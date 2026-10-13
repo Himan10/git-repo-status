@@ -1,0 +1,29 @@
+{
+ "total_count": 2,
+ "workflows": [
+  {
+   "id": 379991493,
+   "node_id": "W_kwDOS3FLBc4WpjXF",
+   "name": "Service image",
+   "path": ".github/workflows/service-image.yml",
+   "state": "active",
+   "created_at": "2026-10-10T01:37:37.000+05:30",
+   "updated_at": "2026-10-10T02:00:39.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/scout/actions/workflows/379991493",
+   "html_url": "https://github.com/MayaTrail/scout/blob/master/.github/workflows/service-image.yml",
+   "badge_url": "https://github.com/MayaTrail/scout/workflows/Service%20image/badge.svg"
+  },
+  {
+   "id": 295633785,
+   "node_id": "W_kwDOS3FLBc4RnwN5",
+   "name": "Dependency Graph",
+   "path": "dynamic/dependabot/update-graph",
+   "state": "active",
+   "created_at": "2026-06-14T11:41:42.000+05:30",
+   "updated_at": "2026-06-14T11:41:42.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/scout/actions/workflows/295633785",
+   "html_url": "https://github.com/MayaTrail/scout/actions/workflows/dependabot/update-graph",
+   "badge_url": "https://github.com/MayaTrail/scout/actions/workflows/dependabot/update-graph/badge.svg"
+  }
+ ]
+}

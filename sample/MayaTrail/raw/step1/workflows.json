@@ -1,0 +1,53 @@
+{
+ "total_count": 4,
+ "workflows": [
+  {
+   "id": 333859835,
+   "node_id": "W_kwDOQXkNNM4T5kv7",
+   "name": "Backend tests",
+   "path": ".github/workflows/backend-tests.yml",
+   "state": "active",
+   "created_at": "2026-08-14T02:08:24.000+05:30",
+   "updated_at": "2026-08-14T02:54:36.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/step1/actions/workflows/333859835",
+   "html_url": "https://github.com/MayaTrail/step1/blob/main/.github/workflows/backend-tests.yml",
+   "badge_url": "https://github.com/MayaTrail/step1/workflows/Backend%20tests/badge.svg"
+  },
+  {
+   "id": 332343414,
+   "node_id": "W_kwDOQXkNNM4Tzyh2",
+   "name": "Detections",
+   "path": ".github/workflows/detections.yml",
+   "state": "active",
+   "created_at": "2026-08-12T04:59:19.000+05:30",
+   "updated_at": "2026-08-13T17:50:03.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/step1/actions/workflows/332343414",
+   "html_url": "https://github.com/MayaTrail/step1/blob/main/.github/workflows/detections.yml",
+   "badge_url": "https://github.com/MayaTrail/step1/workflows/Detections/badge.svg"
+  },
+  {
+   "id": 225732871,
+   "node_id": "W_kwDOQXkNNM4NdGkH",
+   "name": "Dependabot Updates",
+   "path": "dynamic/dependabot/dependabot-updates",
+   "state": "active",
+   "created_at": "2026-01-21T23:16:09.000+05:30",
+   "updated_at": "2026-01-21T23:16:09.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/step1/actions/workflows/225732871",
+   "html_url": "https://github.com/MayaTrail/step1/actions/workflows/dependabot/dependabot-updates",
+   "badge_url": "https://github.com/MayaTrail/step1/actions/workflows/dependabot/dependabot-updates/badge.svg"
+  },
+  {
+   "id": 287179969,
+   "node_id": "W_kwDOQXkNNM4RHgTB",
+   "name": "Dependency Graph",
+   "path": "dynamic/dependabot/update-graph",
+   "state": "active",
+   "created_at": "2026-06-02T01:56:25.000+05:30",
+   "updated_at": "2026-06-02T01:56:25.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/step1/actions/workflows/287179969",
+   "html_url": "https://github.com/MayaTrail/step1/actions/workflows/dependabot/update-graph",
+   "badge_url": "https://github.com/MayaTrail/step1/actions/workflows/dependabot/update-graph/badge.svg"
+  }
+ ]
+}
