@@ -1,0 +1,17 @@
+{
+ "total_count": 1,
+ "workflows": [
+  {
+   "id": 167394731,
+   "node_id": "W_kwDOOoNWcs4J-j2r",
+   "name": "Create release",
+   "path": ".github/workflows/create-release.yml",
+   "state": "active",
+   "created_at": "2025-06-09T19:17:43.000+05:30",
+   "updated_at": "2025-06-09T19:17:43.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/mayatrail-test/actions/workflows/167394731",
+   "html_url": "https://github.com/MayaTrail/mayatrail-test/blob/main/.github/workflows/create-release.yml",
+   "badge_url": "https://github.com/MayaTrail/mayatrail-test/workflows/Create%20release/badge.svg"
+  }
+ ]
+}

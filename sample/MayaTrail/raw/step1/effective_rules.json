@@ -1,0 +1,44 @@
+[
+ {
+  "type": "deletion",
+  "ruleset_source_type": "Repository",
+  "ruleset_source": "MayaTrail/step1",
+  "ruleset_id": 12836394
+ },
+ {
+  "type": "non_fast_forward",
+  "ruleset_source_type": "Repository",
+  "ruleset_source": "MayaTrail/step1",
+  "ruleset_id": 12836394
+ },
+ {
+  "type": "pull_request",
+  "parameters": {
+   "required_approving_review_count": 1,
+   "dismiss_stale_reviews_on_push": false,
+   "required_reviewers": [],
+   "require_code_owner_review": true,
+   "dismissal_restriction": {
+    "enabled": false,
+    "allowed_actors": []
+   },
+   "require_last_push_approval": false,
+   "required_review_thread_resolution": false,
+   "require_extra_approval_for_unattributed_changes": true,
+   "allowed_merge_methods": [
+    "merge",
+    "squash",
+    "rebase"
+   ]
+  },
+  "ruleset_source_type": "Repository",
+  "ruleset_source": "MayaTrail/step1",
+  "ruleset_id": 12836394
+ },
+ {
+  "type": "required_signatures",
+  "ruleset_source_type": "Repository",
+  "ruleset_source": "MayaTrail/step1",
+  "ruleset_id": 12836394
+ }
+]

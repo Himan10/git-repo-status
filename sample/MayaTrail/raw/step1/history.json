@@ -1,0 +1,1256 @@
+{
+ "data": {
+  "repository": {
+   "defaultBranchRef": {
+    "name": "main",
+    "target": {
+     "history": {
+      "nodes": [
+       {
+        "oid": "1f04c635a41e87c43c741a8a40121999f3871485",
+        "committedDate": "2026-10-11T18:32:19Z",
+        "author": {
+         "date": "2026-10-12T00:02:19+05:30",
+         "email": "33115688+Himan10@users.noreply.github.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T18:32:19Z",
+         "email": "noreply@github.com",
+         "name": "GitHub",
+         "user": null
+        },
+        "signature": {
+         "isValid": true,
+         "state": "VALID",
+         "signer": {
+          "login": "web-flow"
+         }
+        }
+       },
+       {
+        "oid": "384436ef8224f8edb0d2c06c8e8de9897892c30a",
+        "committedDate": "2026-10-11T18:31:44Z",
+        "author": {
+         "date": "2026-10-12T00:01:44+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T18:31:44Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "babec89b9d5012b9125250c6e673bc3d65c3b033",
+        "committedDate": "2026-10-11T17:52:21Z",
+        "author": {
+         "date": "2026-10-11T23:22:21+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T17:52:21Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "843932609e4b206d139cccabcf135d506781d951",
+        "committedDate": "2026-10-11T10:57:14Z",
+        "author": {
+         "date": "2026-10-11T16:27:14+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T10:57:14Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "75e44cc0979ce30295f8b503395b383a2d0ffea7",
+        "committedDate": "2026-10-11T10:51:28Z",
+        "author": {
+         "date": "2026-10-11T16:21:28+05:30",
+         "email": "33115688+Himan10@users.noreply.github.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T10:51:28Z",
+         "email": "noreply@github.com",
+         "name": "GitHub",
+         "user": null
+        },
+        "signature": {
+         "isValid": true,
+         "state": "VALID",
+         "signer": {
+          "login": "web-flow"
+         }
+        }
+       },
+       {
+        "oid": "15309b9763743af3f40e2e73b978eef2c848b518",
+        "committedDate": "2026-10-11T10:49:33Z",
+        "author": {
+         "date": "2026-10-11T16:19:33+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T10:49:33Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "cd3c2f467753975d13f6b5a9d4564f63854b06a8",
+        "committedDate": "2026-10-11T10:39:58Z",
+        "author": {
+         "date": "2026-10-11T16:09:58+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-11T10:39:58Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "16a0ac8a763c8d330d943dfcd8a8ee2deb2142a5",
+        "committedDate": "2026-10-09T21:11:07Z",
+        "author": {
+         "date": "2026-10-10T02:41:07+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-09T21:11:07Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "eb1d0f70a2246ac131fb9a540333c69a54a9092c",
+        "committedDate": "2026-10-05T12:54:53Z",
+        "author": {
+         "date": "2026-10-05T18:24:53+05:30",
+         "email": "33115688+Himan10@users.noreply.github.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-05T12:54:53Z",
+         "email": "noreply@github.com",
+         "name": "GitHub",
+         "user": null
+        },
+        "signature": {
+         "isValid": true,
+         "state": "VALID",
+         "signer": {
+          "login": "web-flow"
+         }
+        }
+       },
+       {
+        "oid": "7804fdbc4377da0896b79958585ccd41fe25209c",
+        "committedDate": "2026-10-05T12:51:01Z",
+        "author": {
+         "date": "2026-10-05T18:21:01+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-05T12:51:01Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "30a727834f3404e6ce05e0ff9fcf1e8de6d90b4c",
+        "committedDate": "2026-10-05T12:39:04Z",
+        "author": {
+         "date": "2026-10-05T18:09:04+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-05T12:39:04Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "e91bf0ca37d5192d0de0cf27498b7f8e90f68041",
+        "committedDate": "2026-10-05T11:07:50Z",
+        "author": {
+         "date": "2026-10-05T16:37:50+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-05T11:07:50Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "ddf8de3d764971546adff2e432edb48b1e43e918",
+        "committedDate": "2026-10-02T16:08:05Z",
+        "author": {
+         "date": "2026-10-02T21:38:05+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-02T16:08:05Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "b43c687c486caba2faa5ba60b311dafc333a5f76",
+        "committedDate": "2026-10-02T13:56:31Z",
+        "author": {
+         "date": "2026-10-02T19:26:31+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-02T13:56:31Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "116c114af3e4babb79eab0ffe0f3a2a90785a40a",
+        "committedDate": "2026-10-01T15:37:03Z",
+        "author": {
+         "date": "2026-10-01T21:07:03+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-01T15:37:03Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "5638909760778d4c74fb08f25f521ea7a8d83657",
+        "committedDate": "2026-10-01T14:33:12Z",
+        "author": {
+         "date": "2026-10-01T20:03:12+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-10-01T14:33:12Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "d7271263ff773f27044b8d31ef902e07deed5a75",
+        "committedDate": "2026-09-29T20:52:54Z",
+        "author": {
+         "date": "2026-09-30T02:22:54+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-09-29T20:52:54Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "2a164fd9dae7e42034c1bf0291c9a2a6875c977b",
+        "committedDate": "2026-09-29T20:19:24Z",
+        "author": {
+         "date": "2026-09-30T01:49:24+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-09-29T20:19:24Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "02878c251834b0ab1778bcca7679c081c61dccad",
+        "committedDate": "2026-09-27T12:29:16Z",
+        "author": {
+         "date": "2026-09-27T17:59:16+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-09-27T12:29:16Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "d688de89ef1ffcd5efea40f3742d1148999e9f55",
+        "committedDate": "2026-09-26T16:57:32Z",
+        "author": {
+         "date": "2026-09-26T22:27:32+05:30",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "committer": {
+         "date": "2026-09-26T16:57:32Z",
+         "email": "h3c.initiative46@gmail.com",
+         "name": "Himan10",
+         "user": {
+          "login": "Himan10"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "adf1ccf87e4527f18ef34fe9b8a6d393d1da9757",
+        "committedDate": "2026-09-22T22:26:26Z",
+        "author": {
+         "date": "2026-09-23T03:56:26+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T22:26:26Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "e0fc2ee0e5fddbb7a9097c09ce758784168c7ad4",
+        "committedDate": "2026-09-22T18:31:53Z",
+        "author": {
+         "date": "2026-09-23T00:01:53+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:31:53Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "59ea4958a0b548971b1323898fcb5c0b49d279b9",
+        "committedDate": "2026-09-22T18:31:31Z",
+        "author": {
+         "date": "2026-09-23T00:01:31+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:31:31Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "97facc3f21f8906d5fbdc470e9de860da7062778",
+        "committedDate": "2026-09-22T18:31:16Z",
+        "author": {
+         "date": "2026-09-23T00:01:16+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:31:16Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "a78eed7052b3533a30e6c166147341603ee91586",
+        "committedDate": "2026-09-22T18:30:57Z",
+        "author": {
+         "date": "2026-09-23T00:00:57+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:30:57Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "9701ebcd0262ef42d763a9418bcee17f2446948a",
+        "committedDate": "2026-09-22T18:23:51Z",
+        "author": {
+         "date": "2026-09-22T23:53:51+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:23:51Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "3ceb485babbfed343af6a8285d2a2784cae7f58b",
+        "committedDate": "2026-09-22T18:22:30Z",
+        "author": {
+         "date": "2026-09-22T23:52:30+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:22:30Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "a4054684a6c59b266e9017abe5cb8d48a1bfb7f5",
+        "committedDate": "2026-09-22T18:22:24Z",
+        "author": {
+         "date": "2026-09-22T23:52:24+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:22:24Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "96d2fd719f84c561a8b15f9cff10befbb28f067b",
+        "committedDate": "2026-09-22T18:22:00Z",
+        "author": {
+         "date": "2026-09-22T23:52:00+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T18:22:00Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "08c62b699384859c6ce8287197ee4ab28a80b4de",
+        "committedDate": "2026-09-22T16:41:47Z",
+        "author": {
+         "date": "2026-09-22T22:11:47+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T16:41:47Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "081dc4657c0e3b7686c8b933c210ca53267d42fc",
+        "committedDate": "2026-09-22T16:13:32Z",
+        "author": {
+         "date": "2026-09-22T21:43:32+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T16:13:32Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "e5dc7b682fdbf1116c37fa7744f37e7b9e87fd44",
+        "committedDate": "2026-09-22T13:54:04Z",
+        "author": {
+         "date": "2026-09-22T19:24:04+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:54:04Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "a61b53abf5a62ea2ca8f1dddc6fd01cd5c5da56a",
+        "committedDate": "2026-09-22T13:53:21Z",
+        "author": {
+         "date": "2026-09-22T19:23:21+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:53:21Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "1bbd74cb202a0cc33aa569a475b015927d48d72b",
+        "committedDate": "2026-09-22T13:47:27Z",
+        "author": {
+         "date": "2026-09-22T19:17:27+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:47:27Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "b44ce904d4db6c293b18c02c7a8e8873f4b43b73",
+        "committedDate": "2026-09-22T13:34:59Z",
+        "author": {
+         "date": "2026-09-22T19:04:59+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:34:59Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "ab9be090b21602df33f8511d41999bcdcebc321e",
+        "committedDate": "2026-09-22T13:26:04Z",
+        "author": {
+         "date": "2026-09-22T18:56:04+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:26:04Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "f8b92fd94e8e899b69e6ef2a1d87e1ab37470210",
+        "committedDate": "2026-09-22T13:20:27Z",
+        "author": {
+         "date": "2026-09-22T18:50:27+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:20:27Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "22a1f516d5740611b39c44f556fc5152916e3833",
+        "committedDate": "2026-09-22T13:12:43Z",
+        "author": {
+         "date": "2026-09-22T18:42:43+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:12:43Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "42137a19155569f69093b3cc0572c61dbf964b9c",
+        "committedDate": "2026-09-22T13:02:20Z",
+        "author": {
+         "date": "2026-09-22T18:32:20+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T13:02:20Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "ea0aba82b821cb3dd12964ff97ed2995d6156613",
+        "committedDate": "2026-09-22T12:55:55Z",
+        "author": {
+         "date": "2026-09-22T18:25:55+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T12:55:55Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "04f7823969344ebc74651cf45b1e2261779f5baf",
+        "committedDate": "2026-09-22T12:49:26Z",
+        "author": {
+         "date": "2026-09-22T18:19:26+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T12:49:26Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "b7741428a0dc6d6cbef2c83de5341b3f4adbebdd",
+        "committedDate": "2026-09-22T12:43:09Z",
+        "author": {
+         "date": "2026-09-22T18:13:09+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T12:43:09Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "aa7bf181146e8fce8b599c2037eb3627272cd847",
+        "committedDate": "2026-09-22T12:37:37Z",
+        "author": {
+         "date": "2026-09-22T18:07:37+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T12:37:37Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "c1b1456739a29c841a7a3fcfee6e67d504026104",
+        "committedDate": "2026-09-22T09:27:50Z",
+        "author": {
+         "date": "2026-09-22T14:57:50+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T09:27:50Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "b556c22ba0494907b239c7a0cf73b19ce38e41ce",
+        "committedDate": "2026-09-22T05:06:02Z",
+        "author": {
+         "date": "2026-09-22T10:36:02+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T05:06:02Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "4e36ddf14322a2a9d058a66a95cdd29d894127f1",
+        "committedDate": "2026-09-22T04:44:51Z",
+        "author": {
+         "date": "2026-09-22T10:14:51+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T04:44:51Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "b47d15a8d8e151cd0948b02cfd7897e0c58870e5",
+        "committedDate": "2026-09-22T04:42:14Z",
+        "author": {
+         "date": "2026-09-22T10:12:14+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-22T04:42:14Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "d497745886d65bb9993dba9540f1457d12ce260a",
+        "committedDate": "2026-09-21T23:11:49Z",
+        "author": {
+         "date": "2026-09-22T04:41:49+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-21T23:11:49Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "6909176e23df71e10bcda1f82e36d22dda5f18c6",
+        "committedDate": "2026-09-21T22:39:31Z",
+        "author": {
+         "date": "2026-09-22T04:09:31+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-21T22:39:31Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       },
+       {
+        "oid": "2318e46ba5e2cbf4336cfcc984748569d2fbde74",
+        "committedDate": "2026-09-21T22:11:20Z",
+        "author": {
+         "date": "2026-09-22T03:41:20+05:30",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "committer": {
+         "date": "2026-09-21T22:11:20Z",
+         "email": "ehayushpathak@gmail.com",
+         "name": "Ayush Pathak",
+         "user": {
+          "login": "ehayushpathak"
+         }
+        },
+        "signature": null
+       }
+      ]
+     }
+    }
+   },
+   "refs": {
+    "totalCount": 29,
+    "nodes": [
+     {
+      "name": "website_source",
+      "target": {
+       "committedDate": "2026-06-06T15:16:46Z"
+      }
+     },
+     {
+      "name": "testing",
+      "target": {
+       "committedDate": "2026-02-23T15:13:50Z"
+      }
+     },
+     {
+      "name": "migrate-emulations",
+      "target": {
+       "committedDate": "2026-07-03T06:55:28Z"
+      }
+     },
+     {
+      "name": "migrate_k8s_emulations",
+      "target": {
+       "committedDate": "2026-07-08T22:08:00Z"
+      }
+     },
+     {
+      "name": "main",
+      "target": {
+       "committedDate": "2026-10-11T18:32:19Z"
+      }
+     },
+     {
+      "name": "k8s_emulation",
+      "target": {
+       "committedDate": "2026-07-03T05:10:04Z"
+      }
+     },
+     {
+      "name": "git-test-scripts-workflows",
+      "target": {
+       "committedDate": "2026-08-13T21:23:02Z"
+      }
+     },
+     {
+      "name": "fix/emulations-and-ui-updates",
+      "target": {
+       "committedDate": "2026-07-03T16:41:29Z"
+      }
+     },
+     {
+      "name": "feature/playbook-service",
+      "target": {
+       "committedDate": "2026-04-18T12:46:28Z"
+      }
+     },
+     {
+      "name": "feat/threatintel",
+      "target": {
+       "committedDate": "2026-08-14T23:36:24Z"
+      }
+     },
+     {
+      "name": "feat/scout-integration-feature",
+      "target": {
+       "committedDate": "2026-10-11T10:49:33Z"
+      }
+     },
+     {
+      "name": "feat/scout-integration",
+      "target": {
+       "committedDate": "2026-09-22T22:26:26Z"
+      }
+     },
+     {
+      "name": "feat/scout-additions-1",
+      "target": {
+       "committedDate": "2026-10-12T20:08:58Z"
+      }
+     },
+     {
+      "name": "feat/scout-additions",
+      "target": {
+       "committedDate": "2026-10-11T18:31:44Z"
+      }
+     },
+     {
+      "name": "feat/playbooks-as-doc",
+      "target": {
+       "committedDate": "2026-09-08T14:01:01Z"
+      }
+     },
+     {
+      "name": "feat/new-atomics",
+      "target": {
+       "committedDate": "2026-10-12T10:52:18Z"
+      }
+     },
+     {
+      "name": "feat/hazybeacon-emulation",
+      "target": {
+       "committedDate": "2026-09-20T10:59:43Z"
+      }
+     },
+     {
+      "name": "feat/emulation-detection-rules",
+      "target": {
+       "committedDate": "2026-08-13T08:49:04Z"
+      }
+     },
+     {
+      "name": "feat/ecscape-playbook",
+      "target": {
+       "committedDate": "2026-09-20T11:00:47Z"
+      }
+     },
+     {
+      "name": "feat/detection-loop-reports-authoring",
+      "target": {
+       "committedDate": "2026-09-16T17:03:53Z"
+      }
+     },
+     {
+      "name": "feat/detection-coverage",
+      "target": {
+       "committedDate": "2026-08-15T03:24:04Z"
+      }
+     },
+     {
+      "name": "feat/dangerdev-emulation",
+      "target": {
+       "committedDate": "2026-06-20T10:36:09Z"
+      }
+     },
+     {
+      "name": "feat/bedrock-api-key",
+      "target": {
+       "committedDate": "2026-08-15T11:09:36Z"
+      }
+     },
+     {
+      "name": "feat/auth-changes",
+      "target": {
+       "committedDate": "2026-07-04T00:21:08Z"
+      }
+     },
+     {
+      "name": "feat/atomic-emulations-port",
+      "target": {
+       "committedDate": "2026-09-03T07:42:29Z"
+      }
+     },
+     {
+      "name": "ehayushpathak-patch-1",
+      "target": {
+       "committedDate": "2026-07-05T10:06:41Z"
+      }
+     },
+     {
+      "name": "dev/emulations-workflow",
+      "target": {
+       "committedDate": "2026-09-14T11:49:58Z"
+      }
+     },
+     {
+      "name": "dependabot/pip/backend/django-5.1.15",
+      "target": {
+       "committedDate": "2026-07-02T15:09:43Z"
+      }
+     },
+     {
+      "name": "apt_pipeline",
+      "target": {
+       "committedDate": "2026-05-16T12:32:59Z"
+      }
+     }
+    ]
+   }
+  }
+ }
+}

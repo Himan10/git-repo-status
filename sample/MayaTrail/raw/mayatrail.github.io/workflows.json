@@ -1,0 +1,17 @@
+{
+ "total_count": 1,
+ "workflows": [
+  {
+   "id": 163605953,
+   "node_id": "W_kwDOOpA5As4JwG3B",
+   "name": "Deploy Thulite site to Pages",
+   "path": ".github/workflows/deploy-page.yml",
+   "state": "active",
+   "created_at": "2025-05-22T19:09:41.000+05:30",
+   "updated_at": "2025-05-22T19:09:41.000+05:30",
+   "url": "https://api.github.com/repos/MayaTrail/mayatrail.github.io/actions/workflows/163605953",
+   "html_url": "https://github.com/MayaTrail/mayatrail.github.io/blob/main/.github/workflows/deploy-page.yml",
+   "badge_url": "https://github.com/MayaTrail/mayatrail.github.io/workflows/Deploy%20Thulite%20site%20to%20Pages/badge.svg"
+  }
+ ]
+}
