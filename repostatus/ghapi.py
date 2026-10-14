@@ -2,10 +2,18 @@
 
 Only GET requests and GraphQL queries are allowed. Anything else raises, so the
 tool cannot change a repository even when the token has write scopes.
+
+Works the same on macOS, Linux and Windows:
+  - query parameters are passed as separate -f fields, never as "?a=1&b=2" in an
+    argument, because Windows cmd.exe treats & as "start another command";
+  - GraphQL queries are sent on standard input, not as a multi-line argument;
+  - gh output is always read as UTF-8, whatever the system's default encoding.
 """
 import json
 import re
+import shutil
 import subprocess
+from urllib.parse import parse_qsl
 
 _MUTATION = re.compile(r"^\s*mutation\b", re.IGNORECASE)
 
@@ -16,10 +24,25 @@ class ApiError(Exception):
         self.path, self.status, self.message = path, status, message
 
 
+def gh_path():
+    """Full path of the gh executable, or None if it is not installed."""
+    return shutil.which("gh")
+
+
+def split_query(path):
+    """'repos/x/activity?ref=main&per_page=30' -> ('repos/x/activity', ['-f', 'ref=main', '-f', 'per_page=30'])"""
+    endpoint, _, query = path.partition("?")
+    fields = []
+    for k, v in parse_qsl(query, keep_blank_values=True):
+        fields += ["-f", f"{k}={v}"]
+    return endpoint, fields
+
+
 class GitHub:
     def __init__(self, recorder=None, counter=None):
         self.recorder = recorder  # callable(name, data) to keep raw evidence
         self._counter = counter if counter is not None else [0]
+        self._gh = gh_path() or "gh"
 
     @property
     def calls(self):
@@ -28,9 +51,13 @@ class GitHub:
     def with_recorder(self, recorder):
         return GitHub(recorder, self._counter)
 
-    def _run(self, args, path):
+    def _exec(self, args, stdin=None):
         self._counter[0] += 1
-        p = subprocess.run(["gh", "api", *args], capture_output=True, text=True)
+        return subprocess.run([self._gh, "api", *args], input=stdin, capture_output=True,
+                              text=True, encoding="utf-8", errors="replace")
+
+    def _run(self, args, path, stdin=None):
+        p = self._exec(args, stdin)
         if p.returncode != 0:
             status, message = "?", (p.stderr or p.stdout).strip()
             try:
@@ -46,7 +73,8 @@ class GitHub:
         return json.loads(p.stdout) if p.stdout.strip() else None
 
     def get(self, path, paginate=False, record=None):
-        args = ["-X", "GET", "-H", "Accept: application/vnd.github+json", path]
+        endpoint, fields = split_query(path)
+        args = ["-X", "GET", "-H", "Accept: application/vnd.github+json", endpoint, *fields]
         if paginate:
             args[0:0] = ["--paginate", "--slurp"]
         data = self._run(args, path)
@@ -59,10 +87,9 @@ class GitHub:
     def rate_limit(self):
         """Remaining REST calls this hour, read from the headers of a real request.
         The /rate_limit endpoint was seen reporting a full allowance while headers showed calls used."""
-        self._counter[0] += 1
-        p = subprocess.run(["gh", "api", "-i", "-X", "GET", "user"], capture_output=True, text=True)
-        h = {k.strip().lower(): v.strip() for k, _, v in
-             (line.partition(":") for line in p.stdout.split("\r\n\r\n")[0].splitlines()) if v}
+        p = self._exec(["-i", "-X", "GET", "user"])
+        head = re.split(r"\r?\n\r?\n", p.stdout, maxsplit=1)[0]
+        h = {k.strip().lower(): v.strip() for k, _, v in (line.partition(":") for line in head.splitlines()) if v}
         return {"limit": int(h.get("x-ratelimit-limit", 0)), "remaining": int(h.get("x-ratelimit-remaining", 0)),
                 "reset": int(h.get("x-ratelimit-reset", 0))}
 
@@ -76,10 +103,10 @@ class GitHub:
     def graphql(self, query, record=None, **variables):
         if _MUTATION.match(query):
             raise ValueError("GraphQL mutations are not allowed")
-        args = ["graphql", "-f", f"query={query}"]
+        args = ["graphql", "-F", "query=@-"]  # query text read from standard input
         for k, v in variables.items():
             args += ["-F" if isinstance(v, int) else "-f", f"{k}={v}"]
-        data = self._run(args, "graphql")
+        data = self._run(args, "graphql", stdin=query)
         if self.recorder and record:
             self.recorder(record, data)
         return data["data"]

@@ -20,6 +20,14 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 CALLS_PER_REPO = 15  # measured: about 12 per repo plus 2 to 3 per workflow
 
 
+def display_path(path):
+    """Path relative to the current folder when possible (fails across Windows drives)."""
+    try:
+        return os.path.relpath(path)
+    except ValueError:
+        return path
+
+
 def out_dir(owner, create=True):
     """Results folder for an owner. Names are matched without regard to case, so
     'acme-corp' finds out/ACME-Corp on any operating system."""
@@ -46,7 +54,7 @@ def cmd_collect(a):
         os.makedirs(rd, exist_ok=True)
 
         def rec(name, data):
-            with open(os.path.join(rd, f"{name}.json"), "w") as fh:
+            with open(os.path.join(rd, f"{name}.json"), "w", encoding="utf-8") as fh:
                 json.dump(data, fh, indent=1)
         return rec
 
@@ -89,7 +97,7 @@ def cmd_collect(a):
         facts = list(ex.map(one, repos))
     ctx["collected_at"] = datetime.now(timezone.utc).isoformat()
     ctx["api_calls"] = gh.calls
-    with open(os.path.join(d, "facts.json"), "w") as fh:
+    with open(os.path.join(d, "facts.json"), "w", encoding="utf-8") as fh:
         json.dump({"context": ctx, "repos": facts}, fh, indent=1)
     print(f"Done: {gh.calls} API calls. Facts saved to {d}/facts.json", file=sys.stderr)
 
@@ -99,7 +107,7 @@ def cmd_report(a):
     path = os.path.join(d, "facts.json")
     if not os.path.exists(path):
         sys.exit(f"No collected data for {a.owner}. Run the scan first (./scan.sh {a.owner}).")
-    with open(path) as fh:
+    with open(path, encoding="utf-8") as fh:
         data = json.load(fh)
     ctx = data["context"]
     now = datetime.fromisoformat(ctx["collected_at"])
@@ -107,7 +115,7 @@ def cmd_report(a):
     rows, cfg = flags.evaluate(data["repos"], ctx, now, cfg)
     report.write_csv(os.path.join(d, "repo-status.csv"), rows, now)
     report.write_summary(os.path.join(d, "summary.md"), ctx, rows, cfg, now, ctx.get("api_calls"))
-    rel = os.path.relpath(d)
+    rel = display_path(d)
     print(f"\nResults:\n  {rel}/summary.md        (read this first)\n  {rel}/repo-status.csv   (open in Excel)",
           file=sys.stderr)
 

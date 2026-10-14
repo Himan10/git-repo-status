@@ -12,26 +12,58 @@ Repo Status looks at every GitHub repository in an organisation or personal acco
 
 ## 1. One-time setup
 
-You need a Mac with the Terminal app (Applications > Utilities > Terminal). Type each command below into Terminal and press Enter.
+Repo Status runs on macOS, Linux and Windows. Choose your platform:
 
-**Step 1. Install the two tools Repo Status needs:**
+git-repo-status have two separate starting points for different-2 platforms:
+- `./scan.sh` (linux/macos)
+- `scan.cmd` (windows)
 
-Command: `brew install gh uv`
+Commands in this README and the wiki are written for macOS / Linux as `./scan.sh`. **On Windows, type `scan.cmd` (or `.\scan.cmd` in PowerShell) in its place**; everything after it stays the same. For example, `./scan.sh git-org --skip-forks` becomes `scan.cmd git-org --skip-forks`.
 
-- `gh` is GitHub's official command-line tool. Repo Status uses it to talk to GitHub and it keeps your login safe. Once done, login to github `gh auth login`
+Type each command into the window and press Enter.
+
+**Step 1. Install the two tools Repo Status needs**
+
+- `gh` is GitHub's official command-line tool. Repo Status uses it to talk to GitHub, and it keeps your login safe.
 - `uv` runs Repo Status. It downloads the right version of Python by itself; you do not need to install Python.
 
-**Step 2. Check everything works:**
+macOS: `brew install gh uv` (needs [Homebrew](https://brew.sh))
 
-Command: `./scan.sh check`
+Linux: install `gh` from [cli.github.com](https://github.com/cli/cli#installation), then `curl -LsSf https://astral.sh/uv/install.sh | sh`
+
+Windows (two commands, then close and reopen the window so it finds the new tools):
+
+```
+winget install --id GitHub.cli -e
+winget install --id astral-sh.uv -e
+```
+
+**Step 2. Log in to GitHub**
+
+Command: `gh auth login`
+
+Answer the questions like this: **GitHub.com**, then **HTTPS**, then **Login with a web browser**. Copy the code it shows, press Enter, paste the code in the browser page that opens, and approve.
+
+**Step 3. Go to the Repo Status folder**
+
+Command: `cd path/to/repo-status`
+
+Tip: type `cd ` (with a space), drag the `repo-status` folder from Finder or File Explorer into the window, and press Enter.
+
+**Step 4. Check everything works**
+
+macOS / Linux: `./scan.sh check`
+
+Windows: `scan.cmd check` (PowerShell: `.\scan.cmd check`)
 
 You should see:
 
 ```
+Platform: Windows 11
 GitHub CLI: gh version 2.88.1 (2026-03-12)
-uv: uv 0.10.7 (08ab1a344 2026-02-27)
+Python: 3.12.12
 Logged in to GitHub as: your-username
-Self-test: passed
+Self-test: passed (22 tests)
 ```
 
 If something is missing, the message tells you what to install. See [Common problems](#5-common-problems).
@@ -103,12 +135,16 @@ Output: `git-user: your own account (public and private repos you own). 40 repos
 
 | Message | What to do |
 |---|---|
-| `Missing: GitHub CLI (gh)` or `Missing: uv` | Run `brew install gh uv` |
-| `Not logged in to GitHub` | Run `gh auth login` (section 1) |
-| `permission denied: ./scan.sh` | Run `chmod +x scan.sh` once, then try again |
+| `Missing: GitHub CLI (gh)` or `Missing: uv` | Install it (section 1, step 1). The message shows the command for your platform |
+| `Not logged in to GitHub` | Run `gh auth login` (section 1, step 2) |
+| `permission denied: ./scan.sh` (macOS / Linux) | Run `chmod +x scan.sh` once, then try again |
+| `'uv' is not recognized as an internal or external command` (Windows) | Install uv (section 1, step 1), then close and reopen the window |
+| `'scan.cmd' is not recognized` or `The term 'scan.cmd' is not recognized` (Windows) | You are not in the Repo Status folder (section 1, step 3); in PowerShell, type `.\scan.cmd` |
+| `'per_page' is not recognized as an internal or external command` (Windows) | You have an older copy of Repo Status. Get the latest version; this was fixed |
+| `gh was found as a batch file` (Windows) | Install the regular gh program with `winget install --id GitHub.cli -e` |
 | `GitHub account or organisation '...' not found` | Check the spelling against the GitHub address |
 | `Not enough API calls left this hour` | Wait until the time shown, or use `--skip-forks` / `--repo` |
-| `No scan found for ...` | Run `./scan.sh NAME` before `./scan.sh NAME deep REPO` |
+| `No scan found for ...` | Run the scan (`./scan.sh NAME`) before the deep dive (`./scan.sh NAME deep REPO`) |
 | `'...' is not in the last scan` | Use the exact name from the `repo` column of `repo-status.csv` |
 | `errors: ... 403` next to a repository | Your account lacks permission for part of that repository (often branch rules, which need admin rights). The rest of the row is still valid |
 | `Organisation audit log: unavailable` | Normal outside GitHub Enterprise; nothing to do |
@@ -138,7 +174,9 @@ uv run --python 3.12 --with pyyaml deep_dive.py --owner git-user --repo cli-tool
 uv run --python 3.12 --with pyyaml python -m unittest discover -s tests
 ```
 
-Without `uv`: `python3.12 -m venv .venv && .venv/bin/pip install pyyaml`, then use `.venv/bin/python` instead of `uv run --python 3.12 --with pyyaml`.
+Without `uv`: `python3.12 -m venv .venv && .venv/bin/pip install pyyaml` (Windows: `py -3.12 -m venv .venv` and `.venv\Scripts\pip install pyyaml`), then use the venv's Python instead of `uv run --python 3.12 --with pyyaml`.
+
+`scan.sh` (macOS / Linux) and `scan.cmd` (Windows) only check that `uv` is installed and then run `scan.py`, which holds the checks and commands for every platform. API calls never put `?` or `&` on the command line, because Windows `cmd.exe` treats `&` as a command separator; `tests/test_ghapi.py` guards this.
 
 How it works, every GitHub API call, and the detection rules are in the [wiki](https://github.com/Himan10/git-repo-status/wiki).
 
