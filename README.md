@@ -118,10 +118,16 @@ Output: `git-user: your own account (public and private repos you own). 40 repos
 ## 6. Safety and privacy
 
 - Repo Status only reads. Your normal GitHub login may allow changes, so for scans at work use a **read-only token**, which makes GitHub itself refuse any change:
-  1. GitHub > Settings > Developer settings > Personal access tokens > Fine-grained tokens > Generate new token.
-  2. Resource owner: the organisation. Repository access: All repositories.
-  3. Permissions, all **Read-only**: Metadata, Contents, Actions, Administration, Packages; Organisation: Members.
-  4. Before scanning, run `export GH_TOKEN=` followed by the token.
+  1. GitHub > Settings > Developer settings > Personal access tokens > **Fine-grained tokens** > Generate new token.
+  2. Resource owner: the organisation you will scan (one token per organisation). Repository access: **All repositories**.
+  3. Repository permissions, all **Read-only**: **Metadata**, **Contents**, **Actions**, **Administration**. No organisation permissions are needed.
+  4. If the organisation uses single sign-on, authorise the token for it (Configure SSO next to the token).
+  5. Before scanning, set the token. macOS / Linux: `export GH_TOKEN=<token>`. Windows Command Prompt: `set GH_TOKEN=<token>`. PowerShell: `$env:GH_TOKEN="<token>"`.
+- What a fine-grained token cannot do, because GitHub does not allow it:
+  - **Images and packages** (`packages` columns): GitHub's packages API accepts only classic tokens with `read:packages`. With a fine-grained token these columns stay empty and `summary.md` shows a package listing error.
+  - **Organisation audit log**: needs a classic token with `read:audit_log`, an organisation owner, and GitHub Enterprise Cloud. Only used to report whether it is available.
+- For image and package results, use a **classic token** instead (Personal access tokens > Tokens (classic)) with `repo`, `read:org`, `read:packages`, and `read:audit_log` if you are an organisation owner on Enterprise Cloud. Classic `repo` also allows changes, so GitHub will not refuse writes; Repo Status still only reads.
+- With either token, the access list (`last pusher has no access now`) is only shown for repositories your account can **write** to. That is GitHub's rule, not the token's.
 - The results contain repository names, secret **names** (never values), people's usernames and email addresses. Keep the `out` folder private; it is excluded from git.
 
 ---
