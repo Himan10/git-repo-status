@@ -207,7 +207,7 @@ def write_markdown(path, owner, repo, results):
             L.append("\n**Timeline (one day either side)**\n")
             L += [f"- {t['ts']} {t['what']}" for t in r["timeline"]]
         L.append("")
-    with open(path, "w") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(L) + "\n")
 
 
@@ -218,12 +218,12 @@ def main():
     p.add_argument("--all-branches", action="store_true", help="include force pushes to non-default branches")
     a = p.parse_args()
 
-    from run import out_dir
+    from run import display_path, out_dir
     owner_dir = out_dir(a.owner, create=False)
     facts_path = os.path.join(owner_dir, "facts.json")
     if not os.path.exists(facts_path):
         sys.exit(f"No scan found for {a.owner}. Run ./scan.sh {a.owner} first.")
-    with open(facts_path) as fh:
+    with open(facts_path, encoding="utf-8") as fh:
         data = json.load(fh)
     f = next((x for x in data["repos"] if x["repo"].lower() == a.repo.lower()), None)
     if not f:
@@ -243,7 +243,7 @@ def main():
 
     d = os.path.join(owner_dir, "deep-dive")
     os.makedirs(d, exist_ok=True)
-    with open(os.path.join(d, f"{a.repo}.json"), "w") as fh:
+    with open(os.path.join(d, f"{a.repo}.json"), "w", encoding="utf-8") as fh:
         json.dump(results, fh, indent=1)
     write_markdown(os.path.join(d, f"{a.repo}.md"), a.owner, a.repo, results)
     if not results:
@@ -268,7 +268,7 @@ def main():
         print("\n".join(lines))
         return
     print(f"{a.repo}: {len(results)} force push(es) investigated ({gh.calls} API calls).\n"
-          f"Report: {os.path.relpath(os.path.join(d, a.repo + '.md'))}")
+          f"Report: {display_path(os.path.join(d, a.repo + '.md'))}")
 
 
 if __name__ == "__main__":

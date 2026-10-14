@@ -1,0 +1,4 @@
+# Keep line endings right on every platform
+*.cmd text eol=crlf
+*.sh  text eol=lf
+*.py  text eol=lf

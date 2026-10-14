@@ -88,7 +88,7 @@ def row_for(r, now):
 
 
 def write_csv(path, rows, now):
-    with open(path, "w", newline="") as fh:
+    with open(path, "w", newline="", encoding="utf-8-sig") as fh:  # BOM so Excel reads UTF-8
         w = csv.DictWriter(fh, fieldnames=COLUMNS)
         w.writeheader()
         for r in sorted(rows, key=lambda r: (r["status"] != "dead", r["status"] != "dormant", r["f"]["repo"])):
@@ -161,5 +161,5 @@ def write_summary(path, ctx, rows, cfg, now, api_calls):
         L.append("\n## Collection errors\n")
         for repo, e in errs:
             L.append(f"- {repo}: {e}")
-    with open(path, "w") as fh:
+    with open(path, "w", encoding="utf-8") as fh:
         fh.write("\n".join(L) + "\n")
