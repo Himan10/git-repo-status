@@ -1,18 +1,16 @@
 @echo off
-rem One command to run Repo Status on Windows (macOS and Linux: ./scan.sh).
-rem
-rem   scan check                         check that everything is installed
-rem   scan ^<account or org^> [options]    scan every repository
-rem   scan ^<account or org^> deep ^<repo^>  investigate one flagged repository
-rem   scan ^<account or org^> uses ^<owner/action^> [--since YYYY-MM-DD]  who uses an action
-rem
-rem Works from Command Prompt and PowerShell. The work is done by scan.py.
+rem Repo Status launcher for Windows (Command Prompt or PowerShell). macOS/Linux: use scan.sh.
+rem   scan.cmd check
+rem   scan.cmd ACCOUNT-OR-ORG [options]
+rem   scan.cmd ACCOUNT-OR-ORG deep REPO
+rem   scan.cmd ACCOUNT-OR-ORG uses OWNER/ACTION [--since YYYY-MM-DD] [--until YYYY-MM-DD]
+rem zizmor is pinned here, in scan.sh and in repostatus\zizmor.py (a test checks they agree).
 setlocal
-cd /d "%~dp0"
 where uv >nul 2>nul
 if errorlevel 1 (
-  echo Missing: uv. Install it with:  winget install --id astral-sh.uv
+  echo Missing: uv. Install it with:  winget install --id astral-sh.uv -e
+  echo Then close and reopen this window.
   exit /b 1
 )
-uv run -q --python 3.12 --with pyyaml --with zizmor==1.32.0 scan.py %*
-exit /b %errorlevel%
+uv run -q --python 3.12 --with pyyaml --with zizmor==1.32.0 "%~dp0scan.py" %*
+exit /b %ERRORLEVEL%

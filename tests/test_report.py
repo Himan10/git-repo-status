@@ -99,7 +99,7 @@ class NonAscii(unittest.TestCase):
 
 
 class EncodingGuard(unittest.TestCase):
-    """Every text file and subprocess must name its encoding, or Windows falls back to a legacy code page."""
+    """Every text file and text-mode subprocess must name its encoding, or Windows falls back to a legacy code page."""
 
     def test_open_and_subprocess_name_encoding(self):
         bad = []
@@ -123,8 +123,10 @@ class EncodingGuard(unittest.TestCase):
                         if "b" not in mode and "encoding" not in kw:
                             bad.append(f"{os.path.relpath(path, HERE)}:{node.lineno} open() without encoding")
                     elif called == "run" and isinstance(fn, ast.Attribute) and getattr(fn.value, "id", "") == "subprocess":
-                        if "encoding" not in kw:
-                            bad.append(f"{os.path.relpath(path, HERE)}:{node.lineno} subprocess.run without encoding")
+                        # byte mode (no text=) is fine; text mode must say which encoding
+                        if kw & {"text", "universal_newlines"} and "encoding" not in kw:
+                            bad.append(f"{os.path.relpath(path, HERE)}:{node.lineno} text-mode subprocess.run "
+                                       f"without encoding")
         self.assertEqual(bad, [])
 
 

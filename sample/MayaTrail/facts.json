@@ -1,0 +1,5718 @@
+{
+ "context": {
+  "owner": "MayaTrail",
+  "type": "Organization",
+  "viewer": "Himan10",
+  "audit_log": "unavailable (404 Not Found)",
+  "packages": [
+   {
+    "type": "container",
+    "name": "mayatrail-web",
+    "repo": "mayatrail-web",
+    "visibility": "public",
+    "versions": 3,
+    "latest_published": "2026-06-21T21:14:00Z",
+    "latest_tags": [
+     "0dd2ba37578878c7f1546e93a4153fc5f0c9e271",
+     "latest"
+    ],
+    "first_published": "2026-06-14T12:08:58Z",
+    "error": null
+   },
+   {
+    "type": "container",
+    "name": "scout",
+    "repo": "scout",
+    "visibility": "private",
+    "versions": 3,
+    "latest_published": "2026-10-12T15:52:13Z",
+    "latest_tags": [
+     "sha-e8d616a807e3270568b124ccd79a9e0c80eb9b18",
+     "v0.2.1"
+    ],
+    "first_published": "2026-10-09T20:35:18Z",
+    "error": null
+   }
+  ],
+  "collected_at": "2026-10-13T20:35:27.099486+00:00",
+  "api_calls": 109
+ },
+ "repos": [
+  {
+   "repo": "mayatrail-test",
+   "full_name": "MayaTrail/mayatrail-test",
+   "visibility": "private",
+   "archived": false,
+   "fork": false,
+   "created_at": "2025-05-11T17:07:42Z",
+   "pushed_at": "2025-06-09T14:00:56Z",
+   "default_branch": "main",
+   "size_kb": 168,
+   "errors": [],
+   "history": [
+    {
+     "oid": "fec984fb41483430b41d6828888208b0ace16987",
+     "committed_utc": "2025-06-09T14:00:54Z",
+     "author_date": "2025-06-09T19:30:54+05:30",
+     "committer_date": "2025-06-09T14:00:54Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ec6efedaaef561d96e0243d7a6273f789b101454",
+     "committed_utc": "2025-06-09T13:57:44Z",
+     "author_date": "2025-06-09T19:27:44+05:30",
+     "committer_date": "2025-06-09T13:57:44Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "63f0301ec2c2070e5ef142328438ef5040395c37",
+     "committed_utc": "2025-06-09T13:47:38Z",
+     "author_date": "2025-06-09T19:17:38+05:30",
+     "committer_date": "2025-06-09T13:47:38Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "901401e78cb156ad31d8b90408aecd0f9855d132",
+     "committed_utc": "2025-06-09T13:45:59Z",
+     "author_date": "2025-06-09T19:15:59+05:30",
+     "committer_date": "2025-06-09T13:45:59Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a7cbb41dd09e1e5a0bdd0fbe40f989b691d88f3a",
+     "committed_utc": "2025-05-31T15:36:36Z",
+     "author_date": "2025-05-31T21:06:36+05:30",
+     "committer_date": "2025-05-31T15:36:36Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "c35383792ae1274af475171e7a563d21e9e7fdea",
+     "committed_utc": "2025-05-30T05:25:58Z",
+     "author_date": "2025-05-30T10:55:58+05:30",
+     "committer_date": "2025-05-30T05:25:58Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e3c887c0e4bbff125199e321568c0b85128cf368",
+     "committed_utc": "2025-05-29T19:59:06Z",
+     "author_date": "2025-05-30T01:29:06+05:30",
+     "committer_date": "2025-05-29T19:59:06Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "4e8de4e23f6a9fc0d6c7bd12985beb793059de5c",
+     "committed_utc": "2025-05-29T18:10:54Z",
+     "author_date": "2025-05-29T23:40:54+05:30",
+     "committer_date": "2025-05-29T18:10:54Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "822ecddd6330609fed762b5da063b5ec8359f7f8",
+     "committed_utc": "2025-05-29T18:09:59Z",
+     "author_date": "2025-05-29T23:39:59+05:30",
+     "committer_date": "2025-05-29T18:09:59Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "2343ca989b603718991e2d2c17fccf447c34deb3",
+     "committed_utc": "2025-05-29T18:09:02Z",
+     "author_date": "2025-05-29T23:39:02+05:30",
+     "committer_date": "2025-05-29T18:09:02Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e512b649132caac0aa1083adaa0e11ee5f249f18",
+     "committed_utc": "2025-05-27T08:16:07Z",
+     "author_date": "2025-05-27T13:46:07+05:30",
+     "committer_date": "2025-05-27T08:16:07Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a32a530e47b152f18a4ffba5d4ed198371b59bd1",
+     "committed_utc": "2025-05-27T08:07:53Z",
+     "author_date": "2025-05-27T13:37:53+05:30",
+     "committer_date": "2025-05-27T08:07:53Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "77d39f6b1f08f31fe44e4a2c3530d21898b7553b",
+     "committed_utc": "2025-05-27T08:07:26Z",
+     "author_date": "2025-05-27T13:37:26+05:30",
+     "committer_date": "2025-05-27T08:07:26Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "bd86ddb9690e862508a461d183095501b404d414",
+     "committed_utc": "2025-05-27T08:02:08Z",
+     "author_date": "2025-05-27T13:32:08+05:30",
+     "committer_date": "2025-05-27T08:02:08Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ef5b22ccf27c4d87c1ecd28b342dfe126cb01bd0",
+     "committed_utc": "2025-05-27T08:01:22Z",
+     "author_date": "2025-05-27T13:31:22+05:30",
+     "committer_date": "2025-05-27T08:01:22Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b04adb9b334f07ed4b8859c78ef211ea881d62f2",
+     "committed_utc": "2025-05-27T08:00:11Z",
+     "author_date": "2025-05-27T13:30:11+05:30",
+     "committer_date": "2025-05-27T08:00:11Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b3c8254433f1224555233a7308b1b61b969c32a6",
+     "committed_utc": "2025-05-26T07:46:44Z",
+     "author_date": "2025-05-26T13:16:44+05:30",
+     "committer_date": "2025-05-26T07:46:44Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "9172491d1ae722996f021257c745762623a293a1",
+     "committed_utc": "2025-05-11T17:07:42Z",
+     "author_date": "2025-05-11T10:07:42-07:00",
+     "committer_date": "2025-05-11T17:07:42Z",
+     "author_email": "ayushpathak786.ap@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    }
+   ],
+   "branches": {
+    "total": 1,
+    "items": [
+     {
+      "name": "main",
+      "committed": "2025-06-09T14:00:54Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2025-06-09T14:00:56Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ec6efedaaef561d96e0243d7a6273f789b101454",
+      "after": "fec984fb41483430b41d6828888208b0ace16987"
+     },
+     {
+      "ts": "2025-06-09T13:57:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "63f0301ec2c2070e5ef142328438ef5040395c37",
+      "after": "ec6efedaaef561d96e0243d7a6273f789b101454"
+     },
+     {
+      "ts": "2025-06-09T13:47:42Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "901401e78cb156ad31d8b90408aecd0f9855d132",
+      "after": "63f0301ec2c2070e5ef142328438ef5040395c37"
+     },
+     {
+      "ts": "2025-06-09T13:46:04Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "a7cbb41dd09e1e5a0bdd0fbe40f989b691d88f3a",
+      "after": "901401e78cb156ad31d8b90408aecd0f9855d132"
+     },
+     {
+      "ts": "2025-05-31T15:36:40Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "c35383792ae1274af475171e7a563d21e9e7fdea",
+      "after": "a7cbb41dd09e1e5a0bdd0fbe40f989b691d88f3a"
+     },
+     {
+      "ts": "2025-05-30T05:26:03Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "e3c887c0e4bbff125199e321568c0b85128cf368",
+      "after": "c35383792ae1274af475171e7a563d21e9e7fdea"
+     },
+     {
+      "ts": "2025-05-29T19:59:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "4e8de4e23f6a9fc0d6c7bd12985beb793059de5c",
+      "after": "e3c887c0e4bbff125199e321568c0b85128cf368"
+     },
+     {
+      "ts": "2025-05-29T18:10:57Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "822ecddd6330609fed762b5da063b5ec8359f7f8",
+      "after": "4e8de4e23f6a9fc0d6c7bd12985beb793059de5c"
+     },
+     {
+      "ts": "2025-05-29T18:10:03Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "2343ca989b603718991e2d2c17fccf447c34deb3",
+      "after": "822ecddd6330609fed762b5da063b5ec8359f7f8"
+     },
+     {
+      "ts": "2025-05-29T18:09:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "e512b649132caac0aa1083adaa0e11ee5f249f18",
+      "after": "2343ca989b603718991e2d2c17fccf447c34deb3"
+     },
+     {
+      "ts": "2025-05-27T08:16:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "a32a530e47b152f18a4ffba5d4ed198371b59bd1",
+      "after": "e512b649132caac0aa1083adaa0e11ee5f249f18"
+     },
+     {
+      "ts": "2025-05-27T08:07:55Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "77d39f6b1f08f31fe44e4a2c3530d21898b7553b",
+      "after": "a32a530e47b152f18a4ffba5d4ed198371b59bd1"
+     },
+     {
+      "ts": "2025-05-27T08:07:29Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "bd86ddb9690e862508a461d183095501b404d414",
+      "after": "77d39f6b1f08f31fe44e4a2c3530d21898b7553b"
+     },
+     {
+      "ts": "2025-05-27T08:02:10Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ef5b22ccf27c4d87c1ecd28b342dfe126cb01bd0",
+      "after": "bd86ddb9690e862508a461d183095501b404d414"
+     },
+     {
+      "ts": "2025-05-27T08:01:25Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "b04adb9b334f07ed4b8859c78ef211ea881d62f2",
+      "after": "ef5b22ccf27c4d87c1ecd28b342dfe126cb01bd0"
+     },
+     {
+      "ts": "2025-05-27T08:00:14Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "b3c8254433f1224555233a7308b1b61b969c32a6",
+      "after": "b04adb9b334f07ed4b8859c78ef211ea881d62f2"
+     },
+     {
+      "ts": "2025-05-26T07:46:50Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "9172491d1ae722996f021257c745762623a293a1",
+      "after": "b3c8254433f1224555233a7308b1b61b969c32a6"
+     },
+     {
+      "ts": "2025-05-11T17:07:43Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "9172491d1ae722996f021257c745762623a293a1"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2025-06-09T14:00:56Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ec6efedaaef561d96e0243d7a6273f789b101454",
+      "after": "fec984fb41483430b41d6828888208b0ace16987"
+     },
+     {
+      "ts": "2025-06-09T13:57:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "63f0301ec2c2070e5ef142328438ef5040395c37",
+      "after": "ec6efedaaef561d96e0243d7a6273f789b101454"
+     },
+     {
+      "ts": "2025-06-09T13:47:42Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "901401e78cb156ad31d8b90408aecd0f9855d132",
+      "after": "63f0301ec2c2070e5ef142328438ef5040395c37"
+     },
+     {
+      "ts": "2025-06-09T13:46:04Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "a7cbb41dd09e1e5a0bdd0fbe40f989b691d88f3a",
+      "after": "901401e78cb156ad31d8b90408aecd0f9855d132"
+     },
+     {
+      "ts": "2025-05-31T15:36:40Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "c35383792ae1274af475171e7a563d21e9e7fdea",
+      "after": "a7cbb41dd09e1e5a0bdd0fbe40f989b691d88f3a"
+     },
+     {
+      "ts": "2025-05-30T05:26:03Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "e3c887c0e4bbff125199e321568c0b85128cf368",
+      "after": "c35383792ae1274af475171e7a563d21e9e7fdea"
+     },
+     {
+      "ts": "2025-05-29T19:59:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "4e8de4e23f6a9fc0d6c7bd12985beb793059de5c",
+      "after": "e3c887c0e4bbff125199e321568c0b85128cf368"
+     },
+     {
+      "ts": "2025-05-29T18:10:57Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "822ecddd6330609fed762b5da063b5ec8359f7f8",
+      "after": "4e8de4e23f6a9fc0d6c7bd12985beb793059de5c"
+     },
+     {
+      "ts": "2025-05-29T18:10:03Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "2343ca989b603718991e2d2c17fccf447c34deb3",
+      "after": "822ecddd6330609fed762b5da063b5ec8359f7f8"
+     },
+     {
+      "ts": "2025-05-29T18:09:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "e512b649132caac0aa1083adaa0e11ee5f249f18",
+      "after": "2343ca989b603718991e2d2c17fccf447c34deb3"
+     },
+     {
+      "ts": "2025-05-27T08:16:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "a32a530e47b152f18a4ffba5d4ed198371b59bd1",
+      "after": "e512b649132caac0aa1083adaa0e11ee5f249f18"
+     },
+     {
+      "ts": "2025-05-27T08:07:55Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "77d39f6b1f08f31fe44e4a2c3530d21898b7553b",
+      "after": "a32a530e47b152f18a4ffba5d4ed198371b59bd1"
+     },
+     {
+      "ts": "2025-05-27T08:07:29Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "bd86ddb9690e862508a461d183095501b404d414",
+      "after": "77d39f6b1f08f31fe44e4a2c3530d21898b7553b"
+     },
+     {
+      "ts": "2025-05-27T08:02:10Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ef5b22ccf27c4d87c1ecd28b342dfe126cb01bd0",
+      "after": "bd86ddb9690e862508a461d183095501b404d414"
+     },
+     {
+      "ts": "2025-05-27T08:01:25Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "b04adb9b334f07ed4b8859c78ef211ea881d62f2",
+      "after": "ef5b22ccf27c4d87c1ecd28b342dfe126cb01bd0"
+     },
+     {
+      "ts": "2025-05-27T08:00:14Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "b3c8254433f1224555233a7308b1b61b969c32a6",
+      "after": "b04adb9b334f07ed4b8859c78ef211ea881d62f2"
+     },
+     {
+      "ts": "2025-05-26T07:46:50Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "9172491d1ae722996f021257c745762623a293a1",
+      "after": "b3c8254433f1224555233a7308b1b61b969c32a6"
+     },
+     {
+      "ts": "2025-05-11T17:07:43Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "9172491d1ae722996f021257c745762623a293a1"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2025-05-11T17:07:43Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": [
+     {
+      "name": "Create release",
+      "path": ".github/workflows/create-release.yml",
+      "state": "active",
+      "last_run": null,
+      "last_run_event": null,
+      "last_run_conclusion": null,
+      "triggers": [
+       "workflow_dispatch"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [],
+      "pushes_image": false,
+      "runs_on": [],
+      "parse_error": null
+     }
+    ]
+   },
+   "protection": {
+    "classic": {
+     "error": "403 Upgrade to GitHub Pro or make this repository public to enable this feature."
+    },
+    "rulesets": {
+     "error": "403 gh: Upgrade to GitHub Pro or make this repository public to enable this feature. (HTTP 403)"
+    }
+   },
+   "codeowners": {
+    "path": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  },
+  {
+   "repo": "mayatrail",
+   "full_name": "MayaTrail/mayatrail",
+   "visibility": "private",
+   "archived": false,
+   "fork": false,
+   "created_at": "2025-05-11T17:08:12Z",
+   "pushed_at": "2026-03-30T08:39:09Z",
+   "default_branch": "main",
+   "size_kb": 1,
+   "errors": [],
+   "history": [
+    {
+     "oid": "df0208c28f2b2596bb22b7c9f7fbf936258d1078",
+     "committed_utc": "2026-03-30T08:39:08Z",
+     "author_date": "2026-03-30T14:09:08+05:30",
+     "committer_date": "2026-03-30T08:39:08Z",
+     "author_email": "30806882+RajChowdhury240@users.noreply.github.com",
+     "author_login": "RajChowdhury240",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "5a5f205ce2c2ead709709e1cfca2002e155aa477",
+     "committed_utc": "2025-05-11T17:08:12Z",
+     "author_date": "2025-05-11T10:08:12-07:00",
+     "committer_date": "2025-05-11T17:08:12Z",
+     "author_email": "ayushpathak786.ap@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    }
+   ],
+   "branches": {
+    "total": 1,
+    "items": [
+     {
+      "name": "main",
+      "committed": "2026-03-30T08:39:08Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2026-03-30T08:39:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "RajChowdhury240",
+      "actor_type": "User",
+      "before": "5a5f205ce2c2ead709709e1cfca2002e155aa477",
+      "after": "df0208c28f2b2596bb22b7c9f7fbf936258d1078"
+     },
+     {
+      "ts": "2025-05-11T17:08:12Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "5a5f205ce2c2ead709709e1cfca2002e155aa477"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2026-03-30T08:39:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "RajChowdhury240",
+      "actor_type": "User",
+      "before": "5a5f205ce2c2ead709709e1cfca2002e155aa477",
+      "after": "df0208c28f2b2596bb22b7c9f7fbf936258d1078"
+     },
+     {
+      "ts": "2025-05-11T17:08:12Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "5a5f205ce2c2ead709709e1cfca2002e155aa477"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2025-05-11T17:08:12Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": []
+   },
+   "protection": {
+    "classic": {
+     "error": "403 Upgrade to GitHub Pro or make this repository public to enable this feature."
+    },
+    "rulesets": {
+     "error": "403 gh: Upgrade to GitHub Pro or make this repository public to enable this feature. (HTTP 403)"
+    }
+   },
+   "codeowners": {
+    "path": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  },
+  {
+   "repo": "mayatrail.github.io",
+   "full_name": "MayaTrail/mayatrail.github.io",
+   "visibility": "public",
+   "archived": false,
+   "fork": false,
+   "created_at": "2025-05-13T03:04:06Z",
+   "pushed_at": "2025-05-22T17:42:46Z",
+   "default_branch": "main",
+   "size_kb": 733,
+   "errors": [],
+   "history": [
+    {
+     "oid": "ebc01530eed10130ac9eceb74bde8f70e58f7edb",
+     "committed_utc": "2025-05-22T17:42:37Z",
+     "author_date": "2025-05-22T23:12:37+05:30",
+     "committer_date": "2025-05-22T17:42:37Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "42f0a85b44cfbe35f98f42e8f074bde7e49efd0a",
+     "committed_utc": "2025-05-22T17:13:40Z",
+     "author_date": "2025-05-22T22:43:40+05:30",
+     "committer_date": "2025-05-22T17:13:40Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "827a7854ed6518248cdc24ebb0e58e7f84e25f7a",
+     "committed_utc": "2025-05-22T13:59:47Z",
+     "author_date": "2025-05-22T19:29:47+05:30",
+     "committer_date": "2025-05-22T13:59:47Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "af7f4e2c46ad11e5527f222670341ca9886cd7db",
+     "committed_utc": "2025-05-22T13:47:20Z",
+     "author_date": "2025-05-22T19:17:20+05:30",
+     "committer_date": "2025-05-22T13:47:20Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "34d25d716470717a33ea87af69b44ec92202c480",
+     "committed_utc": "2025-05-22T13:44:04Z",
+     "author_date": "2025-05-22T19:14:04+05:30",
+     "committer_date": "2025-05-22T13:44:04Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ea5d4ae2bbe85889504b03a193150212fbda2baa",
+     "committed_utc": "2025-05-22T13:39:30Z",
+     "author_date": "2025-05-22T19:09:30+05:30",
+     "committer_date": "2025-05-22T13:39:30Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "hnanda21@gmail.com",
+     "committer_login": "r0075h3ll",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "aa9c9f1e8f46205bfbbe3be2d282051b69dccc44",
+     "committed_utc": "2025-05-13T03:04:06Z",
+     "author_date": "2025-05-13T08:34:06+05:30",
+     "committer_date": "2025-05-13T03:04:06Z",
+     "author_email": "hnanda21@gmail.com",
+     "author_login": "r0075h3ll",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    }
+   ],
+   "branches": {
+    "total": 1,
+    "items": [
+     {
+      "name": "main",
+      "committed": "2025-05-22T17:42:37Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2025-05-22T17:42:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "42f0a85b44cfbe35f98f42e8f074bde7e49efd0a",
+      "after": "ebc01530eed10130ac9eceb74bde8f70e58f7edb"
+     },
+     {
+      "ts": "2025-05-22T17:13:49Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "827a7854ed6518248cdc24ebb0e58e7f84e25f7a",
+      "after": "42f0a85b44cfbe35f98f42e8f074bde7e49efd0a"
+     },
+     {
+      "ts": "2025-05-22T13:59:53Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "af7f4e2c46ad11e5527f222670341ca9886cd7db",
+      "after": "827a7854ed6518248cdc24ebb0e58e7f84e25f7a"
+     },
+     {
+      "ts": "2025-05-22T13:47:26Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "34d25d716470717a33ea87af69b44ec92202c480",
+      "after": "af7f4e2c46ad11e5527f222670341ca9886cd7db"
+     },
+     {
+      "ts": "2025-05-22T13:44:11Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ea5d4ae2bbe85889504b03a193150212fbda2baa",
+      "after": "34d25d716470717a33ea87af69b44ec92202c480"
+     },
+     {
+      "ts": "2025-05-22T13:39:40Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "aa9c9f1e8f46205bfbbe3be2d282051b69dccc44",
+      "after": "ea5d4ae2bbe85889504b03a193150212fbda2baa"
+     },
+     {
+      "ts": "2025-05-13T03:04:07Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "aa9c9f1e8f46205bfbbe3be2d282051b69dccc44"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2025-05-22T17:42:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "42f0a85b44cfbe35f98f42e8f074bde7e49efd0a",
+      "after": "ebc01530eed10130ac9eceb74bde8f70e58f7edb"
+     },
+     {
+      "ts": "2025-05-22T17:13:49Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "827a7854ed6518248cdc24ebb0e58e7f84e25f7a",
+      "after": "42f0a85b44cfbe35f98f42e8f074bde7e49efd0a"
+     },
+     {
+      "ts": "2025-05-22T13:59:53Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "af7f4e2c46ad11e5527f222670341ca9886cd7db",
+      "after": "827a7854ed6518248cdc24ebb0e58e7f84e25f7a"
+     },
+     {
+      "ts": "2025-05-22T13:47:26Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "34d25d716470717a33ea87af69b44ec92202c480",
+      "after": "af7f4e2c46ad11e5527f222670341ca9886cd7db"
+     },
+     {
+      "ts": "2025-05-22T13:44:11Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "ea5d4ae2bbe85889504b03a193150212fbda2baa",
+      "after": "34d25d716470717a33ea87af69b44ec92202c480"
+     },
+     {
+      "ts": "2025-05-22T13:39:40Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "aa9c9f1e8f46205bfbbe3be2d282051b69dccc44",
+      "after": "ea5d4ae2bbe85889504b03a193150212fbda2baa"
+     },
+     {
+      "ts": "2025-05-13T03:04:07Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "r0075h3ll",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "aa9c9f1e8f46205bfbbe3be2d282051b69dccc44"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2025-05-13T03:04:07Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": [
+     {
+      "name": "Deploy Thulite site to Pages",
+      "path": ".github/workflows/deploy-page.yml",
+      "state": "active",
+      "last_run": null,
+      "last_run_event": null,
+      "last_run_conclusion": null,
+      "triggers": [
+       "push",
+       "workflow_dispatch"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [],
+      "pushes_image": false,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     }
+    ]
+   },
+   "protection": {
+    "classic": null,
+    "rulesets": {
+     "types": [],
+     "sources": [],
+     "force_push_blocked": false,
+     "deletion_blocked": false,
+     "pr_required": false,
+     "approvals": 0,
+     "code_owner_review": false,
+     "signatures": false,
+     "status_checks": false
+    }
+   },
+   "codeowners": {
+    "path": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  },
+  {
+   "repo": "step1",
+   "full_name": "MayaTrail/step1",
+   "visibility": "public",
+   "archived": false,
+   "fork": false,
+   "created_at": "2025-11-17T17:52:47Z",
+   "pushed_at": "2026-10-12T20:09:10Z",
+   "default_branch": "main",
+   "size_kb": 19387,
+   "errors": [],
+   "history": [
+    {
+     "oid": "1f04c635a41e87c43c741a8a40121999f3871485",
+     "committed_utc": "2026-10-11T18:32:19Z",
+     "author_date": "2026-10-12T00:02:19+05:30",
+     "committer_date": "2026-10-11T18:32:19Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "384436ef8224f8edb0d2c06c8e8de9897892c30a",
+     "committed_utc": "2026-10-11T18:31:44Z",
+     "author_date": "2026-10-12T00:01:44+05:30",
+     "committer_date": "2026-10-11T18:31:44Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "babec89b9d5012b9125250c6e673bc3d65c3b033",
+     "committed_utc": "2026-10-11T17:52:21Z",
+     "author_date": "2026-10-11T23:22:21+05:30",
+     "committer_date": "2026-10-11T17:52:21Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "843932609e4b206d139cccabcf135d506781d951",
+     "committed_utc": "2026-10-11T10:57:14Z",
+     "author_date": "2026-10-11T16:27:14+05:30",
+     "committer_date": "2026-10-11T10:57:14Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "75e44cc0979ce30295f8b503395b383a2d0ffea7",
+     "committed_utc": "2026-10-11T10:51:28Z",
+     "author_date": "2026-10-11T16:21:28+05:30",
+     "committer_date": "2026-10-11T10:51:28Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "15309b9763743af3f40e2e73b978eef2c848b518",
+     "committed_utc": "2026-10-11T10:49:33Z",
+     "author_date": "2026-10-11T16:19:33+05:30",
+     "committer_date": "2026-10-11T10:49:33Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "cd3c2f467753975d13f6b5a9d4564f63854b06a8",
+     "committed_utc": "2026-10-11T10:39:58Z",
+     "author_date": "2026-10-11T16:09:58+05:30",
+     "committer_date": "2026-10-11T10:39:58Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "16a0ac8a763c8d330d943dfcd8a8ee2deb2142a5",
+     "committed_utc": "2026-10-09T21:11:07Z",
+     "author_date": "2026-10-10T02:41:07+05:30",
+     "committer_date": "2026-10-09T21:11:07Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "eb1d0f70a2246ac131fb9a540333c69a54a9092c",
+     "committed_utc": "2026-10-05T12:54:53Z",
+     "author_date": "2026-10-05T18:24:53+05:30",
+     "committer_date": "2026-10-05T12:54:53Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "7804fdbc4377da0896b79958585ccd41fe25209c",
+     "committed_utc": "2026-10-05T12:51:01Z",
+     "author_date": "2026-10-05T18:21:01+05:30",
+     "committer_date": "2026-10-05T12:51:01Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "30a727834f3404e6ce05e0ff9fcf1e8de6d90b4c",
+     "committed_utc": "2026-10-05T12:39:04Z",
+     "author_date": "2026-10-05T18:09:04+05:30",
+     "committer_date": "2026-10-05T12:39:04Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e91bf0ca37d5192d0de0cf27498b7f8e90f68041",
+     "committed_utc": "2026-10-05T11:07:50Z",
+     "author_date": "2026-10-05T16:37:50+05:30",
+     "committer_date": "2026-10-05T11:07:50Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ddf8de3d764971546adff2e432edb48b1e43e918",
+     "committed_utc": "2026-10-02T16:08:05Z",
+     "author_date": "2026-10-02T21:38:05+05:30",
+     "committer_date": "2026-10-02T16:08:05Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b43c687c486caba2faa5ba60b311dafc333a5f76",
+     "committed_utc": "2026-10-02T13:56:31Z",
+     "author_date": "2026-10-02T19:26:31+05:30",
+     "committer_date": "2026-10-02T13:56:31Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "116c114af3e4babb79eab0ffe0f3a2a90785a40a",
+     "committed_utc": "2026-10-01T15:37:03Z",
+     "author_date": "2026-10-01T21:07:03+05:30",
+     "committer_date": "2026-10-01T15:37:03Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "5638909760778d4c74fb08f25f521ea7a8d83657",
+     "committed_utc": "2026-10-01T14:33:12Z",
+     "author_date": "2026-10-01T20:03:12+05:30",
+     "committer_date": "2026-10-01T14:33:12Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "d7271263ff773f27044b8d31ef902e07deed5a75",
+     "committed_utc": "2026-09-29T20:52:54Z",
+     "author_date": "2026-09-30T02:22:54+05:30",
+     "committer_date": "2026-09-29T20:52:54Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "2a164fd9dae7e42034c1bf0291c9a2a6875c977b",
+     "committed_utc": "2026-09-29T20:19:24Z",
+     "author_date": "2026-09-30T01:49:24+05:30",
+     "committer_date": "2026-09-29T20:19:24Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "02878c251834b0ab1778bcca7679c081c61dccad",
+     "committed_utc": "2026-09-27T12:29:16Z",
+     "author_date": "2026-09-27T17:59:16+05:30",
+     "committer_date": "2026-09-27T12:29:16Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "d688de89ef1ffcd5efea40f3742d1148999e9f55",
+     "committed_utc": "2026-09-26T16:57:32Z",
+     "author_date": "2026-09-26T22:27:32+05:30",
+     "committer_date": "2026-09-26T16:57:32Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "adf1ccf87e4527f18ef34fe9b8a6d393d1da9757",
+     "committed_utc": "2026-09-22T22:26:26Z",
+     "author_date": "2026-09-23T03:56:26+05:30",
+     "committer_date": "2026-09-22T22:26:26Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e0fc2ee0e5fddbb7a9097c09ce758784168c7ad4",
+     "committed_utc": "2026-09-22T18:31:53Z",
+     "author_date": "2026-09-23T00:01:53+05:30",
+     "committer_date": "2026-09-22T18:31:53Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "59ea4958a0b548971b1323898fcb5c0b49d279b9",
+     "committed_utc": "2026-09-22T18:31:31Z",
+     "author_date": "2026-09-23T00:01:31+05:30",
+     "committer_date": "2026-09-22T18:31:31Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "97facc3f21f8906d5fbdc470e9de860da7062778",
+     "committed_utc": "2026-09-22T18:31:16Z",
+     "author_date": "2026-09-23T00:01:16+05:30",
+     "committer_date": "2026-09-22T18:31:16Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a78eed7052b3533a30e6c166147341603ee91586",
+     "committed_utc": "2026-09-22T18:30:57Z",
+     "author_date": "2026-09-23T00:00:57+05:30",
+     "committer_date": "2026-09-22T18:30:57Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "9701ebcd0262ef42d763a9418bcee17f2446948a",
+     "committed_utc": "2026-09-22T18:23:51Z",
+     "author_date": "2026-09-22T23:53:51+05:30",
+     "committer_date": "2026-09-22T18:23:51Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "3ceb485babbfed343af6a8285d2a2784cae7f58b",
+     "committed_utc": "2026-09-22T18:22:30Z",
+     "author_date": "2026-09-22T23:52:30+05:30",
+     "committer_date": "2026-09-22T18:22:30Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a4054684a6c59b266e9017abe5cb8d48a1bfb7f5",
+     "committed_utc": "2026-09-22T18:22:24Z",
+     "author_date": "2026-09-22T23:52:24+05:30",
+     "committer_date": "2026-09-22T18:22:24Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "96d2fd719f84c561a8b15f9cff10befbb28f067b",
+     "committed_utc": "2026-09-22T18:22:00Z",
+     "author_date": "2026-09-22T23:52:00+05:30",
+     "committer_date": "2026-09-22T18:22:00Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "08c62b699384859c6ce8287197ee4ab28a80b4de",
+     "committed_utc": "2026-09-22T16:41:47Z",
+     "author_date": "2026-09-22T22:11:47+05:30",
+     "committer_date": "2026-09-22T16:41:47Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "081dc4657c0e3b7686c8b933c210ca53267d42fc",
+     "committed_utc": "2026-09-22T16:13:32Z",
+     "author_date": "2026-09-22T21:43:32+05:30",
+     "committer_date": "2026-09-22T16:13:32Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e5dc7b682fdbf1116c37fa7744f37e7b9e87fd44",
+     "committed_utc": "2026-09-22T13:54:04Z",
+     "author_date": "2026-09-22T19:24:04+05:30",
+     "committer_date": "2026-09-22T13:54:04Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a61b53abf5a62ea2ca8f1dddc6fd01cd5c5da56a",
+     "committed_utc": "2026-09-22T13:53:21Z",
+     "author_date": "2026-09-22T19:23:21+05:30",
+     "committer_date": "2026-09-22T13:53:21Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "1bbd74cb202a0cc33aa569a475b015927d48d72b",
+     "committed_utc": "2026-09-22T13:47:27Z",
+     "author_date": "2026-09-22T19:17:27+05:30",
+     "committer_date": "2026-09-22T13:47:27Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b44ce904d4db6c293b18c02c7a8e8873f4b43b73",
+     "committed_utc": "2026-09-22T13:34:59Z",
+     "author_date": "2026-09-22T19:04:59+05:30",
+     "committer_date": "2026-09-22T13:34:59Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ab9be090b21602df33f8511d41999bcdcebc321e",
+     "committed_utc": "2026-09-22T13:26:04Z",
+     "author_date": "2026-09-22T18:56:04+05:30",
+     "committer_date": "2026-09-22T13:26:04Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "f8b92fd94e8e899b69e6ef2a1d87e1ab37470210",
+     "committed_utc": "2026-09-22T13:20:27Z",
+     "author_date": "2026-09-22T18:50:27+05:30",
+     "committer_date": "2026-09-22T13:20:27Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "22a1f516d5740611b39c44f556fc5152916e3833",
+     "committed_utc": "2026-09-22T13:12:43Z",
+     "author_date": "2026-09-22T18:42:43+05:30",
+     "committer_date": "2026-09-22T13:12:43Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "42137a19155569f69093b3cc0572c61dbf964b9c",
+     "committed_utc": "2026-09-22T13:02:20Z",
+     "author_date": "2026-09-22T18:32:20+05:30",
+     "committer_date": "2026-09-22T13:02:20Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ea0aba82b821cb3dd12964ff97ed2995d6156613",
+     "committed_utc": "2026-09-22T12:55:55Z",
+     "author_date": "2026-09-22T18:25:55+05:30",
+     "committer_date": "2026-09-22T12:55:55Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "04f7823969344ebc74651cf45b1e2261779f5baf",
+     "committed_utc": "2026-09-22T12:49:26Z",
+     "author_date": "2026-09-22T18:19:26+05:30",
+     "committer_date": "2026-09-22T12:49:26Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b7741428a0dc6d6cbef2c83de5341b3f4adbebdd",
+     "committed_utc": "2026-09-22T12:43:09Z",
+     "author_date": "2026-09-22T18:13:09+05:30",
+     "committer_date": "2026-09-22T12:43:09Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "aa7bf181146e8fce8b599c2037eb3627272cd847",
+     "committed_utc": "2026-09-22T12:37:37Z",
+     "author_date": "2026-09-22T18:07:37+05:30",
+     "committer_date": "2026-09-22T12:37:37Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "c1b1456739a29c841a7a3fcfee6e67d504026104",
+     "committed_utc": "2026-09-22T09:27:50Z",
+     "author_date": "2026-09-22T14:57:50+05:30",
+     "committer_date": "2026-09-22T09:27:50Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b556c22ba0494907b239c7a0cf73b19ce38e41ce",
+     "committed_utc": "2026-09-22T05:06:02Z",
+     "author_date": "2026-09-22T10:36:02+05:30",
+     "committer_date": "2026-09-22T05:06:02Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "4e36ddf14322a2a9d058a66a95cdd29d894127f1",
+     "committed_utc": "2026-09-22T04:44:51Z",
+     "author_date": "2026-09-22T10:14:51+05:30",
+     "committer_date": "2026-09-22T04:44:51Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b47d15a8d8e151cd0948b02cfd7897e0c58870e5",
+     "committed_utc": "2026-09-22T04:42:14Z",
+     "author_date": "2026-09-22T10:12:14+05:30",
+     "committer_date": "2026-09-22T04:42:14Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "d497745886d65bb9993dba9540f1457d12ce260a",
+     "committed_utc": "2026-09-21T23:11:49Z",
+     "author_date": "2026-09-22T04:41:49+05:30",
+     "committer_date": "2026-09-21T23:11:49Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "6909176e23df71e10bcda1f82e36d22dda5f18c6",
+     "committed_utc": "2026-09-21T22:39:31Z",
+     "author_date": "2026-09-22T04:09:31+05:30",
+     "committer_date": "2026-09-21T22:39:31Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "2318e46ba5e2cbf4336cfcc984748569d2fbde74",
+     "committed_utc": "2026-09-21T22:11:20Z",
+     "author_date": "2026-09-22T03:41:20+05:30",
+     "committer_date": "2026-09-21T22:11:20Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    }
+   ],
+   "branches": {
+    "total": 29,
+    "items": [
+     {
+      "name": "website_source",
+      "committed": "2026-06-06T15:16:46Z"
+     },
+     {
+      "name": "testing",
+      "committed": "2026-02-23T15:13:50Z"
+     },
+     {
+      "name": "migrate-emulations",
+      "committed": "2026-07-03T06:55:28Z"
+     },
+     {
+      "name": "migrate_k8s_emulations",
+      "committed": "2026-07-08T22:08:00Z"
+     },
+     {
+      "name": "main",
+      "committed": "2026-10-11T18:32:19Z"
+     },
+     {
+      "name": "k8s_emulation",
+      "committed": "2026-07-03T05:10:04Z"
+     },
+     {
+      "name": "git-test-scripts-workflows",
+      "committed": "2026-08-13T21:23:02Z"
+     },
+     {
+      "name": "fix/emulations-and-ui-updates",
+      "committed": "2026-07-03T16:41:29Z"
+     },
+     {
+      "name": "feature/playbook-service",
+      "committed": "2026-04-18T12:46:28Z"
+     },
+     {
+      "name": "feat/threatintel",
+      "committed": "2026-08-14T23:36:24Z"
+     },
+     {
+      "name": "feat/scout-integration-feature",
+      "committed": "2026-10-11T10:49:33Z"
+     },
+     {
+      "name": "feat/scout-integration",
+      "committed": "2026-09-22T22:26:26Z"
+     },
+     {
+      "name": "feat/scout-additions-1",
+      "committed": "2026-10-12T20:08:58Z"
+     },
+     {
+      "name": "feat/scout-additions",
+      "committed": "2026-10-11T18:31:44Z"
+     },
+     {
+      "name": "feat/playbooks-as-doc",
+      "committed": "2026-09-08T14:01:01Z"
+     },
+     {
+      "name": "feat/new-atomics",
+      "committed": "2026-10-12T10:52:18Z"
+     },
+     {
+      "name": "feat/hazybeacon-emulation",
+      "committed": "2026-09-20T10:59:43Z"
+     },
+     {
+      "name": "feat/emulation-detection-rules",
+      "committed": "2026-08-13T08:49:04Z"
+     },
+     {
+      "name": "feat/ecscape-playbook",
+      "committed": "2026-09-20T11:00:47Z"
+     },
+     {
+      "name": "feat/detection-loop-reports-authoring",
+      "committed": "2026-09-16T17:03:53Z"
+     },
+     {
+      "name": "feat/detection-coverage",
+      "committed": "2026-08-15T03:24:04Z"
+     },
+     {
+      "name": "feat/dangerdev-emulation",
+      "committed": "2026-06-20T10:36:09Z"
+     },
+     {
+      "name": "feat/bedrock-api-key",
+      "committed": "2026-08-15T11:09:36Z"
+     },
+     {
+      "name": "feat/auth-changes",
+      "committed": "2026-07-04T00:21:08Z"
+     },
+     {
+      "name": "feat/atomic-emulations-port",
+      "committed": "2026-09-03T07:42:29Z"
+     },
+     {
+      "name": "ehayushpathak-patch-1",
+      "committed": "2026-07-05T10:06:41Z"
+     },
+     {
+      "name": "dev/emulations-workflow",
+      "committed": "2026-09-14T11:49:58Z"
+     },
+     {
+      "name": "dependabot/pip/backend/django-5.1.15",
+      "committed": "2026-07-02T15:09:43Z"
+     },
+     {
+      "name": "apt_pipeline",
+      "committed": "2026-05-16T12:32:59Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [
+    "Dockerfile",
+    "backend/Dockerfile",
+    "backend/Dockerfile.worker",
+    "frontend/UI/Dockerfile"
+   ],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2026-10-12T20:09:10Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/scout-additions-1",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "5deca9ddf65690413df374e0bb2ef23e1b8aa7a9"
+     },
+     {
+      "ts": "2026-10-12T11:55:38Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/new-atomics",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "6b8c5ff22f8bea4347ccc8a3cc750a96db3b5c38"
+     },
+     {
+      "ts": "2026-10-11T18:32:20Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "843932609e4b206d139cccabcf135d506781d951",
+      "after": "1f04c635a41e87c43c741a8a40121999f3871485"
+     },
+     {
+      "ts": "2026-10-11T18:31:47Z",
+      "type": "push",
+      "ref": "refs/heads/feat/scout-additions",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "babec89b9d5012b9125250c6e673bc3d65c3b033",
+      "after": "384436ef8224f8edb0d2c06c8e8de9897892c30a"
+     },
+     {
+      "ts": "2026-10-11T17:52:34Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/scout-additions",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "babec89b9d5012b9125250c6e673bc3d65c3b033"
+     },
+     {
+      "ts": "2026-10-11T10:57:17Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "75e44cc0979ce30295f8b503395b383a2d0ffea7",
+      "after": "843932609e4b206d139cccabcf135d506781d951"
+     },
+     {
+      "ts": "2026-10-11T10:51:29Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "eb1d0f70a2246ac131fb9a540333c69a54a9092c",
+      "after": "75e44cc0979ce30295f8b503395b383a2d0ffea7"
+     },
+     {
+      "ts": "2026-10-11T10:49:37Z",
+      "type": "push",
+      "ref": "refs/heads/feat/scout-integration-feature",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "cd3c2f467753975d13f6b5a9d4564f63854b06a8",
+      "after": "15309b9763743af3f40e2e73b978eef2c848b518"
+     },
+     {
+      "ts": "2026-10-11T10:40:11Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/scout-integration-feature",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "cd3c2f467753975d13f6b5a9d4564f63854b06a8"
+     },
+     {
+      "ts": "2026-10-05T12:56:52Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "7804fdbc4377da0896b79958585ccd41fe25209c",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-10-05T12:54:54Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0a94fbfa24057ea7d8f5eee70beac0823a7c0f90",
+      "after": "eb1d0f70a2246ac131fb9a540333c69a54a9092c"
+     },
+     {
+      "ts": "2026-10-05T12:51:05Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "30a727834f3404e6ce05e0ff9fcf1e8de6d90b4c",
+      "after": "7804fdbc4377da0896b79958585ccd41fe25209c"
+     },
+     {
+      "ts": "2026-10-05T12:39:09Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e91bf0ca37d5192d0de0cf27498b7f8e90f68041",
+      "after": "30a727834f3404e6ce05e0ff9fcf1e8de6d90b4c"
+     },
+     {
+      "ts": "2026-10-05T11:07:54Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ddf8de3d764971546adff2e432edb48b1e43e918",
+      "after": "e91bf0ca37d5192d0de0cf27498b7f8e90f68041"
+     },
+     {
+      "ts": "2026-10-02T16:08:08Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "b43c687c486caba2faa5ba60b311dafc333a5f76",
+      "after": "ddf8de3d764971546adff2e432edb48b1e43e918"
+     },
+     {
+      "ts": "2026-10-02T13:56:35Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "116c114af3e4babb79eab0ffe0f3a2a90785a40a",
+      "after": "b43c687c486caba2faa5ba60b311dafc333a5f76"
+     },
+     {
+      "ts": "2026-10-02T13:56:35Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "116c114af3e4babb79eab0ffe0f3a2a90785a40a",
+      "after": "b43c687c486caba2faa5ba60b311dafc333a5f76"
+     },
+     {
+      "ts": "2026-10-01T15:37:06Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5638909760778d4c74fb08f25f521ea7a8d83657",
+      "after": "116c114af3e4babb79eab0ffe0f3a2a90785a40a"
+     },
+     {
+      "ts": "2026-10-01T14:33:16Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d7271263ff773f27044b8d31ef902e07deed5a75",
+      "after": "5638909760778d4c74fb08f25f521ea7a8d83657"
+     },
+     {
+      "ts": "2026-09-29T20:52:58Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "2a164fd9dae7e42034c1bf0291c9a2a6875c977b",
+      "after": "d7271263ff773f27044b8d31ef902e07deed5a75"
+     },
+     {
+      "ts": "2026-09-29T20:19:35Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "02878c251834b0ab1778bcca7679c081c61dccad",
+      "after": "2a164fd9dae7e42034c1bf0291c9a2a6875c977b"
+     },
+     {
+      "ts": "2026-09-27T12:29:20Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d688de89ef1ffcd5efea40f3742d1148999e9f55",
+      "after": "02878c251834b0ab1778bcca7679c081c61dccad"
+     },
+     {
+      "ts": "2026-09-26T16:57:40Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "d688de89ef1ffcd5efea40f3742d1148999e9f55"
+     },
+     {
+      "ts": "2026-09-22T22:27:18Z",
+      "type": "push",
+      "ref": "refs/heads/feat/scout-integration",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e0fc2ee0e5fddbb7a9097c09ce758784168c7ad4",
+      "after": "adf1ccf87e4527f18ef34fe9b8a6d393d1da9757"
+     },
+     {
+      "ts": "2026-09-22T18:36:31Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/ecscape-playbook",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "906b4bd7945aef24e200a3a2ef210bb7ea1a4dd9"
+     },
+     {
+      "ts": "2026-09-22T18:35:42Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/hazybeacon-emulation",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "1b1ec4cbfca841c5ef4f7cc9b8339e6e1098e6e4"
+     },
+     {
+      "ts": "2026-09-22T18:34:09Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/scout-integration",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "e0fc2ee0e5fddbb7a9097c09ce758784168c7ad4"
+     },
+     {
+      "ts": "2026-09-20T11:18:56Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e168db32b8ea3337b81a1ef545ff02551a6fd431",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-09-20T11:18:46Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ebda4f0292f4f6507051ad0f20df607349df3047",
+      "after": "0a94fbfa24057ea7d8f5eee70beac0823a7c0f90"
+     },
+     {
+      "ts": "2026-09-20T11:17:11Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "b6b0e2af67afe4b4456815975c4318d73b3e0dee",
+      "after": "e168db32b8ea3337b81a1ef545ff02551a6fd431"
+     },
+     {
+      "ts": "2026-09-18T09:21:54Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4631a2450f6ca781b31093c07fde2e8d39e51d31",
+      "after": "ebda4f0292f4f6507051ad0f20df607349df3047"
+     },
+     {
+      "ts": "2026-09-18T09:19:43Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d601643bc733a1f75dcd4734d92931dbaa1352db",
+      "after": "b6b0e2af67afe4b4456815975c4318d73b3e0dee"
+     },
+     {
+      "ts": "2026-09-18T09:07:33Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "cb0657aaafacf0bca781fd7a473b8d70c43e5168",
+      "after": "d601643bc733a1f75dcd4734d92931dbaa1352db"
+     },
+     {
+      "ts": "2026-09-18T08:56:48Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "579cb890787c0bf86163f9097d30bd300210a8a9",
+      "after": "cb0657aaafacf0bca781fd7a473b8d70c43e5168"
+     },
+     {
+      "ts": "2026-09-16T17:04:08Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/detection-loop-reports-authoring",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "417bba0c09f404b3127e1790b0dda737357b7d90"
+     },
+     {
+      "ts": "2026-09-15T11:15:43Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/emulations-workflows-test",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "579cb890787c0bf86163f9097d30bd300210a8a9"
+     },
+     {
+      "ts": "2026-09-14T11:52:57Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d63228385a179195588c303a883d1079c234f953",
+      "after": "4631a2450f6ca781b31093c07fde2e8d39e51d31"
+     },
+     {
+      "ts": "2026-09-14T11:50:01Z",
+      "type": "push",
+      "ref": "refs/heads/dev/emulations-workflow",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "cc7b59c5c9a8bd1ba39c2624f346658d46d03df1",
+      "after": "cc988c1a9b0e514da164f20dc217fb81491c0a1d"
+     },
+     {
+      "ts": "2026-09-14T11:16:15Z",
+      "type": "push",
+      "ref": "refs/heads/dev/emulations-workflow",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d963f2dc4c1dd726784c1d0cd3866643d8186c36",
+      "after": "cc7b59c5c9a8bd1ba39c2624f346658d46d03df1"
+     },
+     {
+      "ts": "2026-09-14T10:44:03Z",
+      "type": "push",
+      "ref": "refs/heads/dev/emulations-workflow",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "b0e8a15f89c4be7b0433322ca4e89a792544fd07",
+      "after": "d963f2dc4c1dd726784c1d0cd3866643d8186c36"
+     },
+     {
+      "ts": "2026-09-14T08:25:43Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/dev/emulations-workflow",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "b0e8a15f89c4be7b0433322ca4e89a792544fd07"
+     },
+     {
+      "ts": "2026-09-11T12:16:44Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/feat/threat-intel-and-rss",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5585d2d4b98d9eeb8e59f436dfe9b8b285b60e39",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-09-08T22:58:24Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/migrate-threat-intel-ui",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d83bc5f35fb1d067ce815e5c7449360b5680dea8",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-09-08T22:58:18Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "eaf7f138b39a190c31c30e10728f22185e9c112d",
+      "after": "d63228385a179195588c303a883d1079c234f953"
+     },
+     {
+      "ts": "2026-09-08T22:56:19Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/migrate-threat-intel-ui",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "d83bc5f35fb1d067ce815e5c7449360b5680dea8"
+     },
+     {
+      "ts": "2026-09-08T14:03:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d95a669c1cdf8e647790dbd426a50febb88afd08",
+      "after": "eaf7f138b39a190c31c30e10728f22185e9c112d"
+     },
+     {
+      "ts": "2026-09-08T14:01:05Z",
+      "type": "push",
+      "ref": "refs/heads/feat/playbooks-as-doc",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e07a8225c0d3c91fa9fbd4c3a6936ffbf08a50b2",
+      "after": "aba11e6646eba50df073c03963c0debf26223643"
+     },
+     {
+      "ts": "2026-09-04T05:53:44Z",
+      "type": "push",
+      "ref": "refs/heads/feat/playbooks-as-doc",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4e6521fef66703a066d6e950bbb843fa7a67cb24",
+      "after": "e07a8225c0d3c91fa9fbd4c3a6936ffbf08a50b2"
+     },
+     {
+      "ts": "2026-09-03T19:14:25Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/playbooks-as-doc",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "4e6521fef66703a066d6e950bbb843fa7a67cb24"
+     },
+     {
+      "ts": "2026-09-03T07:47:22Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "004f518a3adf45174f902866bec4bd1db4f56217",
+      "after": "d95a669c1cdf8e647790dbd426a50febb88afd08"
+     },
+     {
+      "ts": "2026-09-03T07:44:43Z",
+      "type": "force_push",
+      "ref": "refs/heads/feat/atomic-emulations-port",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "dc0d8efa6e46c2e256d7c5fd8eedada673c53b10",
+      "after": "9a04d1df1a84daa90c87ecc3d9675ac34e47dbdf"
+     },
+     {
+      "ts": "2026-09-03T07:02:10Z",
+      "type": "push",
+      "ref": "refs/heads/feat/atomic-emulations-port",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4ce34c56efd65444b3423976f1e124adbed3826c",
+      "after": "dc0d8efa6e46c2e256d7c5fd8eedada673c53b10"
+     },
+     {
+      "ts": "2026-08-31T05:10:39Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/atomic-emulations-port",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "4ce34c56efd65444b3423976f1e124adbed3826c"
+     },
+     {
+      "ts": "2026-08-15T11:28:59Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/threat-intel-and-rss",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "5585d2d4b98d9eeb8e59f436dfe9b8b285b60e39"
+     },
+     {
+      "ts": "2026-08-15T11:11:17Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "56aee79cde31adfcf44f46b040226cc22b13e877",
+      "after": "004f518a3adf45174f902866bec4bd1db4f56217"
+     },
+     {
+      "ts": "2026-08-15T11:09:49Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/bedrock-api-key",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "aae2284ef9614d3c44936d4b7a69b560e92a9a94"
+     },
+     {
+      "ts": "2026-08-15T03:26:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e55ec6e6bb3a48325dee6bed4ef7e1d636e9fff0",
+      "after": "56aee79cde31adfcf44f46b040226cc22b13e877"
+     },
+     {
+      "ts": "2026-08-15T03:24:11Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/detection-coverage",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "3a642498ccfc477ac84bb2611de03ea89e36173f"
+     },
+     {
+      "ts": "2026-08-15T02:05:51Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "017277b0014da61e5b643b1445865a1b5e84f717",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-08-15T02:05:44Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "c6b115631cf1378c7db30c2bcd5cd0cbaf8d043a",
+      "after": "e55ec6e6bb3a48325dee6bed4ef7e1d636e9fff0"
+     },
+     {
+      "ts": "2026-08-15T02:03:28Z",
+      "type": "force_push",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e1e70bdc8e0a19a1cad05042f319dc8e1625ca8d",
+      "after": "017277b0014da61e5b643b1445865a1b5e84f717"
+     },
+     {
+      "ts": "2026-08-15T00:53:18Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/emulations-result-revamp",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "211bdbee88a4e383a6965c07db359b3152612321",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-08-15T00:53:05Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "825a0231568f44644fdfcb679b6297b839101baa",
+      "after": "c6b115631cf1378c7db30c2bcd5cd0cbaf8d043a"
+     },
+     {
+      "ts": "2026-08-15T00:52:25Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-result-revamp",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "8ebe0b5931a38cd74efc550959c3512a452f09dd",
+      "after": "211bdbee88a4e383a6965c07db359b3152612321"
+     },
+     {
+      "ts": "2026-08-15T00:44:36Z",
+      "type": "push",
+      "ref": "refs/heads/emulations-result-revamp",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "327d6f57ee4e9e75486ff7ede13d5359e2645e97",
+      "after": "8ebe0b5931a38cd74efc550959c3512a452f09dd"
+     },
+     {
+      "ts": "2026-08-14T23:46:14Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/emulations-result-revamp",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "327d6f57ee4e9e75486ff7ede13d5359e2645e97"
+     },
+     {
+      "ts": "2026-08-14T23:36:49Z",
+      "type": "push",
+      "ref": "refs/heads/feat/threatintel",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "bddb83b2cb39f102d21f635c62900c0a94548231",
+      "after": "fbf97416f54d4bf9c7774f8bacfd8257e0a0d6fa"
+     },
+     {
+      "ts": "2026-08-14T22:39:36Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/threatintel",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "bddb83b2cb39f102d21f635c62900c0a94548231"
+     },
+     {
+      "ts": "2026-08-14T22:19:07Z",
+      "type": "push",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "e36302ae6c615f24125458881c618b951dd9dcdb",
+      "after": "e1e70bdc8e0a19a1cad05042f319dc8e1625ca8d"
+     },
+     {
+      "ts": "2026-08-14T22:18:40Z",
+      "type": "push",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "fb3a74b75023ba8f042064cf94c936632bc427d7",
+      "after": "e36302ae6c615f24125458881c618b951dd9dcdb"
+     },
+     {
+      "ts": "2026-08-14T22:17:37Z",
+      "type": "push",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "27dbe966ba33d41c7ce47568d7b694c0e3968845",
+      "after": "fb3a74b75023ba8f042064cf94c936632bc427d7"
+     },
+     {
+      "ts": "2026-08-14T20:33:34Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "27dbe966ba33d41c7ce47568d7b694c0e3968845"
+     },
+     {
+      "ts": "2026-08-13T21:32:31Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5790abd6ed429cced4f8ee6cbbcbc39346702a7a",
+      "after": "825a0231568f44644fdfcb679b6297b839101baa"
+     },
+     {
+      "ts": "2026-08-13T21:29:25Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d8523cb204eca6aa2969bf8d4c1d488d39c5b3ce",
+      "after": "5790abd6ed429cced4f8ee6cbbcbc39346702a7a"
+     },
+     {
+      "ts": "2026-08-13T21:24:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f8d19fda60bd353c2b2f4048a0c40904786f1915",
+      "after": "d8523cb204eca6aa2969bf8d4c1d488d39c5b3ce"
+     },
+     {
+      "ts": "2026-08-13T21:23:02Z",
+      "type": "push",
+      "ref": "refs/heads/git-test-scripts-workflows",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9f61565f526f78d6307d6aaa92e9549ebefb91ca",
+      "after": "643a36eb2950bea25058d625cdf7d37b12def494"
+     },
+     {
+      "ts": "2026-08-13T20:34:44Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/git-test-scripts-workflows",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "9f61565f526f78d6307d6aaa92e9549ebefb91ca"
+     },
+     {
+      "ts": "2026-08-13T19:08:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "founderkd",
+      "actor_type": "User",
+      "before": "e4b87b463e97e838047040b6cba8d4b72a2ad7a4",
+      "after": "f8d19fda60bd353c2b2f4048a0c40904786f1915"
+     },
+     {
+      "ts": "2026-08-13T18:57:16Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "founderkd",
+      "actor_type": "User",
+      "before": "1165eecea029b0634b7d75db2a1d65239f68871c",
+      "after": "e4b87b463e97e838047040b6cba8d4b72a2ad7a4"
+     },
+     {
+      "ts": "2026-08-13T12:20:02Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f34366759ee381669f2e37ddf7258e24984346a8",
+      "after": "1165eecea029b0634b7d75db2a1d65239f68871c"
+     },
+     {
+      "ts": "2026-08-13T08:49:06Z",
+      "type": "push",
+      "ref": "refs/heads/feat/emulation-detection-rules",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "863772ef39036286734a9b47dd294a008b1b90b9",
+      "after": "3b47e4c40e2422cecaff65a67679b01be2848758"
+     },
+     {
+      "ts": "2026-08-11T23:29:12Z",
+      "type": "push",
+      "ref": "refs/heads/feat/emulation-detection-rules",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e7582bb9f5911af98d0a85a65026d9c1fb86943c",
+      "after": "863772ef39036286734a9b47dd294a008b1b90b9"
+     },
+     {
+      "ts": "2026-08-01T14:09:25Z",
+      "type": "push",
+      "ref": "refs/heads/feat/emulation-detection-rules",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "e22ca812125b13ec5b9b22ffa395087ba985d578",
+      "after": "e7582bb9f5911af98d0a85a65026d9c1fb86943c"
+     },
+     {
+      "ts": "2026-08-01T13:39:00Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/emulation-detection-rules",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "e22ca812125b13ec5b9b22ffa395087ba985d578"
+     },
+     {
+      "ts": "2026-07-08T22:10:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e50300b83a5e4ecbbdf1fa335c5bb641e705338b",
+      "after": "f34366759ee381669f2e37ddf7258e24984346a8"
+     },
+     {
+      "ts": "2026-07-08T22:08:08Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/migrate_k8s_emulations",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "2e098065b301e1ec19cba9ad508ecd8e0baa6143"
+     },
+     {
+      "ts": "2026-07-06T18:19:56Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "750c577365d260310e318c572848125a746b2fe7",
+      "after": "e50300b83a5e4ecbbdf1fa335c5bb641e705338b"
+     },
+     {
+      "ts": "2026-07-06T18:17:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "500368efc7e8a087fba4e9a9a07c402f7c63ef5b",
+      "after": "750c577365d260310e318c572848125a746b2fe7"
+     },
+     {
+      "ts": "2026-07-05T10:07:56Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "b3c11864e706f5c9a52dde1e872851fde9d1d354",
+      "after": "500368efc7e8a087fba4e9a9a07c402f7c63ef5b"
+     },
+     {
+      "ts": "2026-07-05T10:06:41Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/ehayushpathak-patch-1",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "beec64cb24a5c37eb59054f0b43d1c60b2a6f17a"
+     },
+     {
+      "ts": "2026-07-04T00:21:52Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "aedb6b7d50ade171edc261661f5632cc27d3b8d9",
+      "after": "b3c11864e706f5c9a52dde1e872851fde9d1d354"
+     },
+     {
+      "ts": "2026-07-04T00:21:13Z",
+      "type": "push",
+      "ref": "refs/heads/feat/auth-changes",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0f203277822af53fe531f099e6ee733a49b06617",
+      "after": "2af79ae2318f6a46a9e12750f2f29e5d9a5ea6c2"
+     },
+     {
+      "ts": "2026-07-03T23:01:51Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "8f7b5d4a52b4a6a39c5bcd332e9571ec3b5c1fed",
+      "after": "aedb6b7d50ade171edc261661f5632cc27d3b8d9"
+     },
+     {
+      "ts": "2026-07-03T23:00:48Z",
+      "type": "push",
+      "ref": "refs/heads/feat/auth-changes",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9f5462a250059aa4cc708054b55be98fd2edc090",
+      "after": "0f203277822af53fe531f099e6ee733a49b06617"
+     },
+     {
+      "ts": "2026-07-03T22:36:55Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "a462664a859c396e5854b5e59a5237753facb64f",
+      "after": "8f7b5d4a52b4a6a39c5bcd332e9571ec3b5c1fed"
+     },
+     {
+      "ts": "2026-07-03T22:33:54Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/auth-changes",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "9f5462a250059aa4cc708054b55be98fd2edc090"
+     },
+     {
+      "ts": "2026-07-03T16:42:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4cd61a8b8b84399455484b5c19f85ff1e16eb76b",
+      "after": "a462664a859c396e5854b5e59a5237753facb64f"
+     },
+     {
+      "ts": "2026-07-03T16:41:31Z",
+      "type": "push",
+      "ref": "refs/heads/fix/emulations-and-ui-updates",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "1f575fd9ef070e344916051ef258fd87e7a770b5",
+      "after": "c7d855b88421d481ffc1a3031dd18ab9818b4cf7"
+     },
+     {
+      "ts": "2026-07-03T14:51:44Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "3032ff40eda0cff8b161a1c8270be09bce7c6f05",
+      "after": "4cd61a8b8b84399455484b5c19f85ff1e16eb76b"
+     },
+     {
+      "ts": "2026-07-03T14:48:46Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/fix/emulations-and-ui-updates",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "1f575fd9ef070e344916051ef258fd87e7a770b5"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2026-10-11T18:32:20Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "843932609e4b206d139cccabcf135d506781d951",
+      "after": "1f04c635a41e87c43c741a8a40121999f3871485"
+     },
+     {
+      "ts": "2026-10-11T10:57:17Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "75e44cc0979ce30295f8b503395b383a2d0ffea7",
+      "after": "843932609e4b206d139cccabcf135d506781d951"
+     },
+     {
+      "ts": "2026-10-11T10:51:29Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "eb1d0f70a2246ac131fb9a540333c69a54a9092c",
+      "after": "75e44cc0979ce30295f8b503395b383a2d0ffea7"
+     },
+     {
+      "ts": "2026-10-05T12:54:54Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0a94fbfa24057ea7d8f5eee70beac0823a7c0f90",
+      "after": "eb1d0f70a2246ac131fb9a540333c69a54a9092c"
+     },
+     {
+      "ts": "2026-09-20T11:18:46Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ebda4f0292f4f6507051ad0f20df607349df3047",
+      "after": "0a94fbfa24057ea7d8f5eee70beac0823a7c0f90"
+     },
+     {
+      "ts": "2026-09-18T09:21:54Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4631a2450f6ca781b31093c07fde2e8d39e51d31",
+      "after": "ebda4f0292f4f6507051ad0f20df607349df3047"
+     },
+     {
+      "ts": "2026-09-14T11:52:57Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d63228385a179195588c303a883d1079c234f953",
+      "after": "4631a2450f6ca781b31093c07fde2e8d39e51d31"
+     },
+     {
+      "ts": "2026-09-08T22:58:18Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "eaf7f138b39a190c31c30e10728f22185e9c112d",
+      "after": "d63228385a179195588c303a883d1079c234f953"
+     },
+     {
+      "ts": "2026-09-08T14:03:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d95a669c1cdf8e647790dbd426a50febb88afd08",
+      "after": "eaf7f138b39a190c31c30e10728f22185e9c112d"
+     },
+     {
+      "ts": "2026-09-03T07:47:22Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "004f518a3adf45174f902866bec4bd1db4f56217",
+      "after": "d95a669c1cdf8e647790dbd426a50febb88afd08"
+     },
+     {
+      "ts": "2026-08-15T11:11:17Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "56aee79cde31adfcf44f46b040226cc22b13e877",
+      "after": "004f518a3adf45174f902866bec4bd1db4f56217"
+     },
+     {
+      "ts": "2026-08-15T03:26:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e55ec6e6bb3a48325dee6bed4ef7e1d636e9fff0",
+      "after": "56aee79cde31adfcf44f46b040226cc22b13e877"
+     },
+     {
+      "ts": "2026-08-15T02:05:44Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "c6b115631cf1378c7db30c2bcd5cd0cbaf8d043a",
+      "after": "e55ec6e6bb3a48325dee6bed4ef7e1d636e9fff0"
+     },
+     {
+      "ts": "2026-08-15T00:53:05Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "825a0231568f44644fdfcb679b6297b839101baa",
+      "after": "c6b115631cf1378c7db30c2bcd5cd0cbaf8d043a"
+     },
+     {
+      "ts": "2026-08-13T21:32:31Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5790abd6ed429cced4f8ee6cbbcbc39346702a7a",
+      "after": "825a0231568f44644fdfcb679b6297b839101baa"
+     },
+     {
+      "ts": "2026-08-13T21:29:25Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d8523cb204eca6aa2969bf8d4c1d488d39c5b3ce",
+      "after": "5790abd6ed429cced4f8ee6cbbcbc39346702a7a"
+     },
+     {
+      "ts": "2026-08-13T21:24:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f8d19fda60bd353c2b2f4048a0c40904786f1915",
+      "after": "d8523cb204eca6aa2969bf8d4c1d488d39c5b3ce"
+     },
+     {
+      "ts": "2026-08-13T19:08:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "founderkd",
+      "actor_type": "User",
+      "before": "e4b87b463e97e838047040b6cba8d4b72a2ad7a4",
+      "after": "f8d19fda60bd353c2b2f4048a0c40904786f1915"
+     },
+     {
+      "ts": "2026-08-13T18:57:16Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "founderkd",
+      "actor_type": "User",
+      "before": "1165eecea029b0634b7d75db2a1d65239f68871c",
+      "after": "e4b87b463e97e838047040b6cba8d4b72a2ad7a4"
+     },
+     {
+      "ts": "2026-08-13T12:20:02Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f34366759ee381669f2e37ddf7258e24984346a8",
+      "after": "1165eecea029b0634b7d75db2a1d65239f68871c"
+     },
+     {
+      "ts": "2026-07-08T22:10:35Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e50300b83a5e4ecbbdf1fa335c5bb641e705338b",
+      "after": "f34366759ee381669f2e37ddf7258e24984346a8"
+     },
+     {
+      "ts": "2026-07-06T18:19:56Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "750c577365d260310e318c572848125a746b2fe7",
+      "after": "e50300b83a5e4ecbbdf1fa335c5bb641e705338b"
+     },
+     {
+      "ts": "2026-07-06T18:17:06Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "500368efc7e8a087fba4e9a9a07c402f7c63ef5b",
+      "after": "750c577365d260310e318c572848125a746b2fe7"
+     },
+     {
+      "ts": "2026-07-05T10:07:56Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "b3c11864e706f5c9a52dde1e872851fde9d1d354",
+      "after": "500368efc7e8a087fba4e9a9a07c402f7c63ef5b"
+     },
+     {
+      "ts": "2026-07-04T00:21:52Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "aedb6b7d50ade171edc261661f5632cc27d3b8d9",
+      "after": "b3c11864e706f5c9a52dde1e872851fde9d1d354"
+     },
+     {
+      "ts": "2026-07-03T23:01:51Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "8f7b5d4a52b4a6a39c5bcd332e9571ec3b5c1fed",
+      "after": "aedb6b7d50ade171edc261661f5632cc27d3b8d9"
+     },
+     {
+      "ts": "2026-07-03T22:36:55Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "a462664a859c396e5854b5e59a5237753facb64f",
+      "after": "8f7b5d4a52b4a6a39c5bcd332e9571ec3b5c1fed"
+     },
+     {
+      "ts": "2026-07-03T16:42:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "4cd61a8b8b84399455484b5c19f85ff1e16eb76b",
+      "after": "a462664a859c396e5854b5e59a5237753facb64f"
+     },
+     {
+      "ts": "2026-07-03T14:51:44Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "3032ff40eda0cff8b161a1c8270be09bce7c6f05",
+      "after": "4cd61a8b8b84399455484b5c19f85ff1e16eb76b"
+     },
+     {
+      "ts": "2026-07-03T06:58:36Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "a5da227652401fc08689a4c9d35d4037e51489c7",
+      "after": "3032ff40eda0cff8b161a1c8270be09bce7c6f05"
+     }
+    ],
+    "force_pushes": [
+     {
+      "ts": "2026-09-03T07:44:43Z",
+      "type": "force_push",
+      "ref": "refs/heads/feat/atomic-emulations-port",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "dc0d8efa6e46c2e256d7c5fd8eedada673c53b10",
+      "after": "9a04d1df1a84daa90c87ecc3d9675ac34e47dbdf"
+     },
+     {
+      "ts": "2026-08-15T02:03:28Z",
+      "type": "force_push",
+      "ref": "refs/heads/feat/guardrails-library",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "e1e70bdc8e0a19a1cad05042f319dc8e1625ca8d",
+      "after": "017277b0014da61e5b643b1445865a1b5e84f717"
+     },
+     {
+      "ts": "2026-07-02T15:09:44Z",
+      "type": "force_push",
+      "ref": "refs/heads/dependabot/pip/backend/django-5.1.15",
+      "actor": "dependabot[bot]",
+      "actor_type": "Bot",
+      "before": "af81f7df13466b73eafaaec3f1f676d7926ea174",
+      "after": "d1bfca1c80fb3ec09785ca4a230c5aae8a9aca5c"
+     },
+     {
+      "ts": "2026-06-26T22:09:13Z",
+      "type": "force_push",
+      "ref": "refs/heads/dependabot/pip/backend/django-5.1.15",
+      "actor": "dependabot[bot]",
+      "actor_type": "Bot",
+      "before": "290bf7fdff23af17d774940ddc1051cf5535734b",
+      "after": "af81f7df13466b73eafaaec3f1f676d7926ea174"
+     },
+     {
+      "ts": "2026-06-01T20:45:31Z",
+      "type": "force_push",
+      "ref": "refs/heads/dev0.5/revamp-backend",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5f8ea34fe172f10e16728097fc6fb9117830ff9d",
+      "after": "cb977e27acb278f06f25b494883645c1d6e281e0"
+     }
+    ],
+    "oldest_event": "2025-11-17T17:52:48Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": [
+     {
+      "name": "Backend tests",
+      "path": ".github/workflows/backend-tests.yml",
+      "state": "active",
+      "last_run": "2026-10-12T20:09:56Z",
+      "last_run_event": "pull_request",
+      "last_run_conclusion": "success",
+      "triggers": [
+       "pull_request",
+       "push"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [],
+      "pushes_image": false,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     },
+     {
+      "name": "Detections",
+      "path": ".github/workflows/detections.yml",
+      "state": "active",
+      "last_run": "2026-10-12T20:09:56Z",
+      "last_run_event": "pull_request",
+      "last_run_conclusion": "success",
+      "triggers": [
+       "pull_request",
+       "push"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [],
+      "pushes_image": false,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     },
+     {
+      "name": "Dependabot Updates",
+      "path": "dynamic/dependabot/dependabot-updates",
+      "state": "active",
+      "last_run": "2026-07-02T15:08:32Z",
+      "last_run_event": "dynamic",
+      "last_run_conclusion": "success",
+      "dynamic": true
+     },
+     {
+      "name": "Dependency Graph",
+      "path": "dynamic/dependabot/update-graph",
+      "state": "active",
+      "last_run": "2026-10-05T12:55:02Z",
+      "last_run_event": "dynamic",
+      "last_run_conclusion": "success",
+      "dynamic": true
+     }
+    ]
+   },
+   "protection": {
+    "classic": null,
+    "rulesets": {
+     "types": [
+      "deletion",
+      "non_fast_forward",
+      "pull_request",
+      "required_signatures"
+     ],
+     "sources": [
+      "Repository:MayaTrail/step1"
+     ],
+     "force_push_blocked": true,
+     "deletion_blocked": true,
+     "pr_required": true,
+     "approvals": 1,
+     "code_owner_review": true,
+     "signatures": true,
+     "status_checks": false
+    }
+   },
+   "codeowners": {
+    "path": ".github/CODEOWNERS",
+    "rules": 1,
+    "owners": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "catch_all": true,
+    "workflows_owner": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "codeowners_owner": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "errors": [],
+    "errors_api": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak",
+    "founderkd"
+   ]
+  },
+  {
+   "repo": ".github",
+   "full_name": "MayaTrail/.github",
+   "visibility": "public",
+   "archived": false,
+   "fork": false,
+   "created_at": "2026-03-19T13:41:25Z",
+   "pushed_at": "2026-03-19T13:41:26Z",
+   "default_branch": "main",
+   "size_kb": 0,
+   "errors": [],
+   "empty": true
+  },
+  {
+   "repo": "mayatrail-web",
+   "full_name": "MayaTrail/mayatrail-web",
+   "visibility": "public",
+   "archived": false,
+   "fork": false,
+   "created_at": "2026-06-09T19:23:35Z",
+   "pushed_at": "2026-06-21T21:13:38Z",
+   "default_branch": "main",
+   "size_kb": 187,
+   "errors": [],
+   "history": [
+    {
+     "oid": "0dd2ba37578878c7f1546e93a4153fc5f0c9e271",
+     "committed_utc": "2026-06-21T21:13:37Z",
+     "author_date": "2026-06-22T02:43:37+05:30",
+     "committer_date": "2026-06-21T21:13:37Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "99cc82f799609f2c83d150f4203b968dc94ca678",
+     "committed_utc": "2026-06-21T21:11:56Z",
+     "author_date": "2026-06-22T02:41:56+05:30",
+     "committer_date": "2026-06-21T21:11:56Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "afc0a9261849b99edee6ca6fbc0f375c93a7a4b5",
+     "committed_utc": "2026-06-21T20:23:40Z",
+     "author_date": "2026-06-22T01:53:40+05:30",
+     "committer_date": "2026-06-21T20:23:40Z",
+     "author_email": "91455225+Ephemaral@users.noreply.github.com",
+     "author_login": "Ephemaral",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "9c9eade13592d8fd6c6252e869ab396aecae3e6e",
+     "committed_utc": "2026-06-14T12:08:39Z",
+     "author_date": "2026-06-14T17:38:39+05:30",
+     "committer_date": "2026-06-14T12:08:39Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "b104f9a7e11abf3e20fb2a5d06a80ec00693aa55",
+     "committed_utc": "2026-06-14T12:06:50Z",
+     "author_date": "2026-06-14T17:36:50+05:30",
+     "committer_date": "2026-06-14T12:06:50Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "9caba3c004749664ef82e49fb47ee13582753094",
+     "committed_utc": "2026-06-14T12:04:36Z",
+     "author_date": "2026-06-14T17:34:36+05:30",
+     "committer_date": "2026-06-14T12:04:36Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "c72a569c389ba84dc3ea42c3046ef3ab01a627f8",
+     "committed_utc": "2026-06-14T12:01:53Z",
+     "author_date": "2026-06-14T17:31:53+05:30",
+     "committer_date": "2026-06-14T12:01:53Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "889254ba047ddcee5539af3484684acda5132611",
+     "committed_utc": "2026-06-14T11:38:56Z",
+     "author_date": "2026-06-14T17:08:56+05:30",
+     "committer_date": "2026-06-14T11:38:56Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "ec9ad9835abc1b77db51c3179046c0093ae21055",
+     "committed_utc": "2026-06-14T11:37:17Z",
+     "author_date": "2026-06-14T17:07:17+05:30",
+     "committer_date": "2026-06-14T11:37:17Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "6eb8ad3b908be0daf816c3f1f2a1e80b0368fd13",
+     "committed_utc": "2026-06-14T11:32:02Z",
+     "author_date": "2026-06-14T17:02:02+05:30",
+     "committer_date": "2026-06-14T11:32:02Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "1fd0aac5e609dcfe6e3845cf1871f161a14c6209",
+     "committed_utc": "2026-06-14T11:29:39Z",
+     "author_date": "2026-06-14T16:59:39+05:30",
+     "committer_date": "2026-06-14T11:29:39Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "28be96068affcb7083644beb2bbefa4dc7274708",
+     "committed_utc": "2026-06-14T11:26:02Z",
+     "author_date": "2026-06-14T16:56:02+05:30",
+     "committer_date": "2026-06-14T11:26:02Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "1320a5f2b717125ba36733c4c6cadd8f9f170b69",
+     "committed_utc": "2026-06-10T23:46:18Z",
+     "author_date": "2026-06-11T05:16:18+05:30",
+     "committer_date": "2026-06-10T23:46:18Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "c5d1c7c3c0a73a88cc759b0c5c2d3c53f44dcd2d",
+     "committed_utc": "2026-06-10T23:45:08Z",
+     "author_date": "2026-06-11T05:15:08+05:30",
+     "committer_date": "2026-06-10T23:45:08Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "de818c17464fe9f023475215ce8a7cf7956b6266",
+     "committed_utc": "2026-06-10T23:43:12Z",
+     "author_date": "2026-06-11T05:13:12+05:30",
+     "committer_date": "2026-06-10T23:43:12Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "bd49f90228677e8f7809be16b27af6a2e55cdd9a",
+     "committed_utc": "2026-06-10T23:42:07Z",
+     "author_date": "2026-06-11T05:12:07+05:30",
+     "committer_date": "2026-06-10T23:42:07Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "f7da0fef4623020ca1a5761af8311af90466e2ec",
+     "committed_utc": "2026-06-10T23:39:30Z",
+     "author_date": "2026-06-11T05:09:30+05:30",
+     "committer_date": "2026-06-10T23:39:30Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "0859a79f7ece77a478b4122f4feb23f36b0393cd",
+     "committed_utc": "2026-06-10T22:30:45Z",
+     "author_date": "2026-06-11T04:00:45+05:30",
+     "committer_date": "2026-06-10T22:30:45Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "c8e97e0cc0a6363f22e43d37b2b2328743e98032",
+     "committed_utc": "2026-06-10T22:23:40Z",
+     "author_date": "2026-06-11T03:53:40+05:30",
+     "committer_date": "2026-06-10T22:23:40Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "6f4a04683f1cc9000a9d871cf3d1ee1e966dbbb8",
+     "committed_utc": "2026-06-10T21:20:33Z",
+     "author_date": "2026-06-11T02:50:33+05:30",
+     "committer_date": "2026-06-10T21:20:33Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "8624f6ee26b8b6696bc44b48f2decaa340fb0c92",
+     "committed_utc": "2026-06-10T21:17:26Z",
+     "author_date": "2026-06-11T02:47:26+05:30",
+     "committer_date": "2026-06-10T21:17:26Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "f06cb5e94967b77760d6868fcce3585dfeac695c",
+     "committed_utc": "2026-06-10T21:08:01Z",
+     "author_date": "2026-06-11T02:38:01+05:30",
+     "committer_date": "2026-06-10T21:08:01Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "29a91b5b9c47f23ca06aec89dfdef7f964f3fad7",
+     "committed_utc": "2026-06-10T21:02:04Z",
+     "author_date": "2026-06-11T02:32:04+05:30",
+     "committer_date": "2026-06-10T21:02:04Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "79f87d0ab04a182d4edeec1615cc1658eda9a562",
+     "committed_utc": "2026-06-10T14:49:59Z",
+     "author_date": "2026-06-10T20:19:59+05:30",
+     "committer_date": "2026-06-10T14:49:59Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "a41bafa824ad8839f36c2476fa438133c0325ece",
+     "committed_utc": "2026-06-09T20:07:05Z",
+     "author_date": "2026-06-10T01:37:05+05:30",
+     "committer_date": "2026-06-09T20:07:05Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "390ed2526d46ebdc77f79c7d0e28066bb1f58584",
+     "committed_utc": "2026-06-09T20:04:43Z",
+     "author_date": "2026-06-10T01:34:43+05:30",
+     "committer_date": "2026-06-09T20:04:43Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "26def9862f96968f88d8b9a5256a05290f3a9645",
+     "committed_utc": "2026-06-09T19:23:36Z",
+     "author_date": "2026-06-10T00:53:36+05:30",
+     "committer_date": "2026-06-09T19:23:36Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    }
+   ],
+   "branches": {
+    "total": 3,
+    "items": [
+     {
+      "name": "web-dev/src",
+      "committed": "2026-06-14T12:06:50Z"
+     },
+     {
+      "name": "main",
+      "committed": "2026-06-21T21:13:37Z"
+     },
+     {
+      "name": "Ephemaral-patch-1",
+      "committed": "2026-06-21T21:11:56Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [
+    "Dockerfile"
+   ],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2026-06-21T21:13:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9c9eade13592d8fd6c6252e869ab396aecae3e6e",
+      "after": "0dd2ba37578878c7f1546e93a4153fc5f0c9e271"
+     },
+     {
+      "ts": "2026-06-21T21:11:59Z",
+      "type": "push",
+      "ref": "refs/heads/Ephemaral-patch-1",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "afc0a9261849b99edee6ca6fbc0f375c93a7a4b5",
+      "after": "99cc82f799609f2c83d150f4203b968dc94ca678"
+     },
+     {
+      "ts": "2026-06-21T20:23:40Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/Ephemaral-patch-1",
+      "actor": "Ephemaral",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "afc0a9261849b99edee6ca6fbc0f375c93a7a4b5"
+     },
+     {
+      "ts": "2026-06-14T12:08:39Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9caba3c004749664ef82e49fb47ee13582753094",
+      "after": "9c9eade13592d8fd6c6252e869ab396aecae3e6e"
+     },
+     {
+      "ts": "2026-06-14T12:06:50Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "c72a569c389ba84dc3ea42c3046ef3ab01a627f8",
+      "after": "b104f9a7e11abf3e20fb2a5d06a80ec00693aa55"
+     },
+     {
+      "ts": "2026-06-14T12:04:36Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "889254ba047ddcee5539af3484684acda5132611",
+      "after": "9caba3c004749664ef82e49fb47ee13582753094"
+     },
+     {
+      "ts": "2026-06-14T12:01:55Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ec9ad9835abc1b77db51c3179046c0093ae21055",
+      "after": "c72a569c389ba84dc3ea42c3046ef3ab01a627f8"
+     },
+     {
+      "ts": "2026-06-14T11:38:56Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "1320a5f2b717125ba36733c4c6cadd8f9f170b69",
+      "after": "889254ba047ddcee5539af3484684acda5132611"
+     },
+     {
+      "ts": "2026-06-14T11:37:20Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "6eb8ad3b908be0daf816c3f1f2a1e80b0368fd13",
+      "after": "ec9ad9835abc1b77db51c3179046c0093ae21055"
+     },
+     {
+      "ts": "2026-06-14T11:32:05Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "1fd0aac5e609dcfe6e3845cf1871f161a14c6209",
+      "after": "6eb8ad3b908be0daf816c3f1f2a1e80b0368fd13"
+     },
+     {
+      "ts": "2026-06-14T11:29:46Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "28be96068affcb7083644beb2bbefa4dc7274708",
+      "after": "1fd0aac5e609dcfe6e3845cf1871f161a14c6209"
+     },
+     {
+      "ts": "2026-06-14T11:26:07Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "bd49f90228677e8f7809be16b27af6a2e55cdd9a",
+      "after": "28be96068affcb7083644beb2bbefa4dc7274708"
+     },
+     {
+      "ts": "2026-06-10T23:46:26Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/Himan10-patch-1",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "c5d1c7c3c0a73a88cc759b0c5c2d3c53f44dcd2d",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-06-10T23:46:18Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "de818c17464fe9f023475215ce8a7cf7956b6266",
+      "after": "1320a5f2b717125ba36733c4c6cadd8f9f170b69"
+     },
+     {
+      "ts": "2026-06-10T23:45:09Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/Himan10-patch-1",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "c5d1c7c3c0a73a88cc759b0c5c2d3c53f44dcd2d"
+     },
+     {
+      "ts": "2026-06-10T23:43:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0859a79f7ece77a478b4122f4feb23f36b0393cd",
+      "after": "de818c17464fe9f023475215ce8a7cf7956b6266"
+     },
+     {
+      "ts": "2026-06-10T23:42:07Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f7da0fef4623020ca1a5761af8311af90466e2ec",
+      "after": "bd49f90228677e8f7809be16b27af6a2e55cdd9a"
+     },
+     {
+      "ts": "2026-06-10T23:39:33Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "c8e97e0cc0a6363f22e43d37b2b2328743e98032",
+      "after": "f7da0fef4623020ca1a5761af8311af90466e2ec"
+     },
+     {
+      "ts": "2026-06-10T22:30:45Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "26def9862f96968f88d8b9a5256a05290f3a9645",
+      "after": "0859a79f7ece77a478b4122f4feb23f36b0393cd"
+     },
+     {
+      "ts": "2026-06-10T22:23:42Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "6f4a04683f1cc9000a9d871cf3d1ee1e966dbbb8",
+      "after": "c8e97e0cc0a6363f22e43d37b2b2328743e98032"
+     },
+     {
+      "ts": "2026-06-10T21:20:33Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "8624f6ee26b8b6696bc44b48f2decaa340fb0c92",
+      "after": "6f4a04683f1cc9000a9d871cf3d1ee1e966dbbb8"
+     },
+     {
+      "ts": "2026-06-10T21:17:29Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f06cb5e94967b77760d6868fcce3585dfeac695c",
+      "after": "8624f6ee26b8b6696bc44b48f2decaa340fb0c92"
+     },
+     {
+      "ts": "2026-06-10T21:08:05Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "29a91b5b9c47f23ca06aec89dfdef7f964f3fad7",
+      "after": "f06cb5e94967b77760d6868fcce3585dfeac695c"
+     },
+     {
+      "ts": "2026-06-10T21:02:11Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "79f87d0ab04a182d4edeec1615cc1658eda9a562",
+      "after": "29a91b5b9c47f23ca06aec89dfdef7f964f3fad7"
+     },
+     {
+      "ts": "2026-06-10T14:50:02Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "a41bafa824ad8839f36c2476fa438133c0325ece",
+      "after": "79f87d0ab04a182d4edeec1615cc1658eda9a562"
+     },
+     {
+      "ts": "2026-06-09T20:07:08Z",
+      "type": "push",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "390ed2526d46ebdc77f79c7d0e28066bb1f58584",
+      "after": "a41bafa824ad8839f36c2476fa438133c0325ece"
+     },
+     {
+      "ts": "2026-06-09T20:05:34Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/web-dev/src",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "390ed2526d46ebdc77f79c7d0e28066bb1f58584"
+     },
+     {
+      "ts": "2026-06-09T19:23:36Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "26def9862f96968f88d8b9a5256a05290f3a9645"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2026-06-21T21:13:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9c9eade13592d8fd6c6252e869ab396aecae3e6e",
+      "after": "0dd2ba37578878c7f1546e93a4153fc5f0c9e271"
+     },
+     {
+      "ts": "2026-06-14T12:08:39Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "9caba3c004749664ef82e49fb47ee13582753094",
+      "after": "9c9eade13592d8fd6c6252e869ab396aecae3e6e"
+     },
+     {
+      "ts": "2026-06-14T12:04:36Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "889254ba047ddcee5539af3484684acda5132611",
+      "after": "9caba3c004749664ef82e49fb47ee13582753094"
+     },
+     {
+      "ts": "2026-06-14T11:38:56Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "1320a5f2b717125ba36733c4c6cadd8f9f170b69",
+      "after": "889254ba047ddcee5539af3484684acda5132611"
+     },
+     {
+      "ts": "2026-06-10T23:46:18Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "de818c17464fe9f023475215ce8a7cf7956b6266",
+      "after": "1320a5f2b717125ba36733c4c6cadd8f9f170b69"
+     },
+     {
+      "ts": "2026-06-10T23:43:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0859a79f7ece77a478b4122f4feb23f36b0393cd",
+      "after": "de818c17464fe9f023475215ce8a7cf7956b6266"
+     },
+     {
+      "ts": "2026-06-10T22:30:45Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "26def9862f96968f88d8b9a5256a05290f3a9645",
+      "after": "0859a79f7ece77a478b4122f4feb23f36b0393cd"
+     },
+     {
+      "ts": "2026-06-09T19:23:36Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "26def9862f96968f88d8b9a5256a05290f3a9645"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2026-06-09T19:23:36Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": [
+     {
+      "name": "Deploy",
+      "path": ".github/workflows/deploy.yml",
+      "state": "active",
+      "last_run": "2026-06-21T21:13:40Z",
+      "last_run_event": "push",
+      "last_run_conclusion": "success",
+      "triggers": [
+       "push"
+      ],
+      "crons": [],
+      "secrets": [
+       "AWS_ACCESS_KEY_ID",
+       "AWS_SECRET_ACCESS_KEY",
+       "EC2_INSTANCE_ID"
+      ],
+      "registries": [
+       "ghcr.io"
+      ],
+      "pushes_image": true,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     },
+     {
+      "name": "PR Checks",
+      "path": ".github/workflows/pr-checks.yml",
+      "state": "active",
+      "last_run": "2026-06-21T21:13:55Z",
+      "last_run_event": "pull_request",
+      "last_run_conclusion": "success",
+      "triggers": [
+       "pull_request"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [],
+      "pushes_image": false,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     },
+     {
+      "name": "CodeQL",
+      "path": "dynamic/github-code-scanning/codeql",
+      "state": "active",
+      "last_run": "2026-09-24T23:23:43Z",
+      "last_run_event": "dynamic",
+      "last_run_conclusion": "success",
+      "dynamic": true
+     }
+    ]
+   },
+   "protection": {
+    "classic": null,
+    "rulesets": {
+     "types": [
+      "code_quality",
+      "deletion",
+      "non_fast_forward",
+      "pull_request"
+     ],
+     "sources": [
+      "Repository:MayaTrail/mayatrail-web"
+     ],
+     "force_push_blocked": true,
+     "deletion_blocked": true,
+     "pr_required": true,
+     "approvals": 1,
+     "code_owner_review": true,
+     "signatures": false,
+     "status_checks": false
+    }
+   },
+   "codeowners": {
+    "path": ".github/CODEOWNERS",
+    "rules": 1,
+    "owners": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "catch_all": true,
+    "workflows_owner": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "codeowners_owner": [
+     "@Himan10",
+     "@ehayushpathak"
+    ],
+    "errors": [],
+    "errors_api": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  },
+  {
+   "repo": "scout",
+   "full_name": "MayaTrail/scout",
+   "visibility": "private",
+   "archived": false,
+   "fork": false,
+   "created_at": "2026-06-11T02:51:07Z",
+   "pushed_at": "2026-10-12T15:51:08Z",
+   "default_branch": "master",
+   "size_kb": 4581,
+   "errors": [],
+   "history": [
+    {
+     "oid": "e8d616a807e3270568b124ccd79a9e0c80eb9b18",
+     "committed_utc": "2026-10-12T15:50:33Z",
+     "author_date": "2026-10-12T21:20:33+05:30",
+     "committer_date": "2026-10-12T15:50:33Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "28d7b2cdb61e68d1335f27b823e7c2dd4ea1dec4",
+     "committed_utc": "2026-10-12T15:43:09Z",
+     "author_date": "2026-10-12T21:13:09+05:30",
+     "committer_date": "2026-10-12T15:43:09Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "f627d6b1397003f5204ee3859ea72414bd623987",
+     "committed_utc": "2026-10-12T12:08:54Z",
+     "author_date": "2026-10-12T17:38:54+05:30",
+     "committer_date": "2026-10-12T12:08:54Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "dae2022e7bcf0ca1f96e41f67b94fbd6238d892a",
+     "committed_utc": "2026-10-12T12:07:16Z",
+     "author_date": "2026-10-12T17:37:16+05:30",
+     "committer_date": "2026-10-12T12:07:16Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "9ac38acf62a5f290c38b25eaf8c361864bbfb767",
+     "committed_utc": "2026-10-12T09:18:12Z",
+     "author_date": "2026-10-12T14:48:12+05:30",
+     "committer_date": "2026-10-12T09:18:12Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "17064c7f7a5a1289b7a1d78e0ae12a65da929456",
+     "committed_utc": "2026-10-12T08:46:18Z",
+     "author_date": "2026-10-12T14:16:18+05:30",
+     "committer_date": "2026-10-12T08:46:18Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "75f38a03453532b8f370e87a1e707e9ed166a5ec",
+     "committed_utc": "2026-10-12T08:42:03Z",
+     "author_date": "2026-10-12T14:12:03+05:30",
+     "committer_date": "2026-10-12T08:42:03Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "c76cd30f743e29a141a21e3f55f27649a412f7a6",
+     "committed_utc": "2026-10-12T08:37:10Z",
+     "author_date": "2026-10-12T14:07:10+05:30",
+     "committer_date": "2026-10-12T08:37:10Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "72264fb3904143552170cffad5b94dd7d6409f5e",
+     "committed_utc": "2026-10-12T08:33:54Z",
+     "author_date": "2026-10-12T14:03:54+05:30",
+     "committer_date": "2026-10-12T08:33:54Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "2e024b450b424e684cf264c929ddfa84d4aedaa0",
+     "committed_utc": "2026-10-12T08:28:47Z",
+     "author_date": "2026-10-12T13:58:47+05:30",
+     "committer_date": "2026-10-12T08:28:47Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "f89122b2cf114dbacb79084981df46ec61558fa0",
+     "committed_utc": "2026-10-12T08:26:01Z",
+     "author_date": "2026-10-12T13:56:01+05:30",
+     "committer_date": "2026-10-12T08:26:01Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "eb2e3db30e9aad0fb10a8fb623373a34c7fc0fc6",
+     "committed_utc": "2026-10-12T08:16:54Z",
+     "author_date": "2026-10-12T13:46:54+05:30",
+     "committer_date": "2026-10-12T08:16:54Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "2ae1dd180eff1b578c897f47597881293a88ec8f",
+     "committed_utc": "2026-10-12T08:12:05Z",
+     "author_date": "2026-10-12T13:42:05+05:30",
+     "committer_date": "2026-10-12T08:12:05Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "cee920016fdcb3367427410c79af08e56fb7adf4",
+     "committed_utc": "2026-10-12T08:04:09Z",
+     "author_date": "2026-10-12T13:34:09+05:30",
+     "committer_date": "2026-10-12T08:04:09Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "982b017c125aac5e51cb3898e18d8d3521db4cac",
+     "committed_utc": "2026-10-12T07:58:49Z",
+     "author_date": "2026-10-12T13:28:49+05:30",
+     "committer_date": "2026-10-12T07:58:49Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "7bdc4d699ad020a59e77625e97e01f9aac04bc4e",
+     "committed_utc": "2026-10-12T07:55:58Z",
+     "author_date": "2026-10-12T13:25:58+05:30",
+     "committer_date": "2026-10-12T07:55:58Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "110d99223d8b7176f15361f16f0c9721b01a1d8e",
+     "committed_utc": "2026-10-12T07:52:05Z",
+     "author_date": "2026-10-12T13:22:05+05:30",
+     "committer_date": "2026-10-12T07:52:05Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "7de8191b22163d09a802e7c306fd90ea16fafb95",
+     "committed_utc": "2026-10-12T07:48:52Z",
+     "author_date": "2026-10-12T13:18:52+05:30",
+     "committer_date": "2026-10-12T07:48:52Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "39bd1b4b63f4bf2410d4c0e0f6e27ff36a69adb1",
+     "committed_utc": "2026-10-12T07:45:15Z",
+     "author_date": "2026-10-12T13:15:15+05:30",
+     "committer_date": "2026-10-12T07:45:15Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "e4cf7b8359f2f0a450af96072785ce641b676432",
+     "committed_utc": "2026-10-12T07:42:07Z",
+     "author_date": "2026-10-12T13:12:07+05:30",
+     "committer_date": "2026-10-12T07:42:07Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "19a06d7e1af9f27ccfbc55bcf82a09fe8e2197aa",
+     "committed_utc": "2026-10-12T07:36:47Z",
+     "author_date": "2026-10-12T13:06:47+05:30",
+     "committer_date": "2026-10-12T07:36:47Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "73366357d02a0286949ff4285959eafb48eb4d50",
+     "committed_utc": "2026-10-12T07:32:21Z",
+     "author_date": "2026-10-12T13:02:21+05:30",
+     "committer_date": "2026-10-12T07:32:21Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "3b20878aa300bd51549c3321ad996307773263f5",
+     "committed_utc": "2026-10-12T07:27:49Z",
+     "author_date": "2026-10-12T12:57:49+05:30",
+     "committer_date": "2026-10-12T07:27:49Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "0c38c001971f3f81806537f33ca0ec3d28b4c954",
+     "committed_utc": "2026-10-12T07:23:59Z",
+     "author_date": "2026-10-12T12:53:59+05:30",
+     "committer_date": "2026-10-12T07:23:59Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "fb8bcc108303d376ab942e71ee9f5309ba26f98e",
+     "committed_utc": "2026-10-12T07:17:18Z",
+     "author_date": "2026-10-12T12:47:18+05:30",
+     "committer_date": "2026-10-12T07:17:18Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b94aea07e51e9bb84a946e947ef7828e9cd234a1",
+     "committed_utc": "2026-10-12T07:12:30Z",
+     "author_date": "2026-10-12T12:42:30+05:30",
+     "committer_date": "2026-10-12T07:12:30Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "457e3aa3cdf2b8c06edf3a4f3f4053965f4d249c",
+     "committed_utc": "2026-10-12T07:10:58Z",
+     "author_date": "2026-10-12T12:40:58+05:30",
+     "committer_date": "2026-10-12T07:10:58Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "1ee1840a0299c0f3fbeae8950060aaa8ade02ccd",
+     "committed_utc": "2026-10-12T07:01:05Z",
+     "author_date": "2026-10-12T12:31:05+05:30",
+     "committer_date": "2026-10-12T07:01:05Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "bd56bafbc60a37efddaa938cd581eb10868a874e",
+     "committed_utc": "2026-10-12T06:54:51Z",
+     "author_date": "2026-10-12T12:24:51+05:30",
+     "committer_date": "2026-10-12T06:54:51Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "5223959c7f08db3ffb33deb058d40a811e0912d7",
+     "committed_utc": "2026-10-12T06:49:02Z",
+     "author_date": "2026-10-12T12:19:02+05:30",
+     "committer_date": "2026-10-12T06:49:02Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "00b1f4cb3d4b68fe0072d8e65b2270f5091f7270",
+     "committed_utc": "2026-10-12T06:44:20Z",
+     "author_date": "2026-10-12T12:14:20+05:30",
+     "committer_date": "2026-10-12T06:44:20Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "bb30f3c2d4c7877ecef6f39ddd5c41fd56514cc5",
+     "committed_utc": "2026-10-12T06:40:43Z",
+     "author_date": "2026-10-12T12:10:43+05:30",
+     "committer_date": "2026-10-12T06:40:43Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "19dd43ab12696ad1ccf94b8a7f97e80d35c0fb9d",
+     "committed_utc": "2026-10-11T13:15:57Z",
+     "author_date": "2026-10-11T18:45:57+05:30",
+     "committer_date": "2026-10-11T13:15:57Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "27e9bba1019b7c744b56fcc20212af3f9a581396",
+     "committed_utc": "2026-10-11T13:12:44Z",
+     "author_date": "2026-10-11T18:42:44+05:30",
+     "committer_date": "2026-10-11T13:12:44Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "105a48dcef09c1babd7fb128e3d486ea85b428a2",
+     "committed_utc": "2026-10-09T20:30:37Z",
+     "author_date": "2026-10-10T02:00:37+05:30",
+     "committer_date": "2026-10-09T20:30:37Z",
+     "author_email": "33115688+Himan10@users.noreply.github.com",
+     "author_login": "Himan10",
+     "committer_email": "noreply@github.com",
+     "committer_login": null,
+     "signature": "VALID",
+     "signature_valid": true
+    },
+    {
+     "oid": "116c17dc81bc79bd9e656f2b74a09dce0897d8cc",
+     "committed_utc": "2026-10-09T20:06:33Z",
+     "author_date": "2026-10-10T01:36:33+05:30",
+     "committer_date": "2026-10-09T20:06:33Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "094302366538951c210e8204845976a67eb6feec",
+     "committed_utc": "2026-09-21T04:23:55Z",
+     "author_date": "2026-09-21T09:53:55+05:30",
+     "committer_date": "2026-09-21T04:23:55Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "6b10153320e8e0be8ec7d9d94332b4a5ed26cdac",
+     "committed_utc": "2026-09-21T04:08:04Z",
+     "author_date": "2026-09-21T09:38:04+05:30",
+     "committer_date": "2026-09-21T04:08:04Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "37f1e5480480194798eae017d10500d2f65340e0",
+     "committed_utc": "2026-09-21T04:07:34Z",
+     "author_date": "2026-09-21T09:37:34+05:30",
+     "committer_date": "2026-09-21T04:07:34Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "1a8e781cdb9951cc9d8ccb73fa03633ac3f4f226",
+     "committed_utc": "2026-09-21T03:58:56Z",
+     "author_date": "2026-09-21T09:28:56+05:30",
+     "committer_date": "2026-09-21T03:58:56Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "0d11a91b562a3dd36c63a96cd3730e74758e414f",
+     "committed_utc": "2026-09-21T03:52:56Z",
+     "author_date": "2026-09-21T09:22:56+05:30",
+     "committer_date": "2026-09-21T03:52:56Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "aa4312fa7f87952cf3f3854720e86adfea30ed54",
+     "committed_utc": "2026-09-21T03:45:49Z",
+     "author_date": "2026-09-21T09:15:49+05:30",
+     "committer_date": "2026-09-21T03:45:49Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "5fdf6e6cb42a9dfe4f3bf2a46045f8f644920b29",
+     "committed_utc": "2026-09-21T03:37:37Z",
+     "author_date": "2026-09-21T09:07:37+05:30",
+     "committer_date": "2026-09-21T03:37:37Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "c5424df8bf3f56e19a711717f657ac238c6321df",
+     "committed_utc": "2026-09-21T03:32:44Z",
+     "author_date": "2026-09-21T09:02:44+05:30",
+     "committer_date": "2026-09-21T03:32:44Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "05574e600deade0717b1751e2111d30d24def957",
+     "committed_utc": "2026-09-21T03:27:28Z",
+     "author_date": "2026-09-21T08:57:28+05:30",
+     "committer_date": "2026-09-21T03:27:28Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "fca680275e90ed20620bfbcd07cb2ef1c1f3f864",
+     "committed_utc": "2026-09-21T03:21:52Z",
+     "author_date": "2026-09-21T08:51:52+05:30",
+     "committer_date": "2026-09-21T03:21:52Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "3d5d3f3b3fca5d973749bd19bd8bceda2beaa38d",
+     "committed_utc": "2026-09-21T03:15:15Z",
+     "author_date": "2026-09-21T08:45:15+05:30",
+     "committer_date": "2026-09-21T03:15:15Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "bb9a9fb30d61ff5678fbeb04604e3afa7c728912",
+     "committed_utc": "2026-09-21T03:11:31Z",
+     "author_date": "2026-09-21T08:41:04+05:30",
+     "committer_date": "2026-09-21T03:11:31Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "54abbaf12f6c8d077cbabea0c06df7ec5a8d49d6",
+     "committed_utc": "2026-09-21T03:11:04Z",
+     "author_date": "2026-09-21T08:41:04+05:30",
+     "committer_date": "2026-09-21T03:11:04Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "19d43564901be59181eaca6f31f972e5b1926526",
+     "committed_utc": "2026-09-21T03:07:47Z",
+     "author_date": "2026-09-21T08:37:47+05:30",
+     "committer_date": "2026-09-21T03:07:47Z",
+     "author_email": "ehayushpathak@gmail.com",
+     "author_login": "ehayushpathak",
+     "committer_email": "ehayushpathak@gmail.com",
+     "committer_login": "ehayushpathak",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    }
+   ],
+   "branches": {
+    "total": 14,
+    "items": [
+     {
+      "name": "verify/exfil-edge-set-diff",
+      "committed": "2026-07-28T06:25:21Z"
+     },
+     {
+      "name": "master",
+      "committed": "2026-10-12T15:50:33Z"
+     },
+     {
+      "name": "fix/viewer-set-ui-defects",
+      "committed": "2026-10-12T12:07:16Z"
+     },
+     {
+      "name": "fix/terminal-impact",
+      "committed": "2026-10-12T15:43:09Z"
+     },
+     {
+      "name": "feat/viewer-set-query",
+      "committed": "2026-10-12T08:46:18Z"
+     },
+     {
+      "name": "feat/multi-account-concurrency",
+      "committed": "2026-09-08T18:52:04Z"
+     },
+     {
+      "name": "feat/mayatrail-integration",
+      "committed": "2026-10-09T20:06:33Z"
+     },
+     {
+      "name": "feat/granular-opengraph-edges",
+      "committed": "2026-09-02T17:49:10Z"
+     },
+     {
+      "name": "feat/external-attack-surface",
+      "committed": "2026-08-04T02:10:13Z"
+     },
+     {
+      "name": "feat/cross-resource-chains-viz",
+      "committed": "2026-07-04T15:15:12Z"
+     },
+     {
+      "name": "feat/credential-first-recon",
+      "committed": "2026-08-05T17:10:22Z"
+     },
+     {
+      "name": "feat/collector-plaintext-secret-exposures",
+      "committed": "2026-09-21T04:07:34Z"
+     },
+     {
+      "name": "feat/chain-noise-collapse",
+      "committed": "2026-07-31T15:13:17Z"
+     },
+     {
+      "name": "claude/practical-driscoll-e8e25c",
+      "committed": "2026-07-31T18:22:57Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [
+    "Dockerfile",
+    "Dockerfile.service"
+   ],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2026-10-12T15:50:33Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f627d6b1397003f5204ee3859ea72414bd623987",
+      "after": "e8d616a807e3270568b124ccd79a9e0c80eb9b18"
+     },
+     {
+      "ts": "2026-10-12T15:48:43Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/fix/terminal-impact",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "28d7b2cdb61e68d1335f27b823e7c2dd4ea1dec4"
+     },
+     {
+      "ts": "2026-10-12T12:08:55Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9ac38acf62a5f290c38b25eaf8c361864bbfb767",
+      "after": "f627d6b1397003f5204ee3859ea72414bd623987"
+     },
+     {
+      "ts": "2026-10-12T12:07:18Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/fix/viewer-set-ui-defects",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "dae2022e7bcf0ca1f96e41f67b94fbd6238d892a"
+     },
+     {
+      "ts": "2026-10-12T09:18:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "19dd43ab12696ad1ccf94b8a7f97e80d35c0fb9d",
+      "after": "9ac38acf62a5f290c38b25eaf8c361864bbfb767"
+     },
+     {
+      "ts": "2026-10-12T09:12:15Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/viewer-set-query",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "17064c7f7a5a1289b7a1d78e0ae12a65da929456"
+     },
+     {
+      "ts": "2026-10-11T13:16:03Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/feat/scoutv0.2.0",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "27e9bba1019b7c744b56fcc20212af3f9a581396",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-10-11T13:15:57Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "105a48dcef09c1babd7fb128e3d486ea85b428a2",
+      "after": "19dd43ab12696ad1ccf94b8a7f97e80d35c0fb9d"
+     },
+     {
+      "ts": "2026-10-11T13:12:57Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/scoutv0.2.0",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "27e9bba1019b7c744b56fcc20212af3f9a581396"
+     },
+     {
+      "ts": "2026-10-09T20:30:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "094302366538951c210e8204845976a67eb6feec",
+      "after": "105a48dcef09c1babd7fb128e3d486ea85b428a2"
+     },
+     {
+      "ts": "2026-10-09T20:06:45Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/mayatrail-integration",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "116c17dc81bc79bd9e656f2b74a09dce0897d8cc"
+     },
+     {
+      "ts": "2026-09-21T04:37:59Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/collector-plaintext-secret-exposures",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "37f1e5480480194798eae017d10500d2f65340e0"
+     },
+     {
+      "ts": "2026-09-21T04:37:37Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ea38ff535fdf824886244fcbb5f46b23c38431c0",
+      "after": "094302366538951c210e8204845976a67eb6feec"
+     },
+     {
+      "ts": "2026-09-18T07:00:59Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "cc0dae00293ce97c3fcb09e3523282b29988e117",
+      "after": "ea38ff535fdf824886244fcbb5f46b23c38431c0"
+     },
+     {
+      "ts": "2026-09-17T18:49:53Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "1aff57a4dd357e52d534c8aac479a8ab401c083f",
+      "after": "cc0dae00293ce97c3fcb09e3523282b29988e117"
+     },
+     {
+      "ts": "2026-09-16T06:28:37Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "8f45bbdea3dfd62010ed3a35949a92e55035df21",
+      "after": "1aff57a4dd357e52d534c8aac479a8ab401c083f"
+     },
+     {
+      "ts": "2026-09-14T16:52:55Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e545528ce35418c79c66f0cb5d9d3b37fe4b42c4",
+      "after": "8f45bbdea3dfd62010ed3a35949a92e55035df21"
+     },
+     {
+      "ts": "2026-09-08T19:39:42Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "3810a1c46b50a0a90ce4de670d0c667c4649cf57",
+      "after": "e545528ce35418c79c66f0cb5d9d3b37fe4b42c4"
+     },
+     {
+      "ts": "2026-09-08T19:38:37Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/multi-account-concurrency",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "2a357724fc2ada8783ec08147461342dc024a4b0"
+     },
+     {
+      "ts": "2026-09-02T18:01:29Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "fb0177887331f5a7fbbbe27f555f40b214ab198f",
+      "after": "3810a1c46b50a0a90ce4de670d0c667c4649cf57"
+     },
+     {
+      "ts": "2026-09-02T17:59:49Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/granular-opengraph-edges",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "e213be8e2631c3c864a1d855473c7771556e2c8a"
+     },
+     {
+      "ts": "2026-08-05T17:16:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "d75b2b7f8dc572c47b7146ca82e693ee6768db3f",
+      "after": "fb0177887331f5a7fbbbe27f555f40b214ab198f"
+     },
+     {
+      "ts": "2026-08-05T17:10:32Z",
+      "type": "push",
+      "ref": "refs/heads/feat/credential-first-recon",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "f6791a378fcd9bd9890cf6923720ab24285eade4",
+      "after": "363f8172f7e6467aa0f50e8e674e125446ee5557"
+     },
+     {
+      "ts": "2026-08-04T04:39:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "d21dd560efe39959d54b2cf7b07c4d1d0f526fff",
+      "after": "d75b2b7f8dc572c47b7146ca82e693ee6768db3f"
+     },
+     {
+      "ts": "2026-08-04T04:38:53Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "add16a714a1e5a0af2cb9ec8b08cee0d46d07315",
+      "after": "d21dd560efe39959d54b2cf7b07c4d1d0f526fff"
+     },
+     {
+      "ts": "2026-08-04T04:21:24Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/external-attack-surface",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "8eef5b5cc76c18bdbc6c071b0d1dc6aa7c15d72f"
+     },
+     {
+      "ts": "2026-08-04T04:13:21Z",
+      "type": "push",
+      "ref": "refs/heads/feat/credential-first-recon",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "3b8e7430c5dc3c77246472ae134c9c7bf2fde650",
+      "after": "f6791a378fcd9bd9890cf6923720ab24285eade4"
+     },
+     {
+      "ts": "2026-08-03T07:14:11Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/credential-first-recon",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "3b8e7430c5dc3c77246472ae134c9c7bf2fde650"
+     },
+     {
+      "ts": "2026-07-31T18:26:06Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9508bd9f2ab9816bfcacf30c49577ea945212d24",
+      "after": "add16a714a1e5a0af2cb9ec8b08cee0d46d07315"
+     },
+     {
+      "ts": "2026-07-31T18:23:06Z",
+      "type": "push",
+      "ref": "refs/heads/claude/practical-driscoll-e8e25c",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "270e0545773d63694c2b3fe35feeac1e8d293b16",
+      "after": "ba8087095a6dcc802c5855ff98f878d26712c22c"
+     },
+     {
+      "ts": "2026-07-31T18:18:58Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "54bbe9bd5822c986a6cdb87ac89bfd16bcd53537",
+      "after": "9508bd9f2ab9816bfcacf30c49577ea945212d24"
+     },
+     {
+      "ts": "2026-07-31T18:17:05Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/claude/practical-driscoll-e8e25c",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "270e0545773d63694c2b3fe35feeac1e8d293b16"
+     },
+     {
+      "ts": "2026-07-31T15:15:47Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/chain-noise-collapse",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "1419c01928c6ef5f1680580b75fe0cc2ec15946b"
+     },
+     {
+      "ts": "2026-07-28T06:51:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "36d264ff89bd8eb2374e7b3015b1d6fc280750a5",
+      "after": "54bbe9bd5822c986a6cdb87ac89bfd16bcd53537"
+     },
+     {
+      "ts": "2026-07-28T06:25:32Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/verify/exfil-edge-set-diff",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "268ab86c8a7bb510c379d682ca17049a348acb83"
+     },
+     {
+      "ts": "2026-07-28T02:17:34Z",
+      "type": "branch_deletion",
+      "ref": "refs/heads/fix/research-corpus-coverage-leak",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e91d2288747bf93c99de1a2b0c18c54358e13e45",
+      "after": "0000000000000000000000000000000000000000"
+     },
+     {
+      "ts": "2026-07-28T02:14:21Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9c29db9a359b4f45b9a518b160336b8fa7a37fd0",
+      "after": "36d264ff89bd8eb2374e7b3015b1d6fc280750a5"
+     },
+     {
+      "ts": "2026-07-28T02:11:21Z",
+      "type": "push",
+      "ref": "refs/heads/fix/research-corpus-coverage-leak",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "f4886c28589940ebb8884c45a4069fad9aba39a6",
+      "after": "e91d2288747bf93c99de1a2b0c18c54358e13e45"
+     },
+     {
+      "ts": "2026-07-28T02:04:06Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/fix/research-corpus-coverage-leak",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "f4886c28589940ebb8884c45a4069fad9aba39a6"
+     },
+     {
+      "ts": "2026-07-04T15:15:48Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ed170266ec8453789e81770f41753bbf3dcd9a59",
+      "after": "9c29db9a359b4f45b9a518b160336b8fa7a37fd0"
+     },
+     {
+      "ts": "2026-07-04T15:15:27Z",
+      "type": "push",
+      "ref": "refs/heads/feat/cross-resource-chains-viz",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "74d49ce5da980c01761b9a0eb11b8d21c6b98efd",
+      "after": "4f3943ffc1058f51df666b406500e29bc0202f24"
+     },
+     {
+      "ts": "2026-07-03T11:39:51Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/feat/cross-resource-chains-viz",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "74d49ce5da980c01761b9a0eb11b8d21c6b98efd"
+     },
+     {
+      "ts": "2026-07-02T11:45:27Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "7029092d14f5f66c7048409b77d8f6a5d796ea11",
+      "after": "ed170266ec8453789e81770f41753bbf3dcd9a59"
+     },
+     {
+      "ts": "2026-06-29T06:55:02Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "286ee885631bd6540a7b224a967498acf4ea9557",
+      "after": "7029092d14f5f66c7048409b77d8f6a5d796ea11"
+     },
+     {
+      "ts": "2026-06-28T08:03:09Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "87e2140984dd2a8515764d321d164eef6a4160c2",
+      "after": "286ee885631bd6540a7b224a967498acf4ea9557"
+     },
+     {
+      "ts": "2026-06-27T05:23:51Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ec0ac96faa2009b25ae59a5d1353a5b2781aee93",
+      "after": "87e2140984dd2a8515764d321d164eef6a4160c2"
+     },
+     {
+      "ts": "2026-06-22T18:50:59Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "a87081429c58cedff458a8c170774b4885a378b3",
+      "after": "ec0ac96faa2009b25ae59a5d1353a5b2781aee93"
+     },
+     {
+      "ts": "2026-06-21T06:33:58Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "54fdae43f1303e4a03eeafe5a605191ebfee062a",
+      "after": "a87081429c58cedff458a8c170774b4885a378b3"
+     },
+     {
+      "ts": "2026-06-21T06:28:52Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "aabcf0aa8534b65d375e732e573d4946283220fa",
+      "after": "54fdae43f1303e4a03eeafe5a605191ebfee062a"
+     },
+     {
+      "ts": "2026-06-21T04:57:13Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "76f127169f664475dbe09667471c3a16e1e1ee96",
+      "after": "aabcf0aa8534b65d375e732e573d4946283220fa"
+     },
+     {
+      "ts": "2026-06-21T04:53:01Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e36c5d511c095f9fc2d2fb8962770b9cf4868389",
+      "after": "76f127169f664475dbe09667471c3a16e1e1ee96"
+     },
+     {
+      "ts": "2026-06-20T16:54:45Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "7bcd791fcd16b42fcb52bd2cc3d06f6f36ff30a8",
+      "after": "e36c5d511c095f9fc2d2fb8962770b9cf4868389"
+     },
+     {
+      "ts": "2026-06-20T16:49:25Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "5bb59b614608f855c555f6a2796127f51ca7b5a5",
+      "after": "7bcd791fcd16b42fcb52bd2cc3d06f6f36ff30a8"
+     },
+     {
+      "ts": "2026-06-14T06:11:36Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "5bb59b614608f855c555f6a2796127f51ca7b5a5"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2026-10-12T15:50:33Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f627d6b1397003f5204ee3859ea72414bd623987",
+      "after": "e8d616a807e3270568b124ccd79a9e0c80eb9b18"
+     },
+     {
+      "ts": "2026-10-12T12:08:55Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9ac38acf62a5f290c38b25eaf8c361864bbfb767",
+      "after": "f627d6b1397003f5204ee3859ea72414bd623987"
+     },
+     {
+      "ts": "2026-10-12T09:18:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "19dd43ab12696ad1ccf94b8a7f97e80d35c0fb9d",
+      "after": "9ac38acf62a5f290c38b25eaf8c361864bbfb767"
+     },
+     {
+      "ts": "2026-10-11T13:15:57Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "105a48dcef09c1babd7fb128e3d486ea85b428a2",
+      "after": "19dd43ab12696ad1ccf94b8a7f97e80d35c0fb9d"
+     },
+     {
+      "ts": "2026-10-09T20:30:38Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "094302366538951c210e8204845976a67eb6feec",
+      "after": "105a48dcef09c1babd7fb128e3d486ea85b428a2"
+     },
+     {
+      "ts": "2026-09-21T04:37:37Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ea38ff535fdf824886244fcbb5f46b23c38431c0",
+      "after": "094302366538951c210e8204845976a67eb6feec"
+     },
+     {
+      "ts": "2026-09-18T07:00:59Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "cc0dae00293ce97c3fcb09e3523282b29988e117",
+      "after": "ea38ff535fdf824886244fcbb5f46b23c38431c0"
+     },
+     {
+      "ts": "2026-09-17T18:49:53Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "1aff57a4dd357e52d534c8aac479a8ab401c083f",
+      "after": "cc0dae00293ce97c3fcb09e3523282b29988e117"
+     },
+     {
+      "ts": "2026-09-16T06:28:37Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "8f45bbdea3dfd62010ed3a35949a92e55035df21",
+      "after": "1aff57a4dd357e52d534c8aac479a8ab401c083f"
+     },
+     {
+      "ts": "2026-09-14T16:52:55Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e545528ce35418c79c66f0cb5d9d3b37fe4b42c4",
+      "after": "8f45bbdea3dfd62010ed3a35949a92e55035df21"
+     },
+     {
+      "ts": "2026-09-08T19:39:42Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "3810a1c46b50a0a90ce4de670d0c667c4649cf57",
+      "after": "e545528ce35418c79c66f0cb5d9d3b37fe4b42c4"
+     },
+     {
+      "ts": "2026-09-02T18:01:29Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "fb0177887331f5a7fbbbe27f555f40b214ab198f",
+      "after": "3810a1c46b50a0a90ce4de670d0c667c4649cf57"
+     },
+     {
+      "ts": "2026-08-05T17:16:12Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "d75b2b7f8dc572c47b7146ca82e693ee6768db3f",
+      "after": "fb0177887331f5a7fbbbe27f555f40b214ab198f"
+     },
+     {
+      "ts": "2026-08-04T04:39:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "d21dd560efe39959d54b2cf7b07c4d1d0f526fff",
+      "after": "d75b2b7f8dc572c47b7146ca82e693ee6768db3f"
+     },
+     {
+      "ts": "2026-08-04T04:38:53Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "add16a714a1e5a0af2cb9ec8b08cee0d46d07315",
+      "after": "d21dd560efe39959d54b2cf7b07c4d1d0f526fff"
+     },
+     {
+      "ts": "2026-07-31T18:26:06Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9508bd9f2ab9816bfcacf30c49577ea945212d24",
+      "after": "add16a714a1e5a0af2cb9ec8b08cee0d46d07315"
+     },
+     {
+      "ts": "2026-07-31T18:18:58Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "54bbe9bd5822c986a6cdb87ac89bfd16bcd53537",
+      "after": "9508bd9f2ab9816bfcacf30c49577ea945212d24"
+     },
+     {
+      "ts": "2026-07-28T06:51:10Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "36d264ff89bd8eb2374e7b3015b1d6fc280750a5",
+      "after": "54bbe9bd5822c986a6cdb87ac89bfd16bcd53537"
+     },
+     {
+      "ts": "2026-07-28T02:14:21Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "9c29db9a359b4f45b9a518b160336b8fa7a37fd0",
+      "after": "36d264ff89bd8eb2374e7b3015b1d6fc280750a5"
+     },
+     {
+      "ts": "2026-07-04T15:15:48Z",
+      "type": "pr_merge",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ed170266ec8453789e81770f41753bbf3dcd9a59",
+      "after": "9c29db9a359b4f45b9a518b160336b8fa7a37fd0"
+     },
+     {
+      "ts": "2026-07-02T11:45:27Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "7029092d14f5f66c7048409b77d8f6a5d796ea11",
+      "after": "ed170266ec8453789e81770f41753bbf3dcd9a59"
+     },
+     {
+      "ts": "2026-06-29T06:55:02Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "286ee885631bd6540a7b224a967498acf4ea9557",
+      "after": "7029092d14f5f66c7048409b77d8f6a5d796ea11"
+     },
+     {
+      "ts": "2026-06-28T08:03:09Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "87e2140984dd2a8515764d321d164eef6a4160c2",
+      "after": "286ee885631bd6540a7b224a967498acf4ea9557"
+     },
+     {
+      "ts": "2026-06-27T05:23:51Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "ec0ac96faa2009b25ae59a5d1353a5b2781aee93",
+      "after": "87e2140984dd2a8515764d321d164eef6a4160c2"
+     },
+     {
+      "ts": "2026-06-22T18:50:59Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "a87081429c58cedff458a8c170774b4885a378b3",
+      "after": "ec0ac96faa2009b25ae59a5d1353a5b2781aee93"
+     },
+     {
+      "ts": "2026-06-21T06:33:58Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "54fdae43f1303e4a03eeafe5a605191ebfee062a",
+      "after": "a87081429c58cedff458a8c170774b4885a378b3"
+     },
+     {
+      "ts": "2026-06-21T06:28:52Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "aabcf0aa8534b65d375e732e573d4946283220fa",
+      "after": "54fdae43f1303e4a03eeafe5a605191ebfee062a"
+     },
+     {
+      "ts": "2026-06-21T04:57:13Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "76f127169f664475dbe09667471c3a16e1e1ee96",
+      "after": "aabcf0aa8534b65d375e732e573d4946283220fa"
+     },
+     {
+      "ts": "2026-06-21T04:53:01Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "e36c5d511c095f9fc2d2fb8962770b9cf4868389",
+      "after": "76f127169f664475dbe09667471c3a16e1e1ee96"
+     },
+     {
+      "ts": "2026-06-20T16:54:45Z",
+      "type": "push",
+      "ref": "refs/heads/master",
+      "actor": "ehayushpathak",
+      "actor_type": "User",
+      "before": "7bcd791fcd16b42fcb52bd2cc3d06f6f36ff30a8",
+      "after": "e36c5d511c095f9fc2d2fb8962770b9cf4868389"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2026-06-14T06:11:36Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": [
+     {
+      "name": "Service image",
+      "path": ".github/workflows/service-image.yml",
+      "state": "active",
+      "last_run": "2026-10-12T15:51:10Z",
+      "last_run_event": "push",
+      "last_run_conclusion": "success",
+      "triggers": [
+       "pull_request",
+       "push"
+      ],
+      "crons": [],
+      "secrets": [],
+      "registries": [
+       "ghcr.io"
+      ],
+      "pushes_image": true,
+      "runs_on": [
+       "ubuntu-latest"
+      ],
+      "parse_error": null
+     },
+     {
+      "name": "Dependency Graph",
+      "path": "dynamic/dependabot/update-graph",
+      "state": "active",
+      "last_run": "2026-06-14T06:11:42Z",
+      "last_run_event": "dynamic",
+      "last_run_conclusion": "success",
+      "dynamic": true
+     }
+    ]
+   },
+   "protection": {
+    "classic": {
+     "error": "403 Upgrade to GitHub Pro or make this repository public to enable this feature."
+    },
+    "rulesets": {
+     "error": "403 gh: Upgrade to GitHub Pro or make this repository public to enable this feature. (HTTP 403)"
+    }
+   },
+   "codeowners": {
+    "path": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  },
+  {
+   "repo": "emulations-authoring",
+   "full_name": "MayaTrail/emulations-authoring",
+   "visibility": "private",
+   "archived": false,
+   "fork": false,
+   "created_at": "2026-06-26T23:04:40Z",
+   "pushed_at": "2026-10-09T14:55:09Z",
+   "default_branch": "main",
+   "size_kb": 91,
+   "errors": [],
+   "history": [
+    {
+     "oid": "54dd89653440ead3e7463900de51119d3767604e",
+     "committed_utc": "2026-10-09T14:55:03Z",
+     "author_date": "2026-10-09T20:25:03+05:30",
+     "committer_date": "2026-10-09T14:55:03Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "ee73191ed580a94fd249bf04dbe9e75db0d1e534",
+     "committed_utc": "2026-08-13T20:31:56Z",
+     "author_date": "2026-08-14T02:01:56+05:30",
+     "committer_date": "2026-08-13T20:31:56Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "005e2d78e663a5756e9106db1054095626124640",
+     "committed_utc": "2026-07-08T15:02:29Z",
+     "author_date": "2026-07-08T20:32:29+05:30",
+     "committer_date": "2026-07-08T15:02:29Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "b246f1343d5ff3b9aa95283f775e6b3f2ffa9479",
+     "committed_utc": "2026-07-01T22:06:40Z",
+     "author_date": "2026-07-02T03:36:40+05:30",
+     "committer_date": "2026-07-01T22:06:40Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "5ab20213217218fc275cebd3c562b6483a77f16a",
+     "committed_utc": "2026-06-28T18:19:41Z",
+     "author_date": "2026-06-28T23:49:41+05:30",
+     "committer_date": "2026-06-28T18:19:41Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "f5b594773f6f6b099f9df5a38c2d49c69787d503",
+     "committed_utc": "2026-06-28T08:26:34Z",
+     "author_date": "2026-06-28T13:56:34+05:30",
+     "committer_date": "2026-06-28T08:26:34Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    },
+    {
+     "oid": "d31b30089097e86379263368a673f7974d124aeb",
+     "committed_utc": "2026-06-26T23:04:08Z",
+     "author_date": "2026-06-27T04:34:08+05:30",
+     "committer_date": "2026-06-26T23:04:08Z",
+     "author_email": "h3c.initiative46@gmail.com",
+     "author_login": "Himan10",
+     "committer_email": "h3c.initiative46@gmail.com",
+     "committer_login": "Himan10",
+     "signature": "UNSIGNED",
+     "signature_valid": false
+    }
+   ],
+   "branches": {
+    "total": 1,
+    "items": [
+     {
+      "name": "main",
+      "committed": "2026-10-09T14:55:03Z"
+     }
+    ]
+   },
+   "tree_truncated": false,
+   "dockerfiles": [],
+   "activity": {
+    "latest": [
+     {
+      "ts": "2026-10-09T14:55:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ee73191ed580a94fd249bf04dbe9e75db0d1e534",
+      "after": "54dd89653440ead3e7463900de51119d3767604e"
+     },
+     {
+      "ts": "2026-08-13T20:31:59Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "005e2d78e663a5756e9106db1054095626124640",
+      "after": "ee73191ed580a94fd249bf04dbe9e75db0d1e534"
+     },
+     {
+      "ts": "2026-07-08T15:02:32Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "b246f1343d5ff3b9aa95283f775e6b3f2ffa9479",
+      "after": "005e2d78e663a5756e9106db1054095626124640"
+     },
+     {
+      "ts": "2026-07-01T22:06:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5ab20213217218fc275cebd3c562b6483a77f16a",
+      "after": "b246f1343d5ff3b9aa95283f775e6b3f2ffa9479"
+     },
+     {
+      "ts": "2026-06-28T18:19:45Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f5b594773f6f6b099f9df5a38c2d49c69787d503",
+      "after": "5ab20213217218fc275cebd3c562b6483a77f16a"
+     },
+     {
+      "ts": "2026-06-28T08:26:43Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d31b30089097e86379263368a673f7974d124aeb",
+      "after": "f5b594773f6f6b099f9df5a38c2d49c69787d503"
+     },
+     {
+      "ts": "2026-06-26T23:04:44Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "d31b30089097e86379263368a673f7974d124aeb"
+     }
+    ],
+    "default_branch": [
+     {
+      "ts": "2026-10-09T14:55:09Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "ee73191ed580a94fd249bf04dbe9e75db0d1e534",
+      "after": "54dd89653440ead3e7463900de51119d3767604e"
+     },
+     {
+      "ts": "2026-08-13T20:31:59Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "005e2d78e663a5756e9106db1054095626124640",
+      "after": "ee73191ed580a94fd249bf04dbe9e75db0d1e534"
+     },
+     {
+      "ts": "2026-07-08T15:02:32Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "b246f1343d5ff3b9aa95283f775e6b3f2ffa9479",
+      "after": "005e2d78e663a5756e9106db1054095626124640"
+     },
+     {
+      "ts": "2026-07-01T22:06:46Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "5ab20213217218fc275cebd3c562b6483a77f16a",
+      "after": "b246f1343d5ff3b9aa95283f775e6b3f2ffa9479"
+     },
+     {
+      "ts": "2026-06-28T18:19:45Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "f5b594773f6f6b099f9df5a38c2d49c69787d503",
+      "after": "5ab20213217218fc275cebd3c562b6483a77f16a"
+     },
+     {
+      "ts": "2026-06-28T08:26:43Z",
+      "type": "push",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "d31b30089097e86379263368a673f7974d124aeb",
+      "after": "f5b594773f6f6b099f9df5a38c2d49c69787d503"
+     },
+     {
+      "ts": "2026-06-26T23:04:44Z",
+      "type": "branch_creation",
+      "ref": "refs/heads/main",
+      "actor": "Himan10",
+      "actor_type": "User",
+      "before": "0000000000000000000000000000000000000000",
+      "after": "d31b30089097e86379263368a673f7974d124aeb"
+     }
+    ],
+    "force_pushes": [],
+    "oldest_event": "2026-06-26T23:04:44Z"
+   },
+   "actions": {
+    "enabled": true,
+    "items": []
+   },
+   "protection": {
+    "classic": {
+     "error": "403 Upgrade to GitHub Pro or make this repository public to enable this feature."
+    },
+    "rulesets": {
+     "error": "403 gh: Upgrade to GitHub Pro or make this repository public to enable this feature. (HTTP 403)"
+    }
+   },
+   "codeowners": {
+    "path": null
+   },
+   "autorun": {
+    "tasks_json": false
+   },
+   "collaborators": [
+    "Ephemaral",
+    "Himan10",
+    "ehayushpathak"
+   ]
+  }
+ ]
+}

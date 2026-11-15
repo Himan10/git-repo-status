@@ -422,7 +422,7 @@ def main(argv=None):
     p.add_argument("--since-days", type=int, default=365, help="workflow changes from this many days back")
     a = p.parse_args(argv)
 
-    from run import out_dir
+    from run import display_path, out_dir
     owner_dir = out_dir(a.owner, create=False)
     facts_path = os.path.join(owner_dir, "facts.json")
     if not os.path.exists(facts_path):
@@ -458,7 +458,7 @@ def main(argv=None):
         json.dump({"force_pushes": results, "workflow_changes": wf, "zizmor": zz, "upstream": up}, fh, indent=1)
     write_markdown(os.path.join(d, f"{a.repo}.md"), a.owner, a.repo, results, reasons,
                    [workflow_markdown(wf, f), zizmor_markdown(zz), upstream_markdown(up)])
-    report_path = os.path.relpath(os.path.join(d, a.repo + ".md"))
+    report_path = display_path(os.path.join(d, a.repo + ".md"))
     summary = (f"{a.repo}: {len(results)} force push(es), {len(wf['commits'])} workflow change(s) and "
                f"{len(zz.get('findings') or [])} zizmor finding(s) investigated ({gh.calls} API calls).\n"
                f"Report: {report_path}")

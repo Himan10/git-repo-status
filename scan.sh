@@ -1,21 +1,10 @@
 #!/usr/bin/env bash
-# One command to run Repo Status on macOS and Linux (Windows: scan.cmd).
-#
-#   ./scan.sh check                         check that everything is installed
-#   ./scan.sh <account or org> [options]    scan every repository
-#   ./scan.sh <account or org> deep <repo>  investigate one flagged repository
+# Repo Status launcher for macOS and Linux. Windows: use scan.cmd.
+#   ./scan.sh check | ./scan.sh <account or org> [options] | ./scan.sh <account or org> deep <repo>
 #   ./scan.sh <account or org> uses <owner/action> [--since YYYY-MM-DD] [--until YYYY-MM-DD]
-#
-# The work is done by scan.py, so every operating system behaves the same.
-set -euo pipefail
-cd "$(dirname "$0")"
-
+# zizmor is pinned here, in scan.cmd and in repostatus/zizmor.py (a test checks they agree).
 if ! command -v uv >/dev/null; then
-  if [ "$(uname)" = "Darwin" ]; then
-    echo "Missing: uv. Install it with:  brew install uv"
-  else
-    echo "Missing: uv. Install it: see https://docs.astral.sh/uv/getting-started/installation/"
-  fi
+  echo "Missing: uv. Install it with:  brew install uv   (Linux: curl -LsSf https://astral.sh/uv/install.sh | sh)"
   exit 1
 fi
-exec uv run -q --python 3.12 --with pyyaml --with zizmor==1.32.0 scan.py "$@"
+exec uv run -q --python 3.12 --with pyyaml --with zizmor==1.32.0 "$(dirname "$0")/scan.py" "$@"

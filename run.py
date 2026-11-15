@@ -26,6 +26,14 @@ CALLS_PER_REPO = 18  # about 15 per repo plus 2 to 3 per workflow; zizmor itself
 UNSAFE_NAME = re.compile(r'[<>:"\\|?*\x00-\x1f]')  # characters Windows does not allow in file names
 
 
+def display_path(path):
+    """Path relative to the current folder when possible (fails across Windows drives)."""
+    try:
+        return os.path.relpath(path)
+    except ValueError:
+        return path
+
+
 def out_dir(owner, create=True):
     """Results folder for an owner. Names are matched without regard to case, so
     'acme-corp' finds out/ACME-Corp on any operating system."""
@@ -164,7 +172,7 @@ def cmd_report(a):
     report.write_inventory(os.path.join(d, "actions-inventory.csv"), rows, ctx)
     report.write_summary(os.path.join(d, "summary.md"), ctx, rows, cfg, now, ctx.get("api_calls"),
                          generated=datetime.now(timezone.utc))
-    rel = os.path.relpath(d)
+    rel = display_path(d)
     print(f"\nResults:\n  {os.path.join(rel, 'summary.md')}        (read this first)\n"
           f"  {os.path.join(rel, 'repo-status.csv')}   (open in Excel)\n"
           f"  {os.path.join(rel, 'actions-inventory.csv')}   (every action used, and where)",
@@ -243,7 +251,7 @@ def cmd_uses(a):
     with open(path, "w", encoding="utf-8") as fh:
         fh.write(text)
     print(text)
-    print(f"Saved: {os.path.relpath(path)}", file=sys.stderr)
+    print(f"Saved: {display_path(path)}", file=sys.stderr)
 
 
 def main(argv=None):

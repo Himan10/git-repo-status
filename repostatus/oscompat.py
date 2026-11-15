@@ -4,7 +4,7 @@ import sys
 
 def scan_cmd():
     """How a person starts Repo Status on this computer, for messages and reports."""
-    return "scan" if sys.platform == "win32" else "./scan.sh"
+    return "scan.cmd" if sys.platform == "win32" else "./scan.sh"
 
 
 def utf8_console():
