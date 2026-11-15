@@ -5,20 +5,28 @@ Repo Status looks at every GitHub repository in an organisation or personal acco
 - **which repositories are still in use and which are dead**
 - **what is still attached to the dead ones**: automated jobs (GitHub Actions), stored secrets, published container images, branch rules, code owners
 - **whether anyone has quietly rewritten a repository's history**, a technique attackers use to hide malicious code (see [How to investigate a GitHub repo's real history](https://opensourcemalware.com/blog/how-to-investigate-a-github-repos-real-history))
+- **whether the GitHub Actions workflows can be attacked or have been tampered with**: [zizmor](https://docs.zizmor.sh) checks what each workflow file says (injection, risky triggers, unpinned actions, ...); Repo Status adds what happened around it: workflows changed after a repo went quiet, workflows that send secrets to outside addresses, dead repos still running workflows with secrets, and upstream actions that disappeared or whose version tags moved
+- **which repositories need a closer look, and why**, at the top of the report
 
-**It is safe to run.** It only reads information from GitHub. It never changes anything, never downloads a repository's code and never runs it.
+**It is safe to run.** It only reads information from GitHub. It never changes anything and never runs anything from a repository. Of a repository's files it reads only the configuration files that GitHub Actions uses (workflows, action definitions, `actions.lock`, Dependabot settings); never the source code.
 
 ---
 
 ## 1. One-time setup
 
-You need a Mac with the Terminal app (Applications > Utilities > Terminal). Type each command below into Terminal and press Enter.
+Repo Status works on macOS, Linux and Windows. Open a terminal (macOS: Terminal; Windows: Command Prompt or PowerShell), go to the Repo Status folder, type each command below and press Enter.
+
+**On Windows, type `scan` instead of `./scan.sh` in every command in this guide** (in PowerShell: `.\scan`). Example: `scan check`.
 
 **Step 1. Install the two tools Repo Status needs:**
 
-Command: `brew install gh uv`
+| Computer | Command |
+|---|---|
+| macOS | `brew install gh uv` |
+| Windows | `winget install --id GitHub.cli` and `winget install --id astral-sh.uv`, then open a new terminal |
+| Linux | gh: [install instructions](https://github.com/cli/cli#installation) (apt, dnf, ...); uv: [install instructions](https://docs.astral.sh/uv/getting-started/installation/) |
 
-- `gh` is GitHub's official command-line tool. Repo Status uses it to talk to GitHub and it keeps your login safe. Once done, login to github `gh auth login`
+- `gh` is GitHub's official command-line tool. Repo Status uses it to talk to GitHub and it keeps your login safe. Once done, log in to GitHub: `gh auth login`
 - `uv` runs Repo Status. It downloads the right version of Python by itself; you do not need to install Python.
 
 **Step 2. Check everything works:**
@@ -31,7 +39,7 @@ You should see:
 GitHub CLI: gh version 2.88.1 (2026-03-12)
 uv: uv 0.10.7 (08ab1a344 2026-02-27)
 Logged in to GitHub as: your-username
-Self-test: passed
+Self-test: passed (23 tests)
 ```
 
 If something is missing, the message tells you what to install. See [Common problems](#5-common-problems).
@@ -59,8 +67,14 @@ Done: 109 API calls. Facts saved to .../out/git-org/facts.json
 Results:
   out/git-org/summary.md        (read this first)
   out/git-org/repo-status.csv   (open in Excel)
+  out/git-org/actions-inventory.csv   (every action used, and where)
 ```
 
+The scan also prints `zizmor: v1.32.0, offline (no token, no network)` near the start. zizmor is installed by `scan.sh` / `scan.cmd` (pinned to that version) and runs on the workflow files Repo Status already read; it makes no API calls of its own.
+
+- `summary.md` opens with **"Deep investigation needed: N of M repositories"**: how many repositories need a closer look, a table of the reasons (what each one means and how to check it), and one line per repository with its priority (high or medium). Each repository is counted once, however many reasons it has. In `repo-status.csv` the same information is in the `deep_dive`, `deep_dive_priority` and `deep_dive_reason_codes` columns, ready to filter in Excel.
+- After the deep-investigation list, `summary.md` has **Workflow security (zizmor)** (each zizmor rule: how many findings, in how many repositories) and **Actions used** (how many `uses:` are unpinned, how many repositories have an `actions.lock`, upstream actions that disappeared).
+- A zizmor finding only puts a repository on the deep-investigation list when it is serious (for example template injection or an impostor commit) **and** the workflow still runs or holds secrets. Common findings such as unpinned actions are counted in the zizmor section but do not.
 - You see every repository in the organisation **that your account can see**. As a member you also see private repositories you have access to.
 - "Organisation audit log: unavailable" is normal for organisations not on GitHub Enterprise. It does not affect the results.
 
@@ -86,6 +100,20 @@ Command: `./scan.sh git-user --skip-forks`
 
 Output: `git-user: your own account (public and private repos you own). 40 repos found (14 forks); scanning 26.`
 
+### Investigate a repository
+
+Command: `./scan.sh git-org deep REPO`
+
+Writes `out/git-org/deep-dive/REPO.md` with: every force push (what the history looked like before and after), every change to `.github/` in the last year (with the workflow diff, who pushed it according to GitHub, and the runs that followed), every zizmor finding including the online checks (impostor commits, actions with known vulnerabilities) and findings hidden by `# zizmor: ignore` comments, and any upstream action whose version tag moved, with a link to compare the two commits.
+
+### After an upstream action is compromised
+
+When a popular action is hijacked (as happened to `aquasecurity/trivy-action` in March 2026), find out who used it and whether it ran during the bad window:
+
+Command: `./scan.sh git-org uses aquasecurity/trivy-action --since 2026-03-19 --until 2026-03-20`
+
+It lists every repository and workflow that uses the action (directly, or through another action recorded in `actions.lock`) and every run in that window, with links. Saved to `out/git-org/uses/`. Without `--since` it makes no API calls.
+
 ## 4. More in the wiki
 
 | Page | What it covers |
@@ -106,6 +134,8 @@ Output: `git-user: your own account (public and private repos you own). 40 repos
 | `Missing: GitHub CLI (gh)` or `Missing: uv` | Run `brew install gh uv` |
 | `Not logged in to GitHub` | Run `gh auth login` (section 1) |
 | `permission denied: ./scan.sh` | Run `chmod +x scan.sh` once, then try again |
+| Windows: `'scan' is not recognized` | Go to the Repo Status folder first (`cd path\to\repo-status`). In PowerShell type `.\scan`, not `scan` |
+| Windows: `'uv' is not recognized` right after installing | Close the terminal and open a new one so it picks up the new install |
 | `GitHub account or organisation '...' not found` | Check the spelling against the GitHub address |
 | `Not enough API calls left this hour` | Wait until the time shown, or use `--skip-forks` / `--repo` |
 | `No scan found for ...` | Run `./scan.sh NAME` before `./scan.sh NAME deep REPO` |
@@ -128,7 +158,8 @@ Output: `git-user: your own account (public and private repos you own). 40 repos
   - **Organisation audit log**: needs a classic token with `read:audit_log`, an organisation owner, and GitHub Enterprise Cloud. Only used to report whether it is available.
 - For image and package results, use a **classic token** instead (Personal access tokens > Tokens (classic)) with `repo`, `read:org`, `read:packages`, and `read:audit_log` if you are an organisation owner on Enterprise Cloud. Classic `repo` also allows changes, so GitHub will not refuse writes; Repo Status still only reads.
 - With either token, the access list (`last pusher has no access now`) is only shown for repositories your account can **write** to. That is GitHub's rule, not the token's.
-- The results contain repository names, secret **names** (never values), people's usernames and email addresses. Keep the `out` folder private; it is excluded from git.
+- zizmor: during the scan it runs **offline**. Repo Status removes the token from zizmor's environment and passes `--offline`. During a deep dive it runs online so it can ask GitHub about the actions a workflow uses; the token is passed only in zizmor's own environment and its responses are cached in `out/<owner>/zizmor-cache`.
+- The results contain repository names, secret **names** (never values), people's usernames and email addresses, and copies of each repository's workflow files (`out/<owner>/workflows/`). Keep the `out` folder private; it is excluded from git.
 
 ---
 
@@ -137,14 +168,20 @@ Output: `git-user: your own account (public and private repos you own). 40 repos
 The same steps without the wrapper script:
 
 ```
-uv run --python 3.12 --with pyyaml run.py all --owner git-org [--skip-forks ...]
-uv run --python 3.12 --with pyyaml run.py collect --owner git-org     # API calls only
+uv run --python 3.12 --with pyyaml --with zizmor==1.32.0 scan.py git-org [--skip-forks ...]   # what scan.sh / scan.cmd run
+uv run --python 3.12 --with pyyaml --with zizmor==1.32.0 run.py all --owner git-org [--no-zizmor] [--skip-action-check]
+uv run --python 3.12 --with pyyaml --with zizmor==1.32.0 run.py collect --owner git-org     # API calls only
 uv run --python 3.12 --with pyyaml run.py report --owner git-org --dead-days 180   # no API calls
-uv run --python 3.12 --with pyyaml deep_dive.py --owner git-user --repo cli-tool
-uv run --python 3.12 --with pyyaml python -m unittest discover -s tests
+uv run --python 3.12 --with pyyaml run.py uses --owner git-org --action actions/checkout [--since 2026-03-19]
+uv run --python 3.12 --with pyyaml --with zizmor==1.32.0 deep_dive.py --owner git-user --repo cli-tool
+uv run --python 3.12 --with pyyaml --with zizmor==1.32.0 python -m unittest discover -s tests
 ```
 
-Without `uv`: `python3.12 -m venv .venv && .venv/bin/pip install pyyaml`, then use `.venv/bin/python` instead of `uv run --python 3.12 --with pyyaml`.
+Without `uv`: `python3.12 -m venv .venv && .venv/bin/pip install pyyaml`, then use `.venv/bin/python` instead of `uv run --python 3.12 --with pyyaml` (Windows: `py -3.12 -m venv .venv`, `.venv\Scripts\pip install pyyaml`, `.venv\Scripts\python`).
+
+Code layout: `collect.py` (API calls, saves facts), `workflows.py` (parses workflow files and `actions.lock`; pure), `zizmor.py` (runs zizmor and reads its JSON), `flags.py` and `workflow_flags.py` (judgement; pure), `report.py` (summary and CSVs). zizmor's version is pinned in `repostatus/zizmor.py`, `scan.sh` and `scan.cmd`; a test fails if they disagree. Change all three together, and pick a release at least two weeks old.
+
+Cross-platform rules (enforced by `tests/test_report.py`): every `open()` of a text file and every `subprocess.run` names its encoding (`utf-8`; the CSV uses `utf-8-sig` so Excel on Windows reads it). Windows otherwise falls back to a legacy code page and crashes on non-ASCII names. `.gitattributes` keeps `scan.sh` at LF and `scan.cmd` at CRLF line endings.
 
 How it works, every GitHub API call, and the detection rules are in the [wiki](https://github.com/Himan10/git-repo-status/wiki).
 

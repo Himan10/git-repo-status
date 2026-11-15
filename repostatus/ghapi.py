@@ -30,7 +30,7 @@ class GitHub:
 
     def _run(self, args, path):
         self._counter[0] += 1
-        p = subprocess.run(["gh", "api", *args], capture_output=True, text=True)
+        p = subprocess.run(["gh", "api", *args], capture_output=True, encoding="utf-8", errors="replace")
         if p.returncode != 0:
             status, message = "?", (p.stderr or p.stdout).strip()
             try:
@@ -60,9 +60,11 @@ class GitHub:
         """Remaining REST calls this hour, read from the headers of a real request.
         The /rate_limit endpoint was seen reporting a full allowance while headers showed calls used."""
         self._counter[0] += 1
-        p = subprocess.run(["gh", "api", "-i", "-X", "GET", "user"], capture_output=True, text=True)
+        p = subprocess.run(["gh", "api", "-i", "-X", "GET", "user"], capture_output=True,
+                           encoding="utf-8", errors="replace")
+        headers = re.split(r"\r?\n\r?\n", p.stdout, maxsplit=1)[0]  # text mode may turn CRLF into LF
         h = {k.strip().lower(): v.strip() for k, _, v in
-             (line.partition(":") for line in p.stdout.split("\r\n\r\n")[0].splitlines()) if v}
+             (line.partition(":") for line in headers.splitlines()) if v}
         return {"limit": int(h.get("x-ratelimit-limit", 0)), "remaining": int(h.get("x-ratelimit-remaining", 0)),
                 "reset": int(h.get("x-ratelimit-reset", 0))}
 

@@ -1,15 +1,23 @@
-"""Collect raw facts per repository. No judgement here; see flags.py."""
+"""Collect raw facts per repository. No judgement here; see flags.py and workflow_flags.py."""
 import base64
 import fnmatch
 import re
+from concurrent.futures import ThreadPoolExecutor
+from datetime import timedelta
 from urllib.parse import quote
 
-import yaml
-
+from .flags import is_bot, ts
 from .ghapi import ApiError
+from .workflows import parse_action, parse_lockfile, parse_workflow, ref_type
 
 HISTORY_DEPTH = 50
 CODEOWNERS_PATHS = (".github/CODEOWNERS", "CODEOWNERS", "docs/CODEOWNERS")
+LOCKFILE = ".github/workflows/actions.lock"
+DEPENDABOT = (".github/dependabot.yml", ".github/dependabot.yaml")
+ACTION_FILE = re.compile(r"(^|/)action\.ya?ml$")
+MAX_ACTION_FILES = 25     # composite actions fetched per repo
+WAKE_GAP_DAYS = 30        # pushes after at least this much quiet are examined; the report applies --dormant-days
+MAX_WAKE_COMPARES = 5
 
 HISTORY_QUERY = """
 query($owner:String!, $name:String!, $n:Int!) {
@@ -30,18 +38,6 @@ query($owner:String!, $name:String!, $n:Int!) {
     }
   }
 }"""
-
-REGISTRY_PATTERNS = {
-    "ghcr.io": r"\bghcr\.io\b",
-    "docker.io": r"\b(docker\.io|registry-1\.docker\.io|index\.docker\.io)\b",
-    "ecr": r"\b\d{12}\.dkr\.ecr\.[a-z0-9-]+\.amazonaws\.com\b|aws-actions/amazon-ecr-login",
-    "gcr/artifact-registry": r"\b([a-z0-9-]+-docker\.pkg\.dev|(\w+\.)?gcr\.io)\b",
-    "acr": r"\b[a-z0-9]+\.azurecr\.io\b",
-    "quay.io": r"\bquay\.io\b",
-}
-PUSH_PATTERN = re.compile(r"docker\s+push|docker/build-push-action|push:\s*true|buildah\s+push|podman\s+push|crane\s+(push|copy)")
-SECRET_PATTERN = re.compile(r"\$\{\{\s*secrets\.([A-Za-z0-9_]+)")
-
 
 def _b64file(gh, full, path, ref):
     data, err = gh.try_get(f"repos/{full}/contents/{quote(path)}?ref={quote(ref)}")
@@ -119,14 +115,16 @@ def _activity(gh, full, default_branch):
     return a
 
 
-def _workflows(gh, full, ref):
+def _workflows(gh, full, ref, paths, save):
+    """Workflows with their run state, plus every file zizmor audits (saved through save(path, text))."""
     wfs, err = gh.try_get(f"repos/{full}/actions/workflows?per_page=100", record="workflows")
     if err:
         return {"error": err, "items": []}
     perms, _ = gh.try_get(f"repos/{full}/actions/permissions")
+    token, terr = gh.try_get(f"repos/{full}/actions/permissions/workflow", record="token_permissions")
     items = []
     for w in wfs.get("workflows", []):
-        item = {"name": w["name"], "path": w["path"], "state": w["state"]}
+        item = {"id": w["id"], "name": w["name"], "path": w["path"], "state": w["state"]}
         runs, _ = gh.try_get(f"repos/{full}/actions/workflows/{w['id']}/runs?per_page=1")
         last = (runs or {}).get("workflow_runs") or []
         item["last_run"] = last[0]["created_at"] if last else None
@@ -135,7 +133,9 @@ def _workflows(gh, full, ref):
 
         if w["path"].startswith(".github/workflows/"):
             text = _b64file(gh, full, w["path"], ref) or ""
-            item.update(_parse_workflow(text))
+            if text:
+                save(w["path"], text)
+            item.update(parse_workflow(text))
             if item["triggers"] and "schedule" in item["triggers"]:
                 sruns, _ = gh.try_get(f"repos/{full}/actions/workflows/{w['id']}/runs?event=schedule&per_page=1")
                 s = (sruns or {}).get("workflow_runs") or []
@@ -143,36 +143,74 @@ def _workflows(gh, full, ref):
         else:
             item["dynamic"] = True  # e.g. Dependabot, CodeQL default setup
         items.append(item)
-    return {"enabled": (perms or {}).get("enabled"), "items": items}
+
+    out = {"enabled": (perms or {}).get("enabled"), "allowed_actions": (perms or {}).get("allowed_actions"),
+           "items": items}
+    out["token"] = ({"default": token.get("default_workflow_permissions"),
+                     "can_approve_prs": token.get("can_approve_pull_request_reviews")} if token
+                    else {"error": terr})
+    if LOCKFILE in paths:
+        text = _b64file(gh, full, LOCKFILE, ref) or ""
+        save(LOCKFILE, text)
+        out["lockfile"] = dict(parse_lockfile(text), path=LOCKFILE)
+    for p in DEPENDABOT:
+        if p in paths:
+            save(p, _b64file(gh, full, p, ref) or "")
+    action_files = sorted(p for p in paths if ACTION_FILE.search(p))
+    out["composite_actions"] = []
+    for p in action_files[:MAX_ACTION_FILES]:
+        text = _b64file(gh, full, p, ref) or ""
+        save(p, text)
+        out["composite_actions"].append(dict(parse_action(text), path=p))
+    if len(action_files) > MAX_ACTION_FILES:
+        out["composite_actions_skipped"] = len(action_files) - MAX_ACTION_FILES
+    return out
 
 
-def _parse_workflow(text):
-    out = {"triggers": [], "crons": [], "secrets": [], "registries": [], "pushes_image": False,
-           "runs_on": [], "parse_error": None}
-    try:
-        doc = yaml.safe_load(text) or {}
-    except yaml.YAMLError as e:
-        out["parse_error"] = str(e).splitlines()[0]
-        doc = {}
-    on = doc.get("on", doc.get(True)) if isinstance(doc, dict) else None
-    if isinstance(on, str):
-        out["triggers"] = [on]
-    elif isinstance(on, list):
-        out["triggers"] = [str(t) for t in on]
-    elif isinstance(on, dict):
-        out["triggers"] = [str(t) for t in on]
-        for s in on.get("schedule") or []:
-            if isinstance(s, dict) and "cron" in s:
-                out["crons"].append(s["cron"])
-    for job in (doc.get("jobs") or {}).values() if isinstance(doc, dict) else []:
-        ro = job.get("runs-on") if isinstance(job, dict) else None
-        labels = ro if isinstance(ro, list) else [ro] if ro else []
-        out["runs_on"] += [str(l) for l in labels if str(l) not in out["runs_on"]]
-    out["secrets"] = sorted({s for s in SECRET_PATTERN.findall(text) if s != "GITHUB_TOKEN"})
-    out["registries"] = [name for name, pat in REGISTRY_PATTERNS.items() if re.search(pat, text)]
-    if "docker/login-action" in text and not out["registries"]:
-        out["registries"].append("docker.io")  # login-action without registry: defaults to Docker Hub
-    out["pushes_image"] = bool(PUSH_PATTERN.search(text))
+def _workflow_history(gh, full, ref):
+    """Recent commits that changed a workflow file: who and when (commit metadata, can be forged)."""
+    commits, err = gh.try_get(f"repos/{full}/commits?path=.github/workflows&sha={ref}&per_page=20",
+                              record="workflow_commits")
+    if err:
+        return {"error": err, "items": []}
+    return {"items": [{
+        "oid": c["sha"],
+        "date": c["commit"]["committer"]["date"],
+        "author_login": (c.get("author") or {}).get("login"),
+        "author_email": c["commit"]["author"]["email"],
+        "committer_email": c["commit"]["committer"]["email"],
+        "headline": c["commit"]["message"].splitlines()[0][:100] if c["commit"]["message"] else "",
+    } for c in commits or []]}
+
+
+def _idle_wakeups(gh, full, activity, branch):
+    """Human pushes to the default branch after a long quiet period, with the files each one changed.
+
+    Times are server-side (activity API). Only the last 100 events are known, so a quiet period that
+    started before the oldest of them cannot be measured and is skipped."""
+    events = activity.get("latest") or []
+    human = sorted((e for e in events if not is_bot(e["actor"], e["actor_type"])), key=lambda e: e["ts"])
+    out = []
+    for prev, e in zip(human, human[1:]):
+        if e["ref"] != f"refs/heads/{branch}" or e["type"] not in ("push", "force_push", "pr_merge"):
+            continue
+        gap = ts(e["ts"]) - ts(prev["ts"])
+        if gap < timedelta(days=WAKE_GAP_DAYS) or not e["before"] or not e["after"] or set(e["before"]) == {"0"}:
+            continue
+        w = {"ts": e["ts"], "actor": e["actor"], "type": e["type"], "prev_ts": prev["ts"],
+             "gap_days": round(gap.total_seconds() / 86400, 1), "before": e["before"], "after": e["after"]}
+        if len(out) < MAX_WAKE_COMPARES:
+            cmp, err = gh.try_get(f"repos/{full}/compare/{e['before']}...{e['after']}")
+            if err:
+                w["error"] = err
+            else:
+                w["files"] = [f["filename"] for f in cmp.get("files") or []]
+                w["files_truncated"] = len(w["files"]) >= 300
+                w["authors"] = sorted({(c.get("author") or {}).get("login") or c["commit"]["author"]["email"]
+                                       for c in cmp.get("commits") or []})
+        else:
+            w["error"] = "not compared (limit per repo reached)"
+        out.append(w)
     return out
 
 
@@ -273,7 +311,8 @@ def _autorun(gh, full, ref, paths):
     }
 
 
-def collect_repo(gh, owner, meta, recorder_for):
+def collect_repo(gh, owner, meta, recorder_for, files_for=None):
+    """All facts for one repo. files_for(repo) returns save(path, text) for files zizmor will audit."""
     full = f"{owner}/{meta['name']}"
     gh = gh.with_recorder(recorder_for(meta["name"]))
     f = {
@@ -298,6 +337,7 @@ def collect_repo(gh, owner, meta, recorder_for):
         f["empty"] = True
         return f
     branch = dbr["name"]
+    save = files_for(meta["name"]) if files_for else (lambda path, text: None)
     f["history"] = [{
         "oid": c["oid"],
         "committed_utc": c["committedDate"],
@@ -314,7 +354,10 @@ def collect_repo(gh, owner, meta, recorder_for):
                      "items": [{"name": r["name"], "committed": (r["target"] or {}).get("committedDate")}
                                for r in g["refs"]["nodes"]]}
 
-    tree, err = gh.try_get(f"repos/{full}/git/trees/{quote(branch, safe='')}?recursive=1")
+    # read every file at the head commit, so all facts (and zizmor) describe the same snapshot
+    head = f["history"][0]["oid"] if f["history"] else branch
+    f["head_sha"] = head if f["history"] else None
+    tree, err = gh.try_get(f"repos/{full}/git/trees/{quote(head, safe='')}?recursive=1")
     paths = {t["path"] for t in (tree or {}).get("tree", [])}
     f["tree_truncated"] = (tree or {}).get("truncated", False)
     if err:
@@ -322,17 +365,91 @@ def collect_repo(gh, owner, meta, recorder_for):
     f["dockerfiles"] = sorted(p for p in paths if re.search(r"(^|/)(Dockerfile|Containerfile)[^/]*$", p))
 
     for key, fn in (("activity", lambda: _activity(gh, full, branch)),
-                    ("actions", lambda: _workflows(gh, full, branch)),
+                    ("actions", lambda: _workflows(gh, full, head, paths, save)),
+                    ("workflow_history", lambda: _workflow_history(gh, full, head)),
                     ("protection", lambda: _protection(gh, full, branch)),
-                    ("codeowners", lambda: _codeowners(gh, full, branch, paths)),
-                    ("autorun", lambda: _autorun(gh, full, branch, paths))):
+                    ("codeowners", lambda: _codeowners(gh, full, head, paths)),
+                    ("autorun", lambda: _autorun(gh, full, head, paths))):
         try:
             f[key] = fn()
         except ApiError as e:
             f["errors"].append(f"{key}: {e}")
+    if f.get("activity"):
+        try:
+            f["idle_wakeups"] = _idle_wakeups(gh, full, f["activity"], branch)
+        except ApiError as e:
+            f["errors"].append(f"idle_wakeups: {e}")
 
     collab, cerr = gh.try_get(f"repos/{full}/collaborators?affiliation=all&per_page=100", paginate=True)
     f["collaborators"] = sorted(c["login"] for c in collab or [])
     if cerr:
         f["errors"].append(f"collaborators: {cerr}")
     return f
+
+
+def all_uses(f):
+    """Every remote `uses:` in a repo's workflows and composite actions, with where it appears."""
+    a = f.get("actions") or {}
+    for w in a.get("items") or []:
+        for u in w.get("uses") or []:
+            yield w["path"], u
+    for c in a.get("composite_actions") or []:
+        for u in c.get("uses") or []:
+            yield c["path"], u
+
+
+def _resolve_tag(gh, slug, tag):
+    """Commit a tag points to now (annotated tags are followed). Returns (sha, error)."""
+    data, err = gh.try_get(f"repos/{slug}/git/ref/tags/{quote(tag, safe='')}")
+    if err:
+        return None, err
+    obj = data.get("object") or {}
+    for _ in range(3):
+        if obj.get("type") != "tag":
+            break
+        t, err = gh.try_get(f"repos/{slug}/git/tags/{obj['sha']}")
+        if err:
+            return None, err
+        obj = t.get("object") or {}
+    return obj.get("sha"), None
+
+
+def action_index(gh, facts, workers=4):
+    """Once per scan, for every upstream action any repo uses: does it still exist under the same
+    owner and id, is it archived, and where do the tags we have a recorded commit for point now."""
+    slugs, claims = set(), set()
+    for f in facts:
+        for _, u in all_uses(f):
+            if u["kind"] in ("action", "reusable") and u.get("slug") and "/" in u["slug"]:
+                slugs.add(u["slug"])
+                if u["ref_type"] == "sha" and u.get("version_comment"):
+                    claims.add((u["slug"], u["version_comment"]))
+        for d in ((f.get("actions") or {}).get("lockfile") or {}).get("dependencies", {}).values():
+            slugs.add(d["slug"])
+            if ref_type(d["ref"]) in ("version", "floating"):
+                claims.add((d["slug"], d["ref"]))
+
+    def repo(slug):
+        data, err = gh.try_get(f"repos/{slug}")
+        if data:
+            return slug, {"status": "ok", "id": data["id"], "owner_id": (data.get("owner") or {}).get("id"),
+                          "full_name": data["full_name"], "archived": data.get("archived", False)}
+        if err and err.startswith("404"):
+            _, oerr = gh.try_get(f"users/{slug.split('/')[0]}")
+            return slug, {"status": "owner gone" if oerr and oerr.startswith("404") else "repo gone"}
+        return slug, {"status": f"unknown ({err})"}
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        repos = dict(ex.map(repo, sorted(slugs)))
+
+    def tag(claim):
+        slug, t = claim
+        r = repos.get(slug) or {}
+        if r.get("status") != "ok":
+            return f"{slug}@{t}", {"error": r.get("status")}
+        sha, err = _resolve_tag(gh, r["full_name"], t)
+        return f"{slug}@{t}", {"commit": sha, "error": err}
+
+    with ThreadPoolExecutor(max_workers=workers) as ex:
+        tags = dict(ex.map(tag, sorted(claims)))
+    return {"repos": repos, "tags": tags}
