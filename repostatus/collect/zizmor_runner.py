@@ -10,7 +10,19 @@ import re
 import shutil
 import subprocess
 
-VERSION = "1.32.0"  # pinned; scan.sh and scan.cmd install exactly this version (tests check they agree)
+def _pinned_version():
+    """The zizmor version pinned in pyproject.toml, the single place versions are set."""
+    import tomllib
+    from repostatus.output_paths import PROJECT_ROOT
+    try:
+        with open(os.path.join(PROJECT_ROOT, "pyproject.toml"), "rb") as fh:
+            deps = tomllib.load(fh)["project"]["dependencies"]
+    except (OSError, KeyError, ValueError):
+        return None
+    return next((d.split("==", 1)[1].strip() for d in deps if d.replace(" ", "").startswith("zizmor==")), None)
+
+
+VERSION = _pinned_version()
 TIMEOUT = 300
 
 # zizmor rules that make a repo a deep-investigation case when they fire at High severity in a
@@ -44,6 +56,11 @@ def _slim(finding, root):
     key = ((loc.get("symbolic") or {}).get("key") or {})
     path = _rel((key.get("Local") or {}).get("verbatim_path") or "", root)
     row = (((loc.get("concrete") or {}).get("location") or {}).get("start_point") or {}).get("row")
+    step = None
+    for l in finding.get("locations") or []:  # zizmor marks the enclosing step as a hidden location
+        feat = ((l.get("concrete") or {}).get("feature") or "").lstrip("- ")
+        if (l.get("symbolic") or {}).get("annotation") == "this step" and feat.startswith("name:"):
+            step = feat.splitlines()[0][5:].strip().strip("'\"")
     return {
         "rule": finding.get("ident"),
         "desc": finding.get("desc"),
@@ -52,6 +69,7 @@ def _slim(finding, root):
         "file": path,
         "line": row + 1 if isinstance(row, int) else None,  # zizmor rows are 0-based
         "note": (loc.get("symbolic") or {}).get("annotation"),
+        "step": step,
         "ignored": bool(finding.get("ignored")),
     }
 
@@ -113,3 +131,52 @@ def escalates(f):
     """A finding that, in a workflow that still runs, puts the repo on the deep-investigation list."""
     return (f["rule"] in ESCALATE and not f["ignored"] and LEVELS.get(f["severity"], 0) >= 3
             and LEVELS.get(f["confidence"], 0) >= 2)
+
+
+ONLINE_RULES = {"known-vulnerable-actions", "impostor-commit", "ref-confusion"}
+ONLINE_TIMEOUT = 1800
+
+
+def run_online(exe, roots, token, cache_dir=None, raw_path=None):
+    """One zizmor run over every repository's saved workflow files, with the audits that ask GitHub.
+
+    roots: {repo: folder}. Returns {"status", "findings": {repo: [online findings]}}. Only the online rules are
+    kept; the offline findings come from the per-repository run. Requests go to api.github.com only, about the
+    actions used (name and version); the shared cache means each action is asked about once."""
+    roots = {repo: os.path.abspath(r) for repo, r in roots.items() if os.path.isdir(r)}
+    if not roots:
+        return {"status": "ok", "findings": {}}
+    if not token:
+        return {"status": "not run: no GitHub token found for zizmor", "findings": {}}
+    args = [exe, "--format", "json", "--no-exit-codes", "--no-progress", "--color", "never", "--no-config",
+            "--collect", "all", *(["--cache-dir", cache_dir] if cache_dir else []), *roots.values()]
+    env = {k: v for k, v in os.environ.items() if k not in ("GH_TOKEN", "GITHUB_TOKEN", "ZIZMOR_GITHUB_TOKEN")}
+    env["ZIZMOR_GITHUB_TOKEN"] = token
+    try:
+        p = subprocess.run(args, capture_output=True, encoding="utf-8", errors="replace", env=env,
+                           timeout=ONLINE_TIMEOUT)
+    except subprocess.TimeoutExpired:
+        return {"status": f"error: timed out after {ONLINE_TIMEOUT}s", "findings": {}}
+    except OSError as e:
+        return {"status": f"error: {e}", "findings": {}}
+    if p.returncode != 0 and "no inputs collected" not in p.stderr:
+        msg = next((l for l in reversed(p.stderr.strip().splitlines()) if l.strip()), f"exit code {p.returncode}")
+        return {"status": f"error: {msg[:200]}", "findings": {}}
+    try:
+        data = json.loads(p.stdout or "[]")
+    except ValueError:
+        return {"status": "error: output was not JSON", "findings": {}}
+    if raw_path:
+        os.makedirs(os.path.dirname(raw_path), exist_ok=True)
+        with open(raw_path, "w", encoding="utf-8") as fh:
+            json.dump(data, fh, indent=1)
+    out = {}
+    for finding in data:
+        if finding.get("ident") not in ONLINE_RULES:
+            continue
+        for repo, root in roots.items():
+            x = _slim(finding, root)
+            if not x["file"].startswith(".."):
+                out.setdefault(repo, []).append(dict(x, online=True))
+                break
+    return {"status": "ok", "findings": out}

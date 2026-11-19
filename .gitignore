@@ -1,4 +1,7 @@
 .env
+.venv/
+.serena/
 out/
 wiki/
 __pycache__/
+README-local.md

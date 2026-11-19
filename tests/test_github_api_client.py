@@ -7,8 +7,8 @@ import subprocess
 import unittest
 from unittest import mock
 
-from repostatus import ghapi
-from repostatus.collect import HISTORY_QUERY
+from repostatus.github import api_client
+from repostatus.collect.repository_facts import HISTORY_QUERY
 
 
 class Captured:
@@ -23,10 +23,10 @@ class Captured:
 class CommandLines(unittest.TestCase):
     def setUp(self):
         self.cap = Captured()
-        patcher = mock.patch.object(ghapi.subprocess, "run", self.cap)
+        patcher = mock.patch.object(api_client.subprocess, "run", self.cap)
         patcher.start()
         self.addCleanup(patcher.stop)
-        self.gh = ghapi.GitHub()
+        self.gh = api_client.GitHub()
 
     def argv(self):
         return self.cap.calls[-1][0]
@@ -73,9 +73,9 @@ class RateLimitHeaders(unittest.TestCase):
         for nl in ("\r\n", "\n"):
             out = nl.join(["HTTP/2.0 200 OK", "X-Ratelimit-Limit: 5000", "X-Ratelimit-Remaining: 4321",
                            "X-Ratelimit-Reset: 1700000000", "", '{"login":"x"}'])
-            with mock.patch.object(ghapi.subprocess, "run",
+            with mock.patch.object(api_client.subprocess, "run",
                                    return_value=subprocess.CompletedProcess([], 0, stdout=out, stderr="")):
-                self.assertEqual(ghapi.GitHub().rate_limit()["remaining"], 4321)
+                self.assertEqual(api_client.GitHub().rate_limit()["remaining"], 4321)
 
 
 if __name__ == "__main__":

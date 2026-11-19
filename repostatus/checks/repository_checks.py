@@ -190,6 +190,7 @@ def effective_protection(f):
     if errors and not plan_limited and not has_c and not has_r:
         return {"source": "unknown", "force_push_blocked": None, "deletion_blocked": None,
                 "pr_required": None, "approvals": None, "code_owner_review": None, "signatures": None,
+                "dismiss_stale": None, "last_push_approval": None,
                 "plan_limited": False, "error": errors[0]}
     source = "+".join(s for s, ok in (("classic", has_c), ("ruleset", has_r)) if ok)
     classic_unknown = bool(c.get("error")) and PLAN_LIMIT not in c["error"]
@@ -205,6 +206,8 @@ def effective_protection(f):
             "approvals": r.get("approvals") or None,
             "code_owner_review": known(r.get("code_owner_review", False)),
             "signatures": known(r.get("signatures", False)),
+            "dismiss_stale": known(r.get("dismiss_stale", False)),
+            "last_push_approval": known(r.get("last_push_approval", False)),
             "plan_limited": False, "error": c["error"],
         }
     return {
@@ -215,6 +218,8 @@ def effective_protection(f):
         "approvals": max(c.get("approvals", 0), r.get("approvals", 0)),
         "code_owner_review": c.get("code_owner_review", False) or r.get("code_owner_review", False),
         "signatures": c.get("signatures", False) or r.get("signatures", False),
+        "dismiss_stale": c.get("dismiss_stale", False) or r.get("dismiss_stale", False),
+        "last_push_approval": c.get("last_push_approval", False) or r.get("last_push_approval", False),
         "plan_limited": plan_limited,
         "error": None if plan_limited else (errors[0] if errors else None),
     }
@@ -262,6 +267,12 @@ def hygiene(f, status, prot, now, cfg):
             out.append("no PR required on default branch" + why)
         if prot["force_push_blocked"] is None:
             out.append(f"branch rules could not be read ({prot['error'][:60]})")
+        if prot["pr_required"]:  # only meaningful when pull requests are required at all
+            if prot.get("dismiss_stale") is False:
+                out.append("approvals stay valid after new commits are pushed (dismiss stale approvals is off)")
+            if prot.get("last_push_approval") is False:
+                out.append("whoever pushed last can approve their own changes "
+                           "(require approval of the most recent push is off)")
     collab = set(f.get("collaborators") or [])
     humans = [e for e in (f.get("activity") or {}).get("default_branch") or []
               if not is_bot(e["actor"], e["actor_type"])]
@@ -293,8 +304,10 @@ def hygiene(f, status, prot, now, cfg):
     return out
 
 
-def evaluate(facts, owner_ctx, now=None, cfg=None):
-    from .workflow_flags import workflow_flags, workflow_hygiene  # imports this module
+def evaluate(facts, owner_ctx, now=None, cfg=None, owner_dir=None):
+    """owner_dir (out/<owner>) lets the IOC check read the saved workflow files."""
+    from repostatus.checks.ioc_matching import ioc_flags
+    from repostatus.checks.workflow_checks import workflow_flags, workflow_hygiene  # imports this module
     cfg = {**DEFAULTS, **(cfg or {})}
     index = owner_ctx.get("action_index")
     now = now or datetime.now(timezone.utc)
@@ -312,10 +325,10 @@ def evaluate(facts, owner_ctx, now=None, cfg=None):
             continue
         prot = effective_protection(f)
         flags = (investigation_flags(f, status, now, cfg) + package_flags(f, status, pkgs, cfg)
-                 + workflow_flags(f, status, now, cfg, index))
+                 + workflow_flags(f, status, now, cfg, index) + ioc_flags(f, owner_dir))
         rows.append({
             "f": f, "status": status, "last": last, "source": source, "bound": bound, "pkgs": pkgs,
             "flags": flags, "prot": prot, "branches": branch_strategy(f, now, cfg),
-            "hygiene": hygiene(f, status, prot, now, cfg) + workflow_hygiene(f),
+            "hygiene": hygiene(f, status, prot, now, cfg) + workflow_hygiene(f, now, cfg, index),
         })
     return rows, cfg

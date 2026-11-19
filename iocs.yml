@@ -1,0 +1,206 @@
+# Known indicators of compromise (IOCs) from published GitHub Actions supply-chain campaigns.
+#
+# Repo Status checks every scan against this file. Most checks use data the scan already has; the
+# self-hosted runner names cost one call per repository.
+#
+# Adding a campaign: one entry per campaign, with its date, at least one source link, and only
+# indicators copied from those sources. A wrong indicator is worse than none. Generic names (such as
+# a workflow called security-audit.yml) must be combined with something specific (only_if_contains),
+# so ordinary workflows with the same name are not flagged.
+#
+# What each field is matched against:
+#   workflow_files           path of a workflow file on any branch, or of a workflow that ran (path:, or pattern: a regex)
+#   workflow_strings         text inside any workflow file, on any branch
+#   branch_names / branch_patterns   names of current branches, and of branches workflows ran on
+#   runner_names             self-hosted runners registered to the repository
+#   repository_names / repository_descriptions   repositories in the organisation
+#   file_names               files anywhere in the default branch
+#   commit_messages          messages of recent commits that changed workflows
+#   action_commits           an action pinned (uses: or actions.lock) to one of these commits
+#   exposure_window          the actions and time window when using them by tag ran the attackers' code
+#   log_strings              text in workflow run logs (deep dive with --logs only)
+
+updated: 2026-11-20
+campaigns:
+  - id: shai-hulud-1
+    name: Shai-Hulud worm, first wave
+    date: 2025-09-15
+    sources:
+      - https://www.stepsecurity.io/blog/ctrl-tinycolor-and-40-npm-packages-compromised
+    workflow_files:
+      - path: .github/workflows/shai-hulud-workflow.yml
+    branch_names: [shai-hulud]
+    repository_names: [Shai-Hulud]
+    workflow_strings:
+      - webhook.site/bb8ca5f6-4175-45d2-b042-fc9ebb8170b7
+
+  - id: shai-hulud-2
+    name: "Shai-Hulud 2.0 (Sha1-Hulud: The Second Coming)"
+    date: 2025-11-24
+    sources:
+      - https://www.wiz.io/blog/shai-hulud-2-0-ongoing-supply-chain-attack
+    workflow_files:
+      - pattern: '^\.github/workflows/formatter_[0-9]+\.yml$'
+      - path: .github/workflows/discussion.yaml
+        only_if_contains: [self-hosted]
+    branch_patterns: ['^add-linter-workflow-[0-9]+$']
+    runner_names: [SHA1HULUD]
+    repository_descriptions: ["Sha1-Hulud: The Second Coming", "Sha1-Hulud: The Continued Coming"]
+    file_names: [setup_bun.js, bun_environment.js]
+
+  - id: ghostaction-2025
+    name: GhostAction (first wave)
+    date: 2025-09-05
+    sources:
+      - https://blog.gitguardian.com/ghostaction-campaign-3-325-secrets-stolen/
+    workflow_files:
+      - path: .github/workflows/github_actions_security.yml
+    workflow_strings:
+      - bold-dhawan.45-139-104-115.plesk.page
+      - objective-hopper.45-139-104-115.plesk.page
+      - carte-avantage.com
+      - 45.139.104.115
+    commit_messages: [Add Github Actions Security workflow]
+
+  - id: ghostaction-2026
+    name: GhostAction (2026 waves)
+    date: 2026-10-07
+    sources:
+      - https://blog.gitguardian.com/ghostaction-github-actions-supply-chain-attack-returns/
+    workflow_files:
+      - path: .github/workflows/github_actions_security.yml
+      - path: .github/workflows/security-check.yml
+        only_if_contains: [193.32.204.199, 170.39.218.2, oast.fun]
+      - path: .github/workflows/security-audit.yml
+        only_if_contains: [193.32.204.199, 170.39.218.2, oast.fun]
+    workflow_strings: [193.32.204.199, 170.39.218.2]
+    commit_messages: [Add Github Actions Security workflow, Update Github Actions Security workflow]
+
+  - id: tj-actions-2025
+    name: tj-actions/changed-files compromise (CVE-2025-30066)
+    date: 2025-03-15
+    sources:
+      - https://github.com/advisories/ghsa-mrrh-fwg8-r2c3
+    # GitHub has since removed the commit, so it can no longer be checked on GitHub itself
+    action_commits:
+      tj-actions/changed-files: [0e58ed8671d6b60d0890c21b07f8835ace038e67]
+    log_strings:
+      - gist.githubusercontent.com/nikitastupin/30e525b776c409e03c2d6f328f254965
+      - B64_BLOB
+
+  - id: reviewdog-2025
+    name: reviewdog/action-setup compromise (CVE-2025-30154)
+    date: 2025-03-19
+    sources:
+      - https://github.com/advisories/GHSA-qmg3-hpqr-gqvc
+    action_commits:
+      reviewdog/action-setup: [f0d342d24037bb11d26b9bd8496e0808ba32e9ec]
+    exposure_window:
+      from: "2025-03-11T18:42:00Z"
+      to: "2025-03-11T20:31:00Z"
+      actions: [reviewdog/action-setup, reviewdog/action-shellcheck, reviewdog/action-composite-template,
+                reviewdog/action-staticcheck, reviewdog/action-ast-grep, reviewdog/action-typos]
+
+  - id: trivy-teampcp-2026
+    name: trivy-action / setup-trivy compromise by TeamPCP (CVE-2026-33634)
+    date: 2026-03-20
+    sources:
+      - https://www.wiz.io/blog/trivy-compromised-teampcp-supply-chain-attack
+    # trivy-action commits verified on GitHub on 2026-11-20 (they still exist, with forged old dates);
+    # setup-trivy's have been removed from GitHub and could not be re-checked
+    action_commits:
+      aquasecurity/trivy-action:
+        - f4f1785be270ae13f36f6a8cfbf6faaae50e660a
+        - 0891663bc55073747be0eb864fbec3727840945d
+        - 2e7964d59cd24d1fd2aa4d6a5f93b7f09ea96947
+        - ddb9da4475c1cef7d5389062bdfdfbdbd1394648
+        - 4209dcadeaea6a7df69262fef1beeda940881d4d
+        - f5c9fd927027beaa3760d2a84daa8b00e6e5ee21
+        - 18f01febc4c3cd70ce6b94b70e69ab866fc033f5
+        - bb75a9059c2d5803db49e6ed6c6f7e0b367f96be
+        - d488f4388ff4aa268906e25c2144f1433a4edec2
+        - 3c615ac0f29e743eda8863377f9776619fd2db76
+        - a9bc513ea7989e3234b395cafb8ed5ccc3755636
+        - 8519037888b189f13047371758f7aed2283c6b58
+        - 8cfb9c31cc944da57458555aa398bb99336d5a1f
+        - 9092287c0339a8102f91c5a257a7e27625d9d029
+        - 7b955a5ece1e1b085c12dac7ac10e0eb1f5b0d4d
+        - 19851bef764b57ff95b35e66589f31949eeb229d
+        - 61fbe20b7589e6b61eedcd5fe1e958e1a95fbd13
+        - fa78e67c0df002c509bcdea88677fb5e2fe6a9b1
+        - b7befdc106c600585d3eec87d7e98e1c136839ae
+        - 7f6f0ce52a59bdfc5757c3982aac2353b58f4c73
+        - ddb6697447a97198bdef9bae00215059eb5e8bc2
+        - 3dffed04dc90cf1c548f40577d642c52241ec76c
+        - ad623e14ebdfe82b9627811d57b9a39e283d6128
+        - 848d665ed24dc1a41f6b4b7c7ffac7693d6b37be
+        - ddb94181dcbc723d96ffc07fddd14d97e4849016
+        - b7252377a3d82c73d497bfafa3eabe84de1d02c4
+        - fa4209b6182a4c1609ce34d40b67f5cfd7f00f53
+        - 2b1dac84ff12ba56158b3a97e2941a587cb20da9
+        - 66c90331c8b991e7895d37796ac712b5895dda3b
+        - fd429cf86db999572f3d9ca7c54561fdf7d388a4
+        - 8ae5a08aec3013ee8f6132b2a9012b45002f8eaa
+        - 2a51c5c5bb1fd1f0e134c9754f1702cfa359c3dd
+        - 9c000ba9d482773cbbc2c3544d61b109bc9eb832
+        - 91e7c2c36dcad14149d8e455b960af62a2ffb275
+        - 4bdcc5d9ef3ddb42ccc9126e6c07faa3df2807e3
+        - 9e8968cb83234f0de0217aa8c934a68a317ee518
+        - c5967f85626795f647d4bf6eb67227f9b79e02f5
+        - b745a35bad072d93a9b83080e9920ec52c6b5a27
+        - 38623bf26706d51c45647909dcfb669825442804
+        - 555e7ad4c895c558c7214496df1cd56d1390c516
+        - 2297a1b967ecc05ba2285eb6af56ab4da554ecae
+        - 820428afeb64484d311211658383ce7f79d31a0a
+        - f77738448eec70113cf711656914b61905b3bd47
+        - 252554b0e1130467f4301ba65c55a9c373508e35
+        - 22e864e71155122e2834eb0c10d0e7e0b8f65aa3
+        - 405e91f329294fb696f55793203abf1f6aba9b40
+        - 506d7ff06abc509692c600b5b69b4dc6ceaa4b15
+        - 276ca9680f6df9016db12f7c48571e5c4639451d
+        - aa3c46a9643b18125abb8aefc13219014e9c4be8
+        - ea56cd31d82b853932d50f1144e95b21817e52cf
+        - 0d49ceb356f7d4735c63bd0d5c7e67665ec7f80c
+        - 7550f14b64c1c724035a075b36e71423719a1f30
+        - da73ae0790e458e878b300b57ceb5f81ac573b46
+        - 6ec7aaf336b7d2593d980908be9bc4fed6d407c6
+        - cf19d27c8a7fb7a8bbf1e1000e9318749bcd82cf
+        - ef3a510e3f94df3ea9fcd01621155ca5f2c3bf5b
+        - 6fc874a1f9d65052d4c67a314da1dae914f1daff
+        - b9faa60f85f6f780a34b8d0faaf45b3e3966fdda
+        - ab6606b76e5a054be08cab3d07da323e90e751e8
+        - a5b4818debf2adbaba872aaffd6a0f64a26449fa
+        - e53b0483d08da44da9dfe8a84bf2837e5163699b
+        - 8aa8af3ea1de8e968a3e49a40afb063692ab8eae
+        - 91d5e0a13afab54533a95f8019dd7530bd38a071
+        - 794b6d99daefd5e27ecb33e12691c4026739bf98
+        - 9ba3c3cd3b23d033cd91253a9e61a4bf59c8a670
+        - e0198fd2b6e1679e36d32933941182d9afa82f6f
+        - 9738180dd24427b8824445dbbc23c30ffc1cb0d8
+        - 3201ddddd69a1419c6f1511a14c5945ba3217126
+        - 985447b035c447c1ed45f38fad7ca7a4254cb668
+        - 3d1b5be1589a83fc98b82781c263708b2eb3b47b
+        - fd090040b5f584f4fcbe466878cb204d0735dcf4
+        - 85cb72f1e8ee5e6e44488cd6cbdbca94722f96ed
+        - cf1692a1fc7a47120e6508309765db7e33477946
+        - 1d74e4cf63b7cf083cf92bf5923cf037f7011c6b
+        - c19401b2f58dc6d2632cb473d44be98dd8292a93
+      aquasecurity/setup-trivy:
+        - 8afa9b9f9183b4e00c46e2b82d34047e3c177bd0
+        - 386c0f18ac3d7f2ed33e2d884761119f4024ff8a
+        - 384add36b52014a0f99c0ab3a3d58bd47e53d00f
+        - 7a4b6f31edb8db48cc22a1d41e298b38c4a6417e
+        - 6d8d730153d6151e03549f276faca0275ed9c7b2
+        - 99b93c070aac11b52dfc3e41a55cbb24a331ae75
+        - f4436225d8a5fd1715d3c2290d8a50643e726031
+    exposure_window:
+      from: "2026-03-19T17:43:00Z"
+      to: "2026-03-21T00:00:00Z"
+      actions: [aquasecurity/trivy-action, aquasecurity/setup-trivy]
+    workflow_strings:
+      - scan.aquasecurtiy.org
+      - 45.148.10.212
+      - plug-tab-protective-relay.trycloudflare.com
+      - tdtqy-oyaaa-aaaae-af2dq-cai.raw.icp0.io
+    repository_names: [tpcp-docs]
+    log_strings: [scan.aquasecurtiy.org, 45.148.10.212, plug-tab-protective-relay.trycloudflare.com]

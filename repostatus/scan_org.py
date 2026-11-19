@@ -10,59 +10,46 @@ import argparse
 import json
 import os
 import re
-import shutil
+import signal
 import sys
 import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
-from repostatus.ghapi import ApiError, GitHub
-from repostatus import flags, report, zizmor
-from repostatus.collect import action_index, all_uses, collect_repo, owner_context
-from repostatus.oscompat import scan_cmd, utf8_console
+from repostatus.checks import repository_checks
+from repostatus.collect import zizmor_runner
+from repostatus.collect.repository_facts import action_index, all_uses, collect_repo, owner_context
+from repostatus.collect.scan_progress import Progress
+from repostatus.github.api_client import ApiError, GitHub, gh_token
+from repostatus.github.rate_limit import Pacer
+from repostatus.output_paths import display_path, make_saver, out_dir
+from repostatus.platform_support import scan_cmd, utf8_console
+from repostatus.reports import org_summary
 
-HERE = os.path.dirname(os.path.abspath(__file__))
-CALLS_PER_REPO = 18  # about 15 per repo plus 2 to 3 per workflow; zizmor itself makes none (runs offline)
-UNSAFE_NAME = re.compile(r'[<>:"\\|?*\x00-\x1f]')  # characters Windows does not allow in file names
-
-
-def display_path(path):
-    """Path relative to the current folder when possible (fails across Windows drives)."""
-    try:
-        return os.path.relpath(path)
-    except ValueError:
-        return path
+CALLS_PER_REPO = 26  # measured: about 23 per repo plus 2 to 3 per workflow; actions and zizmor online are counted after
+_hard_exit = os._exit  # tests replace this
 
 
-def out_dir(owner, create=True):
-    """Results folder for an owner. Names are matched without regard to case, so
-    'acme-corp' finds out/ACME-Corp on any operating system."""
-    base = os.path.join(HERE, "out")
-    if os.path.isdir(base):
-        for name in os.listdir(base):
-            if name.lower() == owner.lower() and os.path.isdir(os.path.join(base, name)):
-                return os.path.join(base, name)
-    d = os.path.join(base, owner)
-    if create:
-        os.makedirs(d, exist_ok=True)
-    return d
-
-
-def make_saver(base):
-    """save(path, text) writing a repo's files under base, byte for byte (zizmor reports line numbers).
-    Starts from an empty folder so files deleted upstream do not linger from an earlier scan."""
-    shutil.rmtree(base, ignore_errors=True)
-
-    def save(path, text):
-        parts = path.split("/")
-        if any(p in ("", ".", "..") or UNSAFE_NAME.search(p) for p in parts):
-            return False  # never write outside the folder; skip names Windows cannot store
-        target = os.path.join(base, *parts)
-        os.makedirs(os.path.dirname(target), exist_ok=True)
-        with open(target, "w", encoding="utf-8", newline="") as fh:
-            fh.write(text)
-        return True
-    return save
+def _online_audits(a, d, wf_root, facts, zz_exe, pacer):
+    """zizmor's online audits (known-vulnerable actions, impostor commits, ref confusion) over every repository
+    at once. zizmor makes its own calls to GitHub, so the allowance is re-read before and after."""
+    if a.no_online_audits or not zz_exe:
+        return {"status": "not run (--no-online-audits)" if a.no_online_audits else "not run: zizmor unavailable"}
+    roots = {f["repo"]: os.path.join(wf_root, f["repo"]) for f in facts if "history" in f and not f.get("empty")}
+    if not a.ignore_rate_limit:
+        pacer.before()
+    start = pacer.refresh()["remaining"]
+    print("Running zizmor's online audits (asks GitHub about each action once)...", file=sys.stderr)
+    res = zizmor_runner.run_online(zz_exe, roots, gh_token(), cache_dir=os.path.join(d, "zizmor-cache"),
+                                   raw_path=os.path.join(d, "zizmor", "online.json"))
+    used = max(0, start - pacer.refresh()["remaining"])
+    for f in facts:
+        found = res["findings"].get(f["repo"]) or []
+        if found and (f.get("zizmor") or {}).get("status") == "ok":
+            f["zizmor"]["findings"] += found
+    n = sum(len(v) for v in res["findings"].values())
+    print(f"  {res['status']}: {n} finding(s), about {used} API calls", file=sys.stderr)
+    return {"status": res["status"], "findings": n, "api_calls": used}
 
 
 def cmd_collect(a):
@@ -83,17 +70,19 @@ def cmd_collect(a):
 
     wf_root = os.path.join(d, "workflows")
 
-    def files_for(repo):
-        return make_saver(os.path.join(wf_root, repo))
+    br_root = os.path.join(d, "branch-workflows")
+
+    def files_for(repo, kind="default"):
+        return make_saver(os.path.join(wf_root if kind == "default" else br_root, repo))
 
     zz_exe, zz_version, zz_status = None, None, "not run (--no-zizmor)"
     if not a.no_zizmor:
-        zz_exe = zizmor.find()
-        zz_version = zizmor.version(zz_exe) if zz_exe else None
+        zz_exe = zizmor_runner.find()
+        zz_version = zizmor_runner.version(zz_exe) if zz_exe else None
         if not zz_exe:
             zz_status = "not run: zizmor not found (start Repo Status with scan.sh or scan.cmd, which install it)"
-        elif zz_version != zizmor.VERSION:
-            zz_status, zz_exe = f"not run: found zizmor {zz_version}, Repo Status expects {zizmor.VERSION}", None
+        elif zz_version != zizmor_runner.VERSION:
+            zz_status, zz_exe = f"not run: found zizmor {zz_version}, Repo Status expects {zizmor_runner.VERSION}", None
         else:
             zz_status = "ok"
     ctx["zizmor"] = {"version": zz_version, "status": zz_status}
@@ -113,48 +102,108 @@ def cmd_collect(a):
     print(f"zizmor: {'v' + zz_version + ', offline (no token, no network)' if zz_exe else zz_status}",
           file=sys.stderr)
 
-    # GitHub allows a fixed number of API calls per hour; check before starting
-    need = len(repos) * CALLS_PER_REPO
-    core = gh.rate_limit()
-    reset = datetime.fromtimestamp(core["reset"]).strftime("%H:%M")
-    print(f"Estimated API calls: about {need}. Available this hour: {core['remaining']} of {core['limit']}.",
-          file=sys.stderr)
-    if need > core["remaining"] and not a.ignore_rate_limit:
-        sys.exit(f"\nNot enough API calls left this hour (limit resets at {reset}).\n"
-                 f"Options: wait until {reset}; scan fewer repos with --skip-forks or --repo NAME; "
-                 f"or add --ignore-rate-limit to try anyway (some repos may then show errors).")
+    progress = Progress(d, a.resume)
+    todo = [r for r in repos if r["name"] not in progress.done]
+    if a.resume:
+        print(f"Resuming the scan started {progress.started[:16].replace('T', ' ')}: "
+              f"{len(repos) - len(todo)} repos already done, {len(todo)} to go.", file=sys.stderr)
 
-    done = [0]
+    # GitHub allows a fixed number of API calls per hour: plan the scan around it
+    pacer = Pacer(gh, a.workers)
+    core = pacer.refresh()
+    need = len(todo) * CALLS_PER_REPO
+    reset = datetime.fromtimestamp(core["reset"]).strftime("%H:%M")
+    print(f"Estimated API calls: about {need}. Allowance: {core['remaining']} of {core['limit']} left this hour "
+          f"(resets at {reset}).", file=sys.stderr)
+    if need > core["remaining"] - pacer.reserve:
+        if a.ignore_rate_limit:
+            print("Not enough for the whole scan; --ignore-rate-limit: not pausing, so later repos may show errors.",
+                  file=sys.stderr)
+        else:
+            hours = max(1, -(-(need - core["remaining"]) // max(core["limit"] - pacer.reserve, 1)))
+            print(f"That is more than this hour's allowance. The scan will pause when it runs low and continue "
+                  f"after GitHub's reset (about {hours} pause(s) of up to an hour). Every finished repository is "
+                  f"saved: if the scan stops, run the same command with --resume.", file=sys.stderr)
+
+    done = [len(repos) - len(todo)]
     lock = threading.Lock()
+    stopping = threading.Event()  # set on Ctrl+C: repos still running are not saved
+
+    def collect_with_retry(meta):
+        for attempt in range(3):
+            if not a.ignore_rate_limit:
+                pacer.before()
+            rgh = gh.fork()
+            f = collect_repo(rgh, a.owner, meta, recorder_for, files_for, branches=not a.skip_branches,
+                             max_branches=a.max_branches)
+            if not rgh.rate_limited or a.ignore_rate_limit:
+                return f, False
+            if attempt < 2:
+                pacer.wait_after_refusal()
+        f["errors"].append("GitHub kept refusing calls (rate limit); run the same command with --resume later")
+        return f, True
 
     def one(meta):
-        f = collect_repo(gh, a.owner, meta, recorder_for, files_for)
+        if stopping.is_set():
+            return None
+        f, limited = collect_with_retry(meta)
+        if stopping.is_set():
+            return None  # Ctrl+C also reaches the gh calls of this repo, so its facts may be incomplete
         if zz_exe and "history" in f and not f.get("empty"):
-            f["zizmor"] = zizmor.run(zz_exe, os.path.join(wf_root, meta["name"]),
+            f["zizmor"] = zizmor_runner.run(zz_exe, os.path.join(wf_root, meta["name"]),
                                      raw_path=os.path.join(d, "zizmor", f"{meta['name']}.json"))
             if f["zizmor"]["status"] != "ok":
                 f["errors"].append(f"zizmor: {f['zizmor']['status']}")
+            if (f.get("branch_workflows") or {}).get("blobs"):
+                f["branch_workflows"]["zizmor"] = zizmor_runner.run(
+                    zz_exe, os.path.join(br_root, meta["name"]),
+                    raw_path=os.path.join(d, "zizmor", f"{meta['name']}.branches.json"))
         else:
             f["zizmor"] = {"status": zz_status, "findings": []}
+        if not limited:
+            progress.save(f)  # a rate-limited repo is not saved, so --resume collects it again
         with lock:
             done[0] += 1
             state = "errors: " + "; ".join(f["errors"]) if f["errors"] else "ok"
             print(f"  [{done[0]}/{len(repos)}] {meta['name']}: {state}", file=sys.stderr)
         return f
 
-    with ThreadPoolExecutor(max_workers=a.workers) as ex:
-        facts = list(ex.map(one, repos))
+    ex = ThreadPoolExecutor(max_workers=a.workers)
+    try:
+        new = {f["repo"]: f for f in ex.map(one, todo) if f}
+    except KeyboardInterrupt:
+        stopping.set()
+        try:
+            signal.signal(signal.SIGINT, signal.SIG_IGN)  # Ctrl+C arrives once more through uv; ignore it
+        except ValueError:
+            pass  # not the main thread (tests)
+        ex.shutdown(wait=False, cancel_futures=True)
+        progress.record_calls(gh.calls)
+        print(f"\nStopped. {len(progress.done)} of {len(repos)} repositories are saved in "
+              f"{display_path(progress.dir)}; repositories that were still running will be collected again.\n"
+              f"Run the same command with --resume to continue.", file=sys.stderr)
+        sys.stderr.flush()
+        _hard_exit(130)  # do not wait for the repositories still running: their results are discarded
+    ex.shutdown()
+    facts = [new.get(r["name"]) or progress.done[r["name"]] for r in repos]
     if not a.skip_action_check:
         before = gh.calls
         print("Checking the upstream actions these repos use (once per action)...", file=sys.stderr)
-        ctx["action_index"] = action_index(gh, facts, a.workers)
+        ctx["action_index"] = action_index(gh, facts, a.workers,
+                                           pace=None if a.ignore_rate_limit else pacer.before)
         print(f"  {len(ctx['action_index']['repos'])} actions, {len(ctx['action_index']['tags'])} tags: "
               f"{gh.calls - before} API calls", file=sys.stderr)
+    ctx["zizmor"]["online"] = _online_audits(a, d, wf_root, facts, zz_exe, pacer)
     ctx["collected_at"] = datetime.now(timezone.utc).isoformat()
-    ctx["api_calls"] = gh.calls
+    ctx["collection_started"] = progress.started
+    ctx["resumed"] = bool(a.resume and len(todo) < len(repos))
+    ctx["pauses"] = {"count": pacer.pauses, "minutes": round(pacer.waited / 60)}
+    ctx["api_calls"] = gh.calls + progress.earlier_calls
     with open(os.path.join(d, "facts.json"), "w", encoding="utf-8") as fh:
         json.dump({"context": ctx, "repos": facts}, fh, indent=1)
-    print(f"Done: {gh.calls} API calls. Facts saved to {os.path.join(d, 'facts.json')}", file=sys.stderr)
+    progress.finish()
+    paused = f", paused {pacer.pauses} time(s) for the hourly limit" if pacer.pauses else ""
+    print(f"Done: {ctx['api_calls']} API calls{paused}. Facts saved to {os.path.join(d, 'facts.json')}", file=sys.stderr)
 
 
 def cmd_report(a):
@@ -166,16 +215,20 @@ def cmd_report(a):
         data = json.load(fh)
     ctx = data["context"]
     now = datetime.fromisoformat(ctx["collected_at"])
-    cfg = {k: getattr(a, k) for k in flags.DEFAULTS if getattr(a, k, None) is not None}
-    rows, cfg = flags.evaluate(data["repos"], ctx, now, cfg)
-    report.write_csv(os.path.join(d, "repo-status.csv"), rows, now)
-    report.write_inventory(os.path.join(d, "actions-inventory.csv"), rows, ctx)
-    report.write_summary(os.path.join(d, "summary.md"), ctx, rows, cfg, now, ctx.get("api_calls"),
+    cfg = {k: getattr(a, k) for k in repository_checks.DEFAULTS if getattr(a, k, None) is not None}
+    rows, cfg = repository_checks.evaluate(data["repos"], ctx, now, cfg, owner_dir=d)
+    org_summary.write_csv(os.path.join(d, "repo-status.csv"), rows, now, cfg)
+    org_summary.write_branch_csv(os.path.join(d, "branch-workflows.csv"), rows, now, cfg)
+    org_summary.write_runs_csv(os.path.join(d, "runs-worth-a-look.csv"), rows, now, cfg)
+    org_summary.write_inventory(os.path.join(d, "actions-inventory.csv"), rows, ctx, now)
+    org_summary.write_summary(os.path.join(d, "summary.md"), ctx, rows, cfg, now, ctx.get("api_calls"),
                          generated=datetime.now(timezone.utc))
     rel = display_path(d)
     print(f"\nResults:\n  {os.path.join(rel, 'summary.md')}        (read this first)\n"
           f"  {os.path.join(rel, 'repo-status.csv')}   (open in Excel)\n"
-          f"  {os.path.join(rel, 'actions-inventory.csv')}   (every action used, and where)",
+          f"  {os.path.join(rel, 'actions-inventory.csv')}   (every action used, and where)\n"
+          f"  {os.path.join(rel, 'branch-workflows.csv')}   (every workflow copy on other branches)\n"
+          f"  {os.path.join(rel, 'runs-worth-a-look.csv')}   (workflow runs with something unusual about them)",
           file=sys.stderr)
 
 
@@ -271,12 +324,21 @@ def main(argv=None):
             s.add_argument("--workers", type=int, default=4)
             s.add_argument("--skip-forks", action="store_true", help="leave out forks")
             s.add_argument("--skip-archived", action="store_true", help="leave out archived repos")
-            s.add_argument("--ignore-rate-limit", action="store_true", help="start even if the hourly API limit may run out")
+            s.add_argument("--ignore-rate-limit", action="store_true",
+                           help="do not pause when the hourly API limit runs low (later repos may show errors)")
+            s.add_argument("--resume", action="store_true",
+                           help="continue a scan that stopped; repositories already finished are not collected again")
+            s.add_argument("--max-branches", type=int, default=1000,
+                           help="branches per repository whose workflows are checked, newest first (default 1000)")
             s.add_argument("--no-zizmor", action="store_true", help="do not run zizmor")
             s.add_argument("--skip-action-check", action="store_true",
                            help="do not look up the upstream actions repos use (saves API calls)")
+            s.add_argument("--no-online-audits", action="store_true",
+                           help="do not run zizmor's online audits (known-vulnerable actions, impostor commits)")
+            s.add_argument("--skip-branches", action="store_true",
+                           help="do not check workflows on other branches, run history or environments")
         if name in ("report", "all"):
-            for k, v in flags.DEFAULTS.items():
+            for k, v in repository_checks.DEFAULTS.items():
                 s.add_argument("--" + k.replace("_", "-"), dest=k, type=type(v), default=None, help=f"default {v}")
     a = p.parse_args(argv)
     try:
