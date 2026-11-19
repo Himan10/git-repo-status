@@ -3,9 +3,12 @@
   scan check                        check that everything is installed
   scan <account or org> [options]   scan every repository
   scan <account or org> deep <repo> investigate one flagged repository
+  scan <account or org> uses <owner/action> [--since YYYY-MM-DD] [--until YYYY-MM-DD]
+                                    which repos use an action, and did it run in that window
 
 Options for a scan: --skip-forks  --skip-archived  --repo NAME (repeatable)
                     --dead-days N  --dormant-days N  --ignore-rate-limit
+                    --no-zizmor  --skip-action-check
 """
 import os
 import platform
@@ -17,6 +20,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 sys.path.insert(0, HERE)
 os.chdir(HERE)
 
+from repostatus import zizmor  # noqa: E402
 from repostatus.ghapi import gh_path  # noqa: E402
 
 WINDOWS = platform.system() == "Windows"
@@ -56,7 +60,8 @@ def check_gh():
 
 def self_test():
     suite = unittest.defaultTestLoader.discover(os.path.join(HERE, "tests"))
-    result = unittest.TextTestRunner(stream=open(os.devnull, "w"), verbosity=0).run(suite)
+    with open(os.devnull, "w", encoding="utf-8") as devnull:
+        result = unittest.TextTestRunner(stream=devnull, verbosity=0).run(suite)
     if result.wasSuccessful():
         return f"passed ({result.testsRun} tests)"
     return f"FAILED ({len(result.failures) + len(result.errors)} of {result.testsRun} tests)"
@@ -77,6 +82,10 @@ def main():
         print(f"GitHub CLI: {version}")
         print(f"Python: {platform.python_version()}")
         print(f"Logged in to GitHub as: {login or 'unknown (check gh auth status)'}")
+        exe = zizmor.find()
+        zv = zizmor.version(exe) if exe else None
+        print(f"zizmor: {zv}" if zv == zizmor.VERSION else
+              f"zizmor: {zv or 'not found'} (expected {zizmor.VERSION}; start with {LAUNCHER})")
         print(f"Self-test: {self_test()}")
         return
 
@@ -85,11 +94,17 @@ def main():
         if len(rest) < 2:
             sys.exit(f"Which repository? Example: {LAUNCHER} {owner} deep my-repo")
         import deep_dive
-        sys.argv = ["deep_dive.py", "--owner", owner, "--repo", rest[1]]
+        sys.argv = ["deep_dive.py", "--owner", owner, "--repo", rest[1], *rest[2:]]
         deep_dive.main()
         return
 
     import run
+    if rest and rest[0] == "uses":
+        if len(rest) < 2:
+            sys.exit(f"Which action? Example: {LAUNCHER} {owner} uses aquasecurity/trivy-action --since 2026-03-19")
+        sys.argv = ["run.py", "uses", "--owner", owner, "--action", rest[1], *rest[2:]]
+        run.main()
+        return
     sys.argv = ["run.py", "all", "--owner", owner, *rest]
     run.main()
 

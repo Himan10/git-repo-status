@@ -119,8 +119,20 @@ class BranchRules(unittest.TestCase):
         prot = flags.effective_protection(f)
         self.assertEqual(prot["source"], "not available on plan")
         self.assertIs(prot["force_push_blocked"], False)
+        f["codeowners"] = {"path": ".github/CODEOWNERS", "workflows_owner": ["@dev"]}
         notes = flags.hygiene(f, "active", prot, NOW, flags.DEFAULTS)
         self.assertTrue(any(n.startswith("force-push allowed") and "GitHub Free" in n for n in notes))
+        self.assertIn("CODEOWNERS not enforced (private repo on GitHub Free: branch rules not available)", notes)
+
+    def test_plan_limited_csv_values_are_marked(self):
+        from repostatus import report
+        f = repo(NORMAL, NORMAL_EVENTS)
+        f["protection"] = {"classic": {"error": self.PLAN}, "rulesets": {"error": self.PLAN}}
+        r = {"f": f, "status": "active", "last": NOW, "source": "", "bound": False, "pkgs": [], "flags": [],
+             "hygiene": [], "prot": flags.effective_protection(f), "branches": None}
+        row = report.row_for(r, NOW)
+        self.assertEqual((row["pr_required"], row["approvals"], row["code_owner_review"], row["force_push_blocked"]),
+                         ("no (plan)", "0 (plan)", "no (plan)", "no (plan)"))
 
     def test_unreadable_rules_are_unknown_not_allowed(self):
         f = repo(NORMAL, NORMAL_EVENTS)

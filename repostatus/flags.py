@@ -16,6 +16,8 @@ DEFAULTS = {
     "multi_push_seconds": 60, # same commit pushed to several branches within this window
     "signer_ratio": 0.8,      # author signs at least this share of commits
     "min_author_commits": 5,  # history needed before judging an author's habits
+    "zombie_days": 30,        # inactive repo whose workflow with secrets ran this recently -> flag
+    "live_days": 90,          # workflow that ran this recently counts as still running
 }
 
 
@@ -274,23 +276,27 @@ def hygiene(f, status, prot, now, cfg):
         if co.get("errors"):
             out.append(f"CODEOWNERS errors ({len(co['errors'])})")
         if prot["code_owner_review"] is False:
-            out.append("CODEOWNERS not enforced")
+            out.append("CODEOWNERS not enforced" + (" (private repo on GitHub Free: branch rules not available)"
+                                                    if prot["plan_limited"] else ""))
         if not co.get("workflows_owner"):
             out.append("workflows have no code owner")
     for w in (f.get("actions") or {}).get("items") or []:
         if w.get("dynamic") or w["state"] != "active":
             continue
         ran = ts(w.get("last_scheduled_run"))
-        if inactive and "schedule" in (w.get("triggers") or []) and ran and _days(now, ran) <= 30:
-            sec = f" with secrets {', '.join(w['secrets'])}" if w.get("secrets") else ""
-            out.append(f"scheduled workflow still running: {w['path']}{sec}")
+        # with secrets it is a ZOMBIE_WORKFLOW_WITH_SECRETS flag instead (workflow_flags.py)
+        if inactive and "schedule" in (w.get("triggers") or []) and ran and _days(now, ran) <= cfg["zombie_days"] \
+                and not w.get("secrets"):
+            out.append(f"scheduled workflow still running: {w['path']}")
         if inactive and any("self-hosted" in r for r in w.get("runs_on") or []):
             out.append(f"self-hosted runner used by {w['path']}")
     return out
 
 
 def evaluate(facts, owner_ctx, now=None, cfg=None):
+    from .workflow_flags import workflow_flags, workflow_hygiene  # imports this module
     cfg = {**DEFAULTS, **(cfg or {})}
+    index = owner_ctx.get("action_index")
     now = now or datetime.now(timezone.utc)
     pkgs_by_repo = defaultdict(list)
     for p in owner_ctx.get("packages", []):
@@ -305,10 +311,11 @@ def evaluate(facts, owner_ctx, now=None, cfg=None):
                          "pkgs": pkgs, "flags": [], "hygiene": [], "prot": None, "branches": None})
             continue
         prot = effective_protection(f)
-        flags = investigation_flags(f, status, now, cfg) + package_flags(f, status, pkgs, cfg)
+        flags = (investigation_flags(f, status, now, cfg) + package_flags(f, status, pkgs, cfg)
+                 + workflow_flags(f, status, now, cfg, index))
         rows.append({
             "f": f, "status": status, "last": last, "source": source, "bound": bound, "pkgs": pkgs,
             "flags": flags, "prot": prot, "branches": branch_strategy(f, now, cfg),
-            "hygiene": hygiene(f, status, prot, now, cfg),
+            "hygiene": hygiene(f, status, prot, now, cfg) + workflow_hygiene(f),
         })
     return rows, cfg
