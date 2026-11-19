@@ -1,0 +1,17 @@
+[project]
+name = "repo-status"
+version = "0.2.0"
+description = "Read-only audit of every repository in a GitHub organisation: activity, history tampering, workflow security (with zizmor), branch rules and secrets."
+readme = "README.md"
+# The single place for versions: scan.sh and scan.cmd only run `uv run python -m repostatus`.
+# uv.lock records the exact versions and checksums that get installed.
+requires-python = ">=3.14"
+dependencies = [
+    "pyyaml>=6.0",
+    # Pinned on purpose: a security tool inside a supply-chain scanner. Choose releases at least two
+    # weeks old. repostatus/collect/zizmor_runner.py reads this pin to check the installed version.
+    "zizmor==1.32.0",
+]
+
+[tool.uv]
+package = false  # run from the source folder; nothing is built or installed as a package

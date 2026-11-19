@@ -4,6 +4,7 @@ Pure functions, text in and facts out. No API calls, and nothing is executed.
 Checks that zizmor already does (injection, triggers, pinning, permissions, ...) are left to zizmor;
 this module records what repo-status needs for its own checks and for the org-wide inventory.
 """
+import json
 import re
 
 import yaml
@@ -47,6 +48,81 @@ ENV_DUMP = re.compile(r"(^|[|;&(\s])(env|printenv)\s*($|[|>;&)])|/proc/self/envi
 TRUSTED_HOSTS = ("github.com", "githubusercontent.com", "ghcr.io", "docker.io", "docker.com", "npmjs.org",
                  "pypi.org", "pythonhosted.org", "amazonaws.com", "azure.com", "microsoft.com", "googleapis.com",
                  "codecov.io", "sonarcloud.io", "slack.com", "localhost", "127.0.0.1")
+
+
+FILTER_KEYS = ("branches", "branches-ignore", "tags", "tags-ignore")
+
+
+def _id_token(perms):
+    """Can this job ask GitHub for an OIDC token (used to log in to AWS, Azure, GCP without a stored key)?"""
+    if perms == "write-all":
+        return True
+    return isinstance(perms, dict) and str(perms.get("id-token", "")).lower() == "write"
+
+
+def _glob_to_regex(pattern):
+    """GitHub's branch filter syntax: * (no /), ** (anything), ? (one character). Returns None for
+    patterns this does not model (+, [ ]), which callers treat as 'might match'."""
+    if re.search(r"[+\[\]]", pattern):
+        return None
+    out, i = "", 0
+    while i < len(pattern):
+        if pattern.startswith("**", i):
+            out, i = out + ".*", i + 2
+        elif pattern[i] == "*":
+            out, i = out + "[^/]*", i + 1
+        elif pattern[i] == "?":
+            out, i = out + "[^/]", i + 1
+        else:
+            out, i = out + re.escape(pattern[i]), i + 1
+    return re.compile(out + r"\Z")
+
+
+def branch_matches(patterns, branch):
+    """True, False, or None (cannot tell). Patterns are checked in order; '!' excludes, last match wins."""
+    result = False
+    for p in patterns:
+        neg = p.startswith("!")
+        rx = _glob_to_regex(p[1:] if neg else p)
+        if rx is None:
+            return None
+        if rx.match(branch):
+            result = not neg
+    return result
+
+
+def runs_on_branch(workflow, branch, default_branch):
+    """Ways this copy of a workflow can be started on `branch`, judged from its own triggers.
+
+    push and workflow_dispatch run the branch's own copy; pull_request runs it for a PR from the branch
+    into the default branch. Every other trigger runs the default branch's copy, so it does not count."""
+    out = []
+    triggers = set(workflow.get("triggers") or [])
+    filters = workflow.get("filters") or {}
+    if "push" in triggers:
+        f = filters.get("push") or {}
+        if "branches" in f:
+            ok = branch_matches(f["branches"], branch)
+        elif "branches-ignore" in f:
+            m = branch_matches(f["branches-ignore"], branch)
+            ok = None if m is None else not m
+        else:
+            ok = not ("tags" in f or "tags-ignore" in f)  # only tag filters: branch pushes do not run it
+        if ok is not False:
+            out.append("push" if ok else "push (filter unclear)")
+    if "workflow_dispatch" in triggers:
+        out.append("workflow_dispatch")
+    if "pull_request" in triggers:
+        f = filters.get("pull_request") or {}
+        ok = True
+        if "branches" in f:
+            ok = branch_matches(f["branches"], default_branch)
+        elif "branches-ignore" in f:
+            m = branch_matches(f["branches-ignore"], default_branch)
+            ok = None if m is None else not m
+        if ok is not False:
+            out.append("pull_request" if ok else "pull_request (filter unclear)")
+    return out
 
 
 def ref_type(ref):
@@ -206,9 +282,16 @@ def parse_workflow(text):
         for s in on.get("schedule") or []:
             if isinstance(s, dict) and "cron" in s:
                 out["crons"].append(s["cron"])
+    if isinstance(on, dict):
+        out["filters"] = {ev: {k: [str(x) for x in (cfg.get(k) or [])] for k in FILTER_KEYS if k in cfg}
+                          for ev, cfg in on.items() if ev in ("push", "pull_request") and isinstance(cfg, dict)}
+    else:
+        out["filters"] = {}
     comments = version_comments(text)
     wf_env = _secret_env(doc.get("env"))
     out["has_permissions"] = "permissions" in doc
+    wf_id_token = _id_token(doc.get("permissions"))
+    out["jobs"] = []
     jobs = doc.get("jobs") if isinstance(doc.get("jobs"), dict) else {}
     for name, job in jobs.items():
         if not isinstance(job, dict):
@@ -227,6 +310,15 @@ def parse_workflow(text):
             if img:
                 out["images"].append({"image": img, "digest": "@sha256:" in img, "where": f"{name}/{key}"})
         _walk_steps(job.get("steps"), str(name), wf_env | _secret_env(job.get("env")), comments, out)
+        env = job.get("environment")
+        env = env.get("name") if isinstance(env, dict) else env
+        out["jobs"].append({
+            "name": str(name),
+            "environment": str(env) if env else None,
+            "secrets": sorted({s for s in SECRET_REF.findall(json.dumps(job)) if s != "GITHUB_TOKEN"}
+                              | ({"*all*"} if ALL_SECRETS.search(json.dumps(job)) else set())),
+            "id_token": _id_token(job["permissions"]) if "permissions" in job else wf_id_token,
+        })
     out["untrusted_triggers"] = sorted(UNTRUSTED_TRIGGERS & set(out["triggers"]))
     out["secrets"] = sorted({s for s in SECRET_REF.findall(text) if s != "GITHUB_TOKEN"})
     out["registries"] = [name for name, pat in REGISTRY_PATTERNS.items() if re.search(pat, text)]

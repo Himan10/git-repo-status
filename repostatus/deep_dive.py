@@ -1,8 +1,9 @@
 """Level 2: investigate one flagged repository. Read-only, API only; nothing is cloned, so nothing
 from the repository can execute on this machine.
 
-Sections: force pushes; workflow changes (diffs, who pushed them, what ran afterwards); zizmor with
-every audit online; upstream actions whose version tags moved.
+Sections: force pushes; workflow changes (commit links, who pushed them, what ran afterwards); workflow
+copies on other branches (links, who can start them, which secrets they can read); zizmor with every
+audit online; upstream actions whose version tags moved.
 
 For each force push it answers:
   1. Was history rewritten (old head no longer an ancestor of new head)?
@@ -18,19 +19,25 @@ import argparse
 import json
 import os
 import re
+import shutil
 import subprocess
+import textwrap
 import sys
+from collections import defaultdict
 from datetime import datetime, timedelta, timezone
 from urllib.parse import quote
 
-from repostatus import zizmor
-from repostatus.collect import all_uses
-from repostatus.flags import evaluate, is_github_commit, ts
-from repostatus.ghapi import ApiError, GitHub
-from repostatus.workflows import FULL_VERSION
-from repostatus.oscompat import scan_cmd, utf8_console
+from repostatus.reports import deep_dive_verdict
+from repostatus.reports.github_links import SHA, commit_link, compare_url, file_url, finding_commits, linkify
+from repostatus.collect import zizmor_runner
+from repostatus.collect.repository_facts import all_uses
+from repostatus.checks.repository_checks import evaluate, is_github_commit, ts
+from repostatus.github.api_client import ApiError, GitHub, gh_token
+from repostatus.reports.org_summary import _last_run_text, _reach
+from repostatus.checks.workflow_checks import _runs, branch_copies, runs_worth_a_look
+from repostatus.collect.workflow_parser import FULL_VERSION
+from repostatus.platform_support import scan_cmd, utf8_console
 
-HERE = os.path.dirname(os.path.abspath(__file__))
 SENSITIVE = re.compile(
     r"(^|/)(\.vscode/|\.github/workflows/|\.github/actions/|\.devcontainer/|\.husky/|"
     r"package\.json$|setup\.py$|setup\.cfg$|pyproject\.toml$|Makefile$|Dockerfile|"
@@ -186,10 +193,6 @@ def investigate(gh, owner, repo, event, all_events, packages):
     return r
 
 
-def _is_workflow_file(name):
-    return name.startswith((".github/workflows/", ".github/actions/")) or name.rsplit("/", 1)[-1] in ("action.yml", "action.yaml")
-
-
 def workflow_changes(gh, owner, repo, f, events, since_days):
     """Recent commits that touched .github/, with diffs of workflow files, the push GitHub recorded for
     each, and the runs of the changed workflows since then."""
@@ -212,8 +215,7 @@ def workflow_changes(gh, owner, repo, f, events, since_days):
             "date": cm["committer"]["date"],
             "verified": (cm.get("verification") or {}).get("verified"),
             "pushed_at": e["ts"] if e else None, "pushed_by": e["actor"] if e else None,
-            "files": [{"name": x["filename"], "status": x["status"], "+": x["additions"], "-": x["deletions"],
-                       "patch": (x.get("patch") or "")[:4000] if _is_workflow_file(x["filename"]) else ""}
+            "files": [{"name": x["filename"], "status": x["status"], "+": x["additions"], "-": x["deletions"]}
                       for x in detail.get("files") or []],
         })
     dated = [c["date"] for c in out["commits"] if c.get("date")]
@@ -228,13 +230,21 @@ def workflow_changes(gh, owner, repo, f, events, since_days):
     return out
 
 
-def workflow_markdown(wf, f):
-    L = [f"## Workflow changes (last {wf['since_days']} days)\n"]
+def workflow_markdown(wf, f, findings=None):
+    full = f["full_name"]
+    L = ["## Workflow changes\n",
+         f"Commits that changed `.github/` in the last {wf['since_days']} days. Each commit links to GitHub, which "
+         f"shows its changes; commits that are themselves a finding are marked FINDING: with the reason.\n"]
     wakes = [w for w in f.get("idle_wakeups") or [] if w.get("files")]
     if wakes:
         L.append("**Pushes after a quiet period** (server-side times)\n")
-        L += [f"- {w['ts']} {w['actor']} after {w['gap_days']:.0f} quiet days: {', '.join(w['files'][:8])}"
-              + (f" (commits by {', '.join(w.get('authors') or [])})" if w.get("authors") else "") for w in wakes]
+        for w in wakes:
+            codes = (findings or {}).get((w["after"] or "")[:7]) or []
+            L.append(f"- {w['ts']} {w['actor']} after {w['gap_days']:.0f} quiet days: "
+                     f"[changes in this push]({compare_url(full, w['before'], w['after'])})"
+                     + (f" FINDING: {', '.join(codes)}" if codes else "")
+                     + f"; files: {', '.join(w['files'][:8])}"
+                     + (f" (commits by {', '.join(w.get('authors') or [])})" if w.get("authors") else ""))
         L.append("")
     if wf.get("error"):
         L.append(f"Commit list could not be read: {wf['error']}\n")
@@ -245,16 +255,13 @@ def workflow_markdown(wf, f):
         L.append("|---|---|---|---|---|---|---|")
         for c in wf["commits"]:
             if c.get("error"):
-                L.append(f"| {c['oid'][:7]} | could not be read: {c['error']} | | | | | |")
+                L.append(f"| {commit_link(full, c['oid'], findings)} | could not be read: {c['error']} | | | | | |")
                 continue
             pushed = f"{c['pushed_at']} by {c['pushed_by']}" if c["pushed_at"] else "not the head of a recorded push"
-            L.append(f"| {c['oid'][:7]} | {c['headline'].replace('|', '/')} | {c['author']} | {c['date']} | {pushed} | "
-                     f"{'yes' if c['verified'] else 'no'} | {', '.join(x['name'] for x in c['files'][:5])} |")
-        for c in wf["commits"]:
-            for x in c.get("files") or []:
-                if x.get("patch"):
-                    L += [f"\n**{c['oid'][:7]} {x['name']}** ({x['status']}, +{x['+']} -{x['-']})\n",
-                          "````diff", x["patch"], "````"]
+            files = ", ".join(x["name"] for x in c["files"][:5]) + (f" and {len(c['files']) - 5} more"
+                                                                   if len(c["files"]) > 5 else "")
+            L.append(f"| {commit_link(full, c['oid'], findings)} | {c['headline'].replace('|', '/')} | {c['author']} | "
+                     f"{c['date']} | {pushed} | {'yes' if c['verified'] else 'no'} | {files} |")
     items = {w["path"]: w for w in (f.get("actions") or {}).get("items") or []}
     for path, runs in wf["runs"].items():
         w = items.get(path, {})
@@ -266,8 +273,8 @@ def workflow_markdown(wf, f):
             L.append("None.")
         else:
             L.append("| Started | Event | By | Result | Commit | Link |\n|---|---|---|---|---|---|")
-            L += [f"| {r['created_at']} | {r['event']} | {r['actor']} | {r['conclusion']} | {r['head_sha'][:7]} | "
-                  f"[run]({r['url']}) |" for r in runs["items"]]
+            L += [f"| {r['created_at']} | {r['event']} | {r['actor']} | {r['conclusion']} | "
+                  f"{commit_link(full, r['head_sha'], findings)} | [run]({r['url']}) |" for r in runs["items"]]
     risky = [(w["path"], where, d) for w in items.values() for code, where, d in w.get("script") or []
              if code == "EXFIL_PATTERN"]
     if risky:
@@ -277,26 +284,18 @@ def workflow_markdown(wf, f):
     return L
 
 
-def _token():
-    t = os.environ.get("GH_TOKEN") or os.environ.get("GITHUB_TOKEN")
-    if t:
-        return t
-    p = subprocess.run(["gh", "auth", "token"], capture_output=True, encoding="utf-8", errors="replace")
-    return p.stdout.strip() if p.returncode == 0 else None
-
-
 def zizmor_online(owner_dir, repo, d):
     """zizmor with every audit, including those that ask GitHub, and ignore comments disregarded."""
     root = os.path.join(owner_dir, "workflows", repo)
     if not os.path.isdir(root):
         return {"status": "not run: no workflow files in the last scan", "findings": []}
-    exe = zizmor.find()
-    v = zizmor.version(exe) if exe else None
-    if v != zizmor.VERSION:
-        return {"status": f"not run: zizmor {v or 'not found'} (expected {zizmor.VERSION}; "
+    exe = zizmor_runner.find()
+    v = zizmor_runner.version(exe) if exe else None
+    if v != zizmor_runner.VERSION:
+        return {"status": f"not run: zizmor {v or 'not found'} (expected {zizmor_runner.VERSION}; "
                           f"start with scan.sh or scan.cmd)", "findings": []}
-    token = _token()
-    res = zizmor.run(exe, root, raw_path=os.path.join(d, f"{repo}.zizmor.json"), online_token=token,
+    token = gh_token()
+    res = zizmor_runner.run(exe, root, raw_path=os.path.join(d, f"{repo}.zizmor.json"), online_token=token,
                      cache_dir=os.path.join(owner_dir, "zizmor-cache"), persona="auditor", no_ignores=True)
     res["online"] = bool(token)
     return res
@@ -310,8 +309,8 @@ def zizmor_markdown(zz):
     L.append(("Online audits included (impostor commits, known-vulnerable actions, ref confusion). " if zz.get("online")
               else "No GitHub token found, so online audits did not run. ")
              + "Auditor persona, `# zizmor: ignore` comments disregarded. Files as of the last scan.\n")
-    found = sorted(zz["findings"], key=lambda x: (-zizmor.LEVELS.get(x["severity"], 0),
-                                                  -zizmor.LEVELS.get(x["confidence"], 0), x["file"], x["line"] or 0))
+    found = sorted(zz["findings"], key=lambda x: (-zizmor_runner.LEVELS.get(x["severity"], 0),
+                                                  -zizmor_runner.LEVELS.get(x["confidence"], 0), x["file"], x["line"] or 0))
     if not found:
         L.append("No findings.\n")
         return L
@@ -372,33 +371,158 @@ def upstream_markdown(up):
     return L
 
 
-def write_markdown(path, owner, repo, results, reasons=(), sections=()):
-    L = [f"# Deep dive: {owner}/{repo}\n",
-         "All times UTC. Push times come from GitHub (server-side); commit dates come from the commit itself.\n"]
+def branches_markdown(owner_dir, repo, f, now, cfg):
+    """Workflow copies on other branches: what differs from the default branch's copy, who can start it,
+    which secrets it can read. Built from the files the scan saved; no API calls."""
+    L = ["## Workflows on other branches\n"]
+    if not f.get("branch_workflows"):
+        L.append("Not checked in the last scan (--skip-branches).\n")
+        return L
+    rows = branch_copies(f, now, cfg)
+    if not rows:
+        L.append(f"All {f['branch_workflows']['scanned']} branches have the same workflow files as the default "
+                 f"branch.\n")
+    else:
+        groups = {g: len({r["branch"] for r in rows if r.get("group") == g}) for g in ("flagged", "active", "stale")}
+        L.append(f"Branches with a differing copy: {groups['flagged']} flagged, {groups['active']} active (a commit or "
+                 f"run in the last {cfg['dormant_days']} days, or running now), {groups['stale']} stale.\n")
+    by_version = defaultdict(list)
+    for r in rows:
+        by_version[(r["file"], r["oid"])].append(r)
+    zz = defaultdict(list)
+    for z in (f["branch_workflows"].get("zizmor") or {}).get("findings") or []:
+        zz[z["file"].split("/", 1)[0]].append(z)
+    rank = {"flagged": 0, "active": 1, "stale": 2}
+    for (name, oid), rs in sorted(by_version.items(),
+                                  key=lambda kv: (min(rank.get(x.get("group"), 1) for x in kv[1]), -len(kv[1]), kv[0])):
+        rs = sorted(rs, key=lambda x: (rank.get(x.get("group"), 1), x["branch"]))
+        r = rs[0]
+        L.append(f"### {name}: version {oid[:7]} ({r['copy']}) on {len(rs)} branch(es)\n")
+        L.append("| Branch | Group | Last commit | Last run | Can be started by | Secrets it can read | This copy | "
+                 "Compare with default |")
+        L.append("|---|---|---|---|---|---|---|---|")
+        full, default = f["full_name"], f.get("default_branch")
+        L += [f"| {x['branch']} | {x.get('group')} | {(x['committed'] or '')[:10]} | {_last_run_text(x)} | "
+              f"{', '.join(x.get('runs_via') or []) or 'no'} | "
+              f"{_reach(x).replace('|', '/')} | [{name}]({file_url(full, x['branch'], '.github/workflows/' + name)}) | "
+              f"[compare]({compare_url(full, default, x['branch'])}) |" for x in rs]
+        found = zz.get(oid[:12]) or []
+        if found:
+            L.append("\nzizmor (offline) on this version: " + ", ".join(
+                f"{z['rule']} ({z['severity']}) line {z['line']}" for z in found[:12]))
+        L.append("")
+    ran = [d for code, _, d in _runs(f, now, cfg)]
+    runs = [x for x in (f.get("recent_runs") or {}).get("items") or []
+            if (x["path"] or "").startswith(".github/workflows/")
+            and x["path"] not in {f".github/workflows/{n}" for n in f["branch_workflows"].get("default_files") or []}
+            and x["head_branch"] != f.get("default_branch") and not x["from_fork"]]
+    if runs:
+        L.append("**Runs of workflow files that are not on the default branch** (from the last 100 runs)\n")
+        if ran:
+            L += [f"- {d}" for d in ran] + [""]
+        L.append("| Started | Workflow | Branch | Event | By | Result | Link |\n|---|---|---|---|---|---|---|")
+        L += [f"| {x['created_at']} | {x['path']} | {x['head_branch']} | {x['event']} | {x['actor']} | "
+              f"{x['conclusion']} | [run]({x['url']}) |" for x in runs[:40]]
+    L.append("")
+    return L
+
+
+MAX_RUN_COMMIT_CHECKS = 20  # runs worth a look whose commit is opened to see if it changed the workflow itself
+
+
+def runs_markdown(gh, f, row, now, cfg, findings=None):
+    """Runs worth a look, and for each (up to 20) whether the commit it ran changed that same workflow:
+    the pattern of a planted workflow that is pushed and runs straight away."""
+    full = f["full_name"]
+    runs = runs_worth_a_look(f, row["status"], now, cfg, row["flags"])
+    L = ["## Runs worth a look\n",
+         f"From the last 100 runs within {cfg['live_days']} days, the runs with something unusual about them.\n"]
+    if not runs:
+        L.append("None.\n")
+        return L, runs
+    for x in runs[:MAX_RUN_COMMIT_CHECKS]:
+        c, err = gh.try_get(f"repos/{full}/commits/{x['head_sha']}")
+        if not err and x["path"] in {fl["filename"] for fl in (c or {}).get("files") or []}:
+            x["reasons"].append(("CHANGED_ITSELF", "the commit it ran changed this workflow file"))
+    L.append("| Started | Workflow | Branch | Event | By | Commit | Why | Run |\n|---|---|---|---|---|---|---|---|")
+    L += [f"| {x['created_at']} | {x['path']} | {x['head_branch']} | {x['event']} | {x['actor']} | "
+          f"{commit_link(full, x['head_sha'], findings)} | {'; '.join(t for _, t in x['reasons'])} | "
+          f"[run]({x['url']}) |" for x in runs]
+    L.append("")
+    return L, runs
+
+
+def logs_markdown(checked, f):
+    """The Run logs evidence section, and the flags for the report: secrets visible in a log, attack indicators."""
+    public = f.get("visibility") == "public"
+    L = ["## Run logs\n",
+         f"{len({x['run']['id'] for x in checked})} run(s) read (runs worth a look, and the latest run of each workflow "
+         f"that holds secrets). Logs were scanned in memory and not saved; values are masked.\n"]
+    flags = []
+    rows = []
+    for x in checked:
+        run = x["run"]
+        where = f"{run['path'].rsplit('/', 1)[-1]} run {run['id']}, job {x['job'] or '-'}"
+        if x.get("error"):
+            rows.append(f"| [{run['id']}]({run['url']}) | {x['job'] or '-'} | | {x['error']} |")
+            continue
+        for n, step, kind, detail in x["findings"]:
+            rows.append(f"| [{run['id']}]({run['url']}) | {x['job']} | {step or '-'}, line {n} | {detail} |")
+            if kind == "attack indicator":
+                flags.append(("IOC_MATCH", "high", f"{detail} in the log of {where}"))
+            else:
+                flags.append(("SECRET_IN_RUN_LOG", "high", f"{detail}; {where}, line {n}"
+                              + ("; this repository is public, so anyone can read that log" if public else "")))
+    if rows:
+        L.append("| Run | Job | Where | Found |\n|---|---|---|---|")
+        L += rows
+    else:
+        L.append("Nothing found: no unmasked tokens, no encoded secrets, no attack indicators.")
+    L.append("")
+    return L, flags
+
+
+EVIDENCE_SECTIONS = [("Force pushes", "force-pushes"), ("Workflow changes", "workflow-changes"),
+                     ("Workflows on other branches", "workflows-on-other-branches"),
+                     ("Runs worth a look", "runs-worth-a-look"), ("Run logs", "run-logs"),
+                     ("zizmor: every finding", "zizmor-every-finding"), ("Upstream actions", "upstream-actions")]
+
+
+def write_markdown(path, owner, repo, results, reasons=(), sections=(), report_name=None, findings=None):
+    """The evidence file: everything the deep dive looked at, for verifying the report's claims."""
+    L = [f"# {repo}: evidence\n",
+         f"Everything behind the deep-dive report" + (f" [{report_name}]({report_name})" if report_name else "")
+         + f" for {owner}/{repo}. All times UTC. Push times come from GitHub (server-side); commit dates come from "
+           f"the commit itself.\n",
+         "Contents: " + " | ".join(f"[{t}](#{a})" for t, a in EVIDENCE_SECTIONS) + "\n"]
     if reasons:
         L.append("**Why this repo is on the list** (from the last scan)\n")
-        L += [f"- {c} ({s}): {d}" for c, s, d in reasons] + [""]
+        L += [f"- {c} ({s}): {linkify(d, f'{owner}/{repo}', findings)}" for c, s, d in reasons] + [""]
     if not results:
         L.append("## Force pushes\n\nGitHub has no record of a force push to the default branch.\n")
+    full = f"{owner}/{repo}"
     for i, r in enumerate(results, 1):
         e = r["event"]
         L.append(f"## Force push {i}: {e['ts']} by {e['actor']}\n")
-        L.append(f"`{(e['before'] or '')[:7]}` -> `{(e['after'] or '')[:7]}` on `{e['ref']}`\n")
+        L.append(f"{commit_link(full, e['before'] or '')} -> {commit_link(full, e['after'] or '', findings)} "
+                 f"on `{e['ref']}` ([compare]({compare_url(full, e['before'] or '', e['after'] or '')}))\n")
         L.append("**Findings**\n")
         L += [f"- {x}" for x in r["findings"]]
         for label, c in (("Old head", r.get("old_head")), ("New head", r.get("new_head"))):
             if c:
-                L.append(f"\n**{label}** `{c['oid'][:7]}` \"{c['headline']}\"  ")
+                L.append(f"\n**{label}** {commit_link(full, c['oid'], findings)} \"{c['headline']}\"  ")
                 L.append(f"author {c['author_email']} at {c['author_date']}; committer {c['committer_email']} "
                          f"at {c['committer_date']}; signature {c['signature']}")
         if r.get("removed") or r.get("added"):
             L.append("\n| Side | Commit | Message | Author |\n|---|---|---|---|")
-            L += [f"| removed | {c['oid'][:7]} | {c['headline'][:70]} | {c['author']} |" for c in r.get("removed", [])]
-            L += [f"| added | {c['oid'][:7]} | {c['headline'][:70]} | {c['author']} |" for c in r.get("added", [])]
+            L += [f"| removed | {commit_link(full, c['oid'])} | {c['headline'][:70]} | {c['author']} |"
+                  for c in r.get("removed", [])]
+            L += [f"| added | {commit_link(full, c['oid'], findings)} | {c['headline'][:70]} | {c['author']} |"
+                  for c in r.get("added", [])]
         if r.get("added_detail"):
             L.append("\n| Added commit | Commit date (claimed) | Pushed (GitHub) | Gap days | Signature |\n|---|---|---|---|---|")
-            L += [f"| {d['oid'][:7]} | {d['committed_utc']} | {e['ts']} | {d['gap_days']} | {d['signature']} |"
-                  for d in r["added_detail"]]
+            L += [f"| {commit_link(full, d['oid'], findings)} | {d['committed_utc']} | {e['ts']} | {d['gap_days']} | "
+                  f"{d['signature']} |" for d in r["added_detail"]]
         if r.get("files"):
             L.append(f"\n**Files changed between old and new head ({len(r['files'])})**\n")
             L.append("| File | Change | + | - |\n|---|---|---|---|")
@@ -413,6 +537,83 @@ def write_markdown(path, owner, repo, results, reasons=(), sections=()):
         fh.write("\n".join(L) + "\n")
 
 
+def _item_lines(a, full=None):
+    """The body of one action in the report: quoted lines, who, what it can reach, fix, where, evidence."""
+    L = []
+    if a.get("lines"):
+        L.append(f"In `{a['file']}`" + (f", step \"{a['step']}\"" if a.get("step") else "") + ":\n")
+        for ln in a["lines"]:
+            note = " (a value GitHub generates, such as a commit hash: it cannot carry code, so this line is low " \
+                   "risk; change it the same way for consistency)" if ln["harmless"] else ""
+            L.append(f"- line {ln['line']}: `{(ln['text'] or '').replace('`', chr(39))}`{note}")
+        L.append("")
+    elif a.get("where") and not a.get("items"):
+        for w in a["where"][:8]:  # every commit named in a finding's own details is part of that finding
+            own = {sha[:7]: [a["code"]] for sha in SHA.findall(w)}
+            L.append(f"- {linkify(w, full, own) if full else w}")
+        L.append("")
+    for item in a.get("items") or []:
+        link = f" Where: {item['settings'][0]} ({item['settings'][1]})" if item.get("settings") else ""
+        L.append(f"- {item['text']}.{link}")
+    if a.get("items"):
+        L.append("")
+    if a.get("why"):
+        L.append(f"**What it means:** {a['why']}  ")
+    if a.get("who"):
+        L.append(f"**Who can exploit it:** {a['who']}. {'This workflow still runs and can read' if a.get('live') else 'It can read'}: "
+                 f"{a['reach']}.  ")
+    if a.get("fix"):
+        L.append(f"**Fix:** {a['fix']}  ")
+    for key in ("settings", "settings2"):
+        if a.get(key):
+            L.append(f"**Where on GitHub:** {a[key][0]}: {a[key][1]}  ")
+    return L
+
+
+def write_report(path, owner, f, collected_at, result, evidence_name):
+    """The deep-dive report: one screen, conclusion first. Details live in the evidence file."""
+    L = [f"# {f['repo']}: deep dive\n",
+         f"{owner}/{f['repo']}, {f.get('visibility') or ''} repository, data from {collected_at[:16].replace('T', ' ')} UTC\n",
+         f"**{result['verdict']}**\n",
+         "| Area | Result | In short |", "|---|---|---|"]
+    for ar in result["areas"]:
+        name = f"[{ar['name']}]({evidence_name}#{ar['evidence']})" if ar.get("evidence") else ar["name"]
+        L.append(f"| {name} | {ar['result']} | {ar['short'].replace('|', '/')} |")
+    L.append("")
+    if result["actions"]:
+        L.append("## What to do\n")
+        for i, a in enumerate(result["actions"], 1):
+            L.append(f"### {i}. {a['level']}: {a['title']}\n")
+            L += _item_lines(a, f"{owner}/{f['repo']}")
+            if a.get("evidence"):
+                L.append(f"**Evidence:** [{evidence_name}]({evidence_name}#{a['evidence']})")
+            L.append("")
+    L.append("## Checked, nothing found\n")
+    L += [f"- {c}" for c in result["clean"]] + [""]
+    L.append("## What this cannot see\n")
+    L += [f"- {x}" for x in result["limits"]] + [""]
+    L.append(f"Every commit, run and finding behind this report: [{evidence_name}]({evidence_name})")
+    with open(path, "w", encoding="utf-8") as fh:
+        fh.write("\n".join(L) + "\n")
+
+
+def console_table(result, width=None):
+    """The verdict and the eight areas for the terminal. Long text wraps at word boundaries under its
+    column, to the terminal's width, instead of being cut off."""
+    w = max(len(a["name"]) for a in result["areas"])
+    indent = 2 + w + 2 + 11 + 2
+    width = width or shutil.get_terminal_size(fallback=(120, 24)).columns
+    text_width = max(40, width - indent)
+    lines = [result["verdict"], ""]
+    for a in result["areas"]:
+        wrapped = textwrap.wrap(a["short"], text_width) or [""]
+        lines.append(f"  {a['name']:<{w}}  {a['result']:<11}  {wrapped[0]}")
+        lines += [" " * indent + more for more in wrapped[1:]]
+    if result["actions"]:
+        lines += ["", "To do:"] + [f"  {i}. {a['level']}: {a['title']}" for i, a in enumerate(result["actions"], 1)]
+    return "\n".join(lines)
+
+
 def main(argv=None):
     utf8_console()
     p = argparse.ArgumentParser(description=__doc__, formatter_class=argparse.RawDescriptionHelpFormatter)
@@ -420,9 +621,12 @@ def main(argv=None):
     p.add_argument("--repo", required=True)
     p.add_argument("--all-branches", action="store_true", help="include force pushes to non-default branches")
     p.add_argument("--since-days", type=int, default=365, help="workflow changes from this many days back")
+    p.add_argument("--logs", action="store_true",
+                   help="also read run logs (runs worth a look and the latest run of workflows with secrets, up to 20) "
+                        "for secrets GitHub's masking missed; logs are never saved")
     a = p.parse_args(argv)
 
-    from run import display_path, out_dir
+    from repostatus.output_paths import display_path, out_dir
     owner_dir = out_dir(a.owner, create=False)
     facts_path = os.path.join(owner_dir, "facts.json")
     if not os.path.exists(facts_path):
@@ -447,7 +651,7 @@ def main(argv=None):
 
     d = os.path.join(owner_dir, "deep-dive")
     os.makedirs(d, exist_ok=True)
-    rows, _ = evaluate([f], data["context"], ts(data["context"]["collected_at"]))
+    rows, cfg = evaluate([f], data["context"], ts(data["context"]["collected_at"]), owner_dir=owner_dir)
     row = rows[0]
     reasons = [x for x in row["flags"] if x[1] in ("high", "medium")]
 
@@ -456,12 +660,30 @@ def main(argv=None):
     up = upstream_actions(f, data["context"].get("action_index"))
     with open(os.path.join(d, f"{a.repo}.json"), "w", encoding="utf-8") as fh:
         json.dump({"force_pushes": results, "workflow_changes": wf, "zizmor": zz, "upstream": up}, fh, indent=1)
-    write_markdown(os.path.join(d, f"{a.repo}.md"), a.owner, a.repo, results, reasons,
-                   [workflow_markdown(wf, f), zizmor_markdown(zz), upstream_markdown(up)])
-    report_path = display_path(os.path.join(d, a.repo + ".md"))
-    summary = (f"{a.repo}: {len(results)} force push(es), {len(wf['commits'])} workflow change(s) and "
-               f"{len(zz.get('findings') or [])} zizmor finding(s) investigated ({gh.calls} API calls).\n"
-               f"Report: {report_path}")
+    evidence_name = f"{a.repo}-evidence.md"
+    findings = finding_commits(row["flags"])
+    runs_section, worth = runs_markdown(gh, f, row, ts(data["context"]["collected_at"]), cfg, findings)
+    logs_section, log_flags, logs_checked = ["## Run logs\n", "Not read: add `--logs` to read them.\n"], [], None
+    if a.logs:
+        from repostatus.checks.ioc_matching import load_iocs
+        from repostatus.collect import run_logs
+        strings = sorted({s for c in load_iocs()["campaigns"] for s in c.get("log_strings") or []})
+        checked = run_logs.check_runs(gh, f["full_name"], run_logs.candidate_runs(f, worth), strings)
+        logs_section, log_flags = logs_markdown(checked, f)
+        logs_checked = len({x["run"]["id"] for x in checked})
+        row["flags"] = row["flags"] + log_flags
+    write_markdown(os.path.join(d, evidence_name), a.owner, a.repo, results, reasons,
+                   [workflow_markdown(wf, f, findings), branches_markdown(owner_dir, a.repo, f,
+                                                                          ts(data["context"]["collected_at"]), cfg),
+                    runs_section, logs_section, zizmor_markdown(zz), upstream_markdown(up)], report_name=f"{a.repo}.md",
+                   findings=findings)
+    row["now"], row["cfg"], row["logs_checked"] = ts(data["context"]["collected_at"]), cfg, logs_checked
+    result = deep_dive_verdict.assess(f, row, f"{a.owner}/{a.repo}", owner_dir, results, wf, zz, up)
+    write_report(os.path.join(d, f"{a.repo}.md"), a.owner, f, data["context"]["collected_at"], result, evidence_name)
+    summary = (console_table(result) + f"\n\nInvestigated: {len(results)} force push(es), {len(wf['commits'])} "
+               f"workflow change(s), {len(zz.get('findings') or [])} zizmor finding(s) ({gh.calls} API calls).\n"
+               f"Report:   {display_path(os.path.join(d, a.repo + '.md'))}\n"
+               f"Evidence: {display_path(os.path.join(d, evidence_name))}")
     if not results:
         prot = row["prot"] or {}
         lines = [f"GitHub has no record of anyone overwriting the history of '{f['default_branch']}' "
@@ -473,9 +695,7 @@ def main(argv=None):
                          f"'force-push allowed on default branch'.{why}")
         elif prot.get("source") == "unknown":
             lines.append(f"Note: branch rules could not be read ({prot.get('error')}).")
-        print("\n".join(lines))
-    if reasons:
-        print("Reasons this repository is on the list:\n" + "\n".join(f"  - {c}: {x}" for c, _, x in reasons))
+        print("\n".join(lines) + "\n")
     print(summary)
 
 

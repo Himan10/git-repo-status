@@ -9,7 +9,7 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 
-from repostatus import report
+from repostatus.reports import org_summary
 
 NOW = datetime(2026, 10, 13, tzinfo=timezone.utc)
 HERE = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -36,7 +36,7 @@ class DeepSection(unittest.TestCase):
     def setUpClass(cls):
         with tempfile.TemporaryDirectory() as d:
             p = os.path.join(d, "summary.md")
-            report.write_summary(p, {"owner": "acme"}, ROWS, CFG, NOW, 10)
+            org_summary.write_summary(p, {"owner": "acme"}, ROWS, CFG, NOW, 10)
             with open(p, encoding="utf-8") as fh:
                 cls.md = fh.read()
 
@@ -51,7 +51,7 @@ class DeepSection(unittest.TestCase):
         self.assertNotIn("| INITIAL_IMPORT_BACKDATED |", self.md)
 
     def test_priority_and_deep_dive_command(self):
-        from repostatus.oscompat import scan_cmd
+        from repostatus.platform_support import scan_cmd
         self.assertIn(f"| legacy-api | dead | high | FORCE_PUSH_DEFAULT, NEW_TIMEZONE | "
                       f"`{scan_cmd()} acme deep legacy-api` |", self.md)
         self.assertIn("| web | active | medium | NEW_TIMEZONE | - |", self.md)
@@ -61,7 +61,7 @@ class DeepSection(unittest.TestCase):
     def test_none(self):
         with tempfile.TemporaryDirectory() as d:
             p = os.path.join(d, "summary.md")
-            report.write_summary(p, {"owner": "acme"}, [ROWS[2]], CFG, NOW, 1)
+            org_summary.write_summary(p, {"owner": "acme"}, [ROWS[2]], CFG, NOW, 1)
             with open(p, encoding="utf-8") as fh:
                 self.assertIn("Deep investigation needed: 0 of 1 repositories\n\nNone.", fh.read())
 
@@ -70,7 +70,7 @@ class Csv(unittest.TestCase):
     def test_priority_and_codes_columns(self):
         with tempfile.TemporaryDirectory() as d:
             p = os.path.join(d, "repo-status.csv")
-            report.write_csv(p, ROWS, NOW)
+            org_summary.write_csv(p, ROWS, NOW)
             with open(p, newline="", encoding="utf-8-sig") as fh:
                 got = {r["repo"]: r for r in csv.DictReader(fh)}
         self.assertEqual(got["legacy-api"]["deep_dive_priority"], "high")
@@ -78,6 +78,21 @@ class Csv(unittest.TestCase):
         self.assertEqual(got["web"]["deep_dive_priority"], "medium")
         self.assertEqual(got["docs"]["deep_dive"], "no")
         self.assertEqual(got["docs"]["deep_dive_priority"], "")
+
+
+class WorkflowCounts(unittest.TestCase):
+    """GitHub calls an enabled workflow "active"; that is not the same as running, and a broken file is not enabled."""
+
+    def test_enabled_and_recently_run(self):
+        r = row("t", "dead", [])
+        r["f"]["actions"] = {"items": [
+            {"path": ".github/workflows/broken.yml", "state": "active", "last_run": None},
+            {"path": ".github/workflows/ok.yml", "state": "active", "last_run": "2026-10-01T00:00:00Z"},
+            {"path": ".github/workflows/old.yml", "state": "active", "last_run": "2025-01-01T00:00:00Z"},
+            {"path": ".github/workflows/off.yml", "state": "disabled_manually", "last_run": "2026-10-02T00:00:00Z"}]}
+        r["f"]["zizmor"] = {"invalid": [".github/workflows/broken.yml"]}
+        x = org_summary.row_for(r, NOW, CFG)
+        self.assertEqual((x["workflows"], x["enabled_workflows"], x["workflows_run_last_90_days"]), (4, 2, 2))
 
 
 class NonAscii(unittest.TestCase):
@@ -88,8 +103,8 @@ class NonAscii(unittest.TestCase):
         rows = [row("r", "active", [("SIGNING_BREAK", "high", text)])]
         with tempfile.TemporaryDirectory() as d:
             md, cs = os.path.join(d, "s.md"), os.path.join(d, "s.csv")
-            report.write_summary(md, {"owner": "o"}, rows, CFG, NOW, 1)
-            report.write_csv(cs, rows, NOW)
+            org_summary.write_summary(md, {"owner": "o"}, rows, CFG, NOW, 1)
+            org_summary.write_csv(cs, rows, NOW)
             with open(md, encoding="utf-8") as fh:
                 self.assertIn(text, fh.read())
             with open(cs, "rb") as fh:

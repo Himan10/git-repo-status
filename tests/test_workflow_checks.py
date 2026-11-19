@@ -8,11 +8,13 @@ import tempfile
 import unittest
 from datetime import datetime, timezone
 
-from repostatus import flags, workflows, zizmor
-from repostatus.workflow_flags import workflow_flags, workflow_hygiene
+from repostatus.checks import repository_checks
+from repostatus.collect import workflow_parser
+from repostatus.collect import zizmor_runner
+from repostatus.checks.workflow_checks import workflow_flags, workflow_hygiene
 
 NOW = datetime(2026, 10, 13, tzinfo=timezone.utc)
-CFG = flags.DEFAULTS
+CFG = repository_checks.DEFAULTS
 HERE = os.path.dirname(os.path.abspath(__file__))
 ROOT = os.path.dirname(HERE)
 SHA_A, SHA_B = "a" * 40, "b" * 40
@@ -58,7 +60,7 @@ jobs:
 class ParseWorkflow(unittest.TestCase):
     @classmethod
     def setUpClass(cls):
-        cls.w = workflows.parse_workflow(WORKFLOW)
+        cls.w = workflow_parser.parse_workflow(WORKFLOW)
         assert cls.w["parse_error"] is None, cls.w["parse_error"]
         cls.codes = [c for c, _, _ in cls.w["script"]]
 
@@ -93,7 +95,7 @@ class ParseWorkflow(unittest.TestCase):
         self.assertEqual(self.w["secrets"], ["DEPLOY_KEY", "GH_PAT", "SLACK_WEBHOOK"])
 
     def test_broken_yaml(self):
-        w = workflows.parse_workflow("on: [push\njobs: {")
+        w = workflow_parser.parse_workflow("on: [push\njobs: {")
         self.assertTrue(w["parse_error"])
         self.assertEqual(w["uses"], [])
 
@@ -127,7 +129,7 @@ dependencies:
 
 class Lockfile(unittest.TestCase):
     def test_parse(self):
-        lock = workflows.parse_lockfile(LOCK)
+        lock = workflow_parser.parse_lockfile(LOCK)
         dep = lock["dependencies"]["actions/checkout@v5.1.0"]
         self.assertEqual((dep["slug"], dep["ref"], dep["commit"], dep["repo_id"]),
                          ("actions/checkout", "v5.1.0", SHA_A, 197814629))
@@ -136,7 +138,7 @@ class Lockfile(unittest.TestCase):
                          "aquasecurity/setup-trivy")
 
     def test_garbage(self):
-        self.assertIn("error", workflows.parse_lockfile("- just\n- a list"))
+        self.assertIn("error", workflow_parser.parse_lockfile("- just\n- a list"))
 
 
 def repo(**kw):
@@ -227,7 +229,7 @@ class ZizmorEscalation(unittest.TestCase):
 
 class Upstream(unittest.TestCase):
     def test_owner_gone_and_renamed(self):
-        f = repo(actions={"items": [wf(uses=[workflows.parse_uses("gone/act@v1"), workflows.parse_uses("old/act@v1")])]})
+        f = repo(actions={"items": [wf(uses=[workflow_parser.parse_uses("gone/act@v1"), workflow_parser.parse_uses("old/act@v1")])]})
         index = {"repos": {"gone/act": {"status": "owner gone"},
                            "old/act": {"status": "ok", "id": 1, "owner_id": 2, "full_name": "new/act", "archived": False}},
                  "tags": {}}
@@ -235,7 +237,7 @@ class Upstream(unittest.TestCase):
         self.assertEqual((c["ACTION_OWNER_GONE"], c["ACTION_OWNER_RENAMED"]), ("high", "high"))
 
     def test_lockfile_ids_and_moved_tags(self):
-        lock = workflows.parse_lockfile(LOCK)
+        lock = workflow_parser.parse_lockfile(LOCK)
         f = repo(actions={"items": [], "lockfile": lock})
         index = {"repos": {"actions/checkout": {"status": "ok", "id": 197814629, "owner_id": 44036562,
                                                 "full_name": "actions/checkout"},
@@ -250,7 +252,7 @@ class Upstream(unittest.TestCase):
         self.assertIn("trivy-action@v0.36.0", moved[0])
 
     def test_version_comment_mismatch_is_medium(self):
-        u = workflows.parse_uses(f"actions/setup-node@{SHA_A}")
+        u = workflow_parser.parse_uses(f"actions/setup-node@{SHA_A}")
         u["version_comment"] = "v4.2.0"
         f = repo(actions={"items": [wf(uses=[u])]})
         index = {"repos": {"actions/setup-node": {"status": "ok", "id": 1, "owner_id": 1,
@@ -261,7 +263,7 @@ class Upstream(unittest.TestCase):
 
 class Hygiene(unittest.TestCase):
     def test_notes(self):
-        f = repo(actions={"items": [wf(uses=[workflows.parse_uses("actions/checkout@v4")],
+        f = repo(actions={"items": [wf(uses=[workflow_parser.parse_uses("actions/checkout@v4")],
                                        script=[("CURL_PIPE_SHELL", "b/s", "curl x | sh")])],
                           "token": {"default": "write", "can_approve_prs": True}})
         notes = workflow_hygiene(f)
@@ -270,9 +272,9 @@ class Hygiene(unittest.TestCase):
         self.assertIn("script pipes a download into a shell: .github/workflows/ci.yml", notes)
 
     def test_workflow_missing_from_lockfile(self):
-        lock = workflows.parse_lockfile(LOCK)
+        lock = workflow_parser.parse_lockfile(LOCK)
         f = repo(actions={"items": [wf(path=".github/workflows/other.yml",
-                                       uses=[workflows.parse_uses("actions/checkout@v5.1.0")])], "lockfile": lock})
+                                       uses=[workflow_parser.parse_uses("actions/checkout@v5.1.0")])], "lockfile": lock})
         self.assertIn("workflows not in actions.lock: .github/workflows/other.yml", workflow_hygiene(f))
 
 
@@ -280,28 +282,33 @@ class ZizmorOutput(unittest.TestCase):
     def test_slim(self):
         with open(os.path.join(HERE, "fixtures", "zizmor-1.32.0.json"), encoding="utf-8") as fh:
             data = json.load(fh)
-        got = {x["rule"]: x for x in (zizmor._slim(f, "ROOT") for f in data)}
+        got = {x["rule"]: x for x in (zizmor_runner._slim(f, "ROOT") for f in data)}
         t = got["template-injection"]
         self.assertEqual((t["severity"], t["confidence"], t["file"]), ("high", "high", ".github/workflows/bad.yml"))
-        self.assertTrue(zizmor.escalates(t))
-        self.assertFalse(zizmor.escalates(got["unpinned-uses"]))
+        self.assertTrue(zizmor_runner.escalates(t))
+        self.assertFalse(zizmor_runner.escalates(got["unpinned-uses"]))
         self.assertEqual(got["artipacked"]["line"], 8)  # 0-based row 7 in zizmor's JSON
 
-    def test_wrappers_pin_the_same_version(self):
+    def test_versions_live_only_in_pyproject(self):
+        self.assertRegex(zizmor_runner.VERSION or "", r"^\d+\.\d+\.\d+$")  # read from pyproject.toml
+        with open(os.path.join(ROOT, "uv.lock"), encoding="utf-8") as fh:
+            self.assertIn(f'name = "zizmor"\nversion = "{zizmor_runner.VERSION}"', fh.read())
         for name in ("scan.sh", "scan.cmd"):
             with open(os.path.join(ROOT, name), encoding="utf-8") as fh:
-                self.assertIn(f"zizmor=={zizmor.VERSION}", fh.read(), name)
+                text = fh.read()
+            self.assertNotRegex(text, r"--python|--with|zizmor==|pyyaml", f"{name} must not set versions")
+            self.assertIn("--locked", text, f"{name} must install exactly what uv.lock records")
 
     def test_real_zizmor_offline(self):
-        exe = zizmor.find()
-        if not exe or zizmor.version(exe) != zizmor.VERSION:
-            self.skipTest("zizmor not installed here (scan.sh / scan.cmd install it)")
+        exe = zizmor_runner.find()
+        if not exe or zizmor_runner.version(exe) != zizmor_runner.VERSION:
+            self.skipTest("zizmor not installed here (run the tests with `uv run`)")
         with tempfile.TemporaryDirectory() as d:
             os.makedirs(os.path.join(d, ".github", "workflows"))
             with open(os.path.join(HERE, "fixtures", "bad-workflow.yml"), encoding="utf-8") as src, \
                     open(os.path.join(d, ".github", "workflows", "bad.yml"), "w", encoding="utf-8") as dst:
                 dst.write(src.read())
-            res = zizmor.run(exe, d)
+            res = zizmor_runner.run(exe, d)
         self.assertEqual(res["status"], "ok")
         self.assertIn("template-injection", {x["rule"] for x in res["findings"]})
         self.assertEqual({x["file"] for x in res["findings"]}, {".github/workflows/bad.yml"})
@@ -309,9 +316,9 @@ class ZizmorOutput(unittest.TestCase):
 
 class Saver(unittest.TestCase):
     def test_paths_stay_inside_and_keep_line_endings(self):
-        import run
+        from repostatus import output_paths
         with tempfile.TemporaryDirectory() as d:
-            save = run.make_saver(os.path.join(d, "repo"))
+            save = output_paths.make_saver(os.path.join(d, "repo"))
             self.assertTrue(save(".github/workflows/a.yml", "on: push\r\njobs: {}\r\n"))
             self.assertFalse(save("../escape.yml", "x"))
             self.assertFalse(save(".github/workflows/bad:name.yml", "x"))  # not a valid Windows name

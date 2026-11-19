@@ -1,10 +1,11 @@
 @echo off
 rem Repo Status launcher for Windows (Command Prompt or PowerShell). macOS/Linux: use scan.sh.
 rem   scan.cmd check
-rem   scan.cmd ACCOUNT-OR-ORG [options]
-rem   scan.cmd ACCOUNT-OR-ORG deep REPO
+rem   scan.cmd ACCOUNT-OR-ORG [options]          scan every repository
+rem   scan.cmd ACCOUNT-OR-ORG report [options]   rebuild the report from the last scan
+rem   scan.cmd ACCOUNT-OR-ORG deep REPO          investigate one repository
 rem   scan.cmd ACCOUNT-OR-ORG uses OWNER/ACTION [--since YYYY-MM-DD] [--until YYYY-MM-DD]
-rem zizmor is pinned here, in scan.sh and in repostatus\zizmor.py (a test checks they agree).
+rem Python and package versions live in pyproject.toml; uv.lock pins exact versions and checksums.
 setlocal
 where uv >nul 2>nul
 if errorlevel 1 (
@@ -12,5 +13,6 @@ if errorlevel 1 (
   echo Then close and reopen this window.
   exit /b 1
 )
-uv run -q --python 3.12 --with pyyaml --with zizmor==1.32.0 "%~dp0scan.py" %*
+rem "%~dp0." not "%~dp0": a trailing backslash before the closing quote would escape it
+uv run --quiet --locked --directory "%~dp0." python -m repostatus %*
 exit /b %ERRORLEVEL%
