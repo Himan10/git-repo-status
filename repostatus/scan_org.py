@@ -16,15 +16,15 @@ import threading
 from concurrent.futures import ThreadPoolExecutor
 from datetime import datetime, timezone
 
-from repostatus.checks import repository_checks
+from repostatus.checks import action_health, repository_checks
 from repostatus.collect import zizmor_runner
-from repostatus.collect.repository_facts import action_index, all_uses, collect_repo, owner_context
+from repostatus.collect.repository_facts import action_index, collect_repo, owner_context
 from repostatus.collect.scan_progress import Progress
 from repostatus.github.api_client import ApiError, GitHub, gh_token
 from repostatus.github.rate_limit import Pacer
 from repostatus.output_paths import display_path, make_saver, out_dir
 from repostatus.platform_support import scan_cmd, utf8_console
-from repostatus.reports import org_summary
+from repostatus.reports import html_report, org_summary
 
 CALLS_PER_REPO = 26  # measured: about 23 per repo plus 2 to 3 per workflow; actions and zizmor online are counted after
 _hard_exit = os._exit  # tests replace this
@@ -49,7 +49,10 @@ def _online_audits(a, d, wf_root, facts, zz_exe, pacer):
             f["zizmor"]["findings"] += found
     n = sum(len(v) for v in res["findings"].values())
     print(f"  {res['status']}: {n} finding(s), about {used} API calls", file=sys.stderr)
-    return {"status": res["status"], "findings": n, "api_calls": used}
+    skipped = [f"{repo}: {path}" for repo, path, _ in res.get("skipped") or []]
+    for s in skipped:
+        print(f"  skipped (zizmor could not process this file; every other file was audited): {s}", file=sys.stderr)
+    return {"status": res["status"], "findings": n, "api_calls": used, "skipped": skipped}
 
 
 def cmd_collect(a):
@@ -154,6 +157,8 @@ def cmd_collect(a):
                                      raw_path=os.path.join(d, "zizmor", f"{meta['name']}.json"))
             if f["zizmor"]["status"] != "ok":
                 f["errors"].append(f"zizmor: {f['zizmor']['status']}")
+            for path, _ in f["zizmor"].get("skipped") or []:
+                f["errors"].append(f"zizmor skipped {path} (zizmor could not process it; other files audited)")
             if (f.get("branch_workflows") or {}).get("blobs"):
                 f["branch_workflows"]["zizmor"] = zizmor_runner.run(
                     zz_exe, os.path.join(br_root, meta["name"]),
@@ -221,10 +226,13 @@ def cmd_report(a):
     org_summary.write_branch_csv(os.path.join(d, "branch-workflows.csv"), rows, now, cfg)
     org_summary.write_runs_csv(os.path.join(d, "runs-worth-a-look.csv"), rows, now, cfg)
     org_summary.write_inventory(os.path.join(d, "actions-inventory.csv"), rows, ctx, now)
+    generated = datetime.now(timezone.utc)
     org_summary.write_summary(os.path.join(d, "summary.md"), ctx, rows, cfg, now, ctx.get("api_calls"),
-                         generated=datetime.now(timezone.utc))
+                         generated=generated)
+    html_report.write_org(os.path.join(d, "report.html"), html_report.org_page(ctx, rows, cfg, now, d, generated))
     rel = display_path(d)
-    print(f"\nResults:\n  {os.path.join(rel, 'summary.md')}        (read this first)\n"
+    print(f"\nResults:\n  {os.path.join(rel, 'report.html')}       (open in a browser: overview, every repository, findings by area)\n"
+          f"  {os.path.join(rel, 'summary.md')}        (the same results as text)\n"
           f"  {os.path.join(rel, 'repo-status.csv')}   (open in Excel)\n"
           f"  {os.path.join(rel, 'actions-inventory.csv')}   (every action used, and where)\n"
           f"  {os.path.join(rel, 'branch-workflows.csv')}   (every workflow copy on other branches)\n"
@@ -241,40 +249,12 @@ def _load(owner):
         return d, json.load(fh)
 
 
-def _lock_paths(lock, target):
-    """Lockfile entries that run target, directly or through other actions: {workflow path: via}."""
-    deps = lock.get("dependencies") or {}
-
-    def reaches(key, seen=()):
-        d = deps.get(key) or {}
-        if d.get("slug") == target or d.get("target", "").lower() == target:
-            return key
-        for sub in d.get("uses") or []:
-            if sub not in seen and reaches(sub, seen + (key,)):
-                return key
-        return None
-    out = {}
-    for path, keys in (lock.get("workflows") or {}).items():
-        for k in keys:
-            if reaches(k) and (deps.get(k) or {}).get("slug") != target:
-                out[path] = f"through {k} (actions.lock)"
-    return out
-
-
 def cmd_uses(a):
     """Which repos use an action, and (with --since) did those workflows run in a time window."""
     d, data = _load(a.owner)
     owner = data["context"]["owner"]
     target = a.action.lower().split("@")[0].rstrip("/")
-    hits = []
-    for f in data["repos"]:
-        items = {w["path"]: w for w in (f.get("actions") or {}).get("items") or []}
-        for path, u in all_uses(f):
-            if u.get("slug") and (u["slug"] == target or u["target"].lower() == target):
-                hits.append({"repo": f["repo"], "path": path, "ref": u["ref"], "where": u.get("where", ""),
-                             "via": "direct", "wf": items.get(path)})
-        for path, via in _lock_paths((f.get("actions") or {}).get("lockfile") or {}, target).items():
-            hits.append({"repo": f["repo"], "path": path, "ref": "", "where": "", "via": via, "wf": items.get(path)})
+    hits = action_health.who_uses(data["repos"], target)
     since, until = a.since, a.until or datetime.now(timezone.utc).strftime("%Y-%m-%d")
     L = [f"# Who uses {target} in {owner}\n",
          f"From the scan of {data['context']['collected_at'][:10]} (default branch, as it was then). "

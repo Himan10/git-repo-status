@@ -309,6 +309,8 @@ def zizmor_markdown(zz):
     L.append(("Online audits included (impostor commits, known-vulnerable actions, ref confusion). " if zz.get("online")
               else "No GitHub token found, so online audits did not run. ")
              + "Auditor persona, `# zizmor: ignore` comments disregarded. Files as of the last scan.\n")
+    for path, why in zz.get("skipped") or []:
+        L.append(f"Not audited: `{path}`: {why}. Every other file was audited; check this one by hand.\n")
     found = sorted(zz["findings"], key=lambda x: (-zizmor_runner.LEVELS.get(x["severity"], 0),
                                                   -zizmor_runner.LEVELS.get(x["confidence"], 0), x["file"], x["line"] or 0))
     if not found:
@@ -680,9 +682,14 @@ def main(argv=None):
     row["now"], row["cfg"], row["logs_checked"] = ts(data["context"]["collected_at"]), cfg, logs_checked
     result = deep_dive_verdict.assess(f, row, f"{a.owner}/{a.repo}", owner_dir, results, wf, zz, up)
     write_report(os.path.join(d, f"{a.repo}.md"), a.owner, f, data["context"]["collected_at"], result, evidence_name)
+    from repostatus.reports import html_report, org_summary
+    html_report.write_deep(os.path.join(d, f"{a.repo}.html"), a.owner, f, data["context"]["collected_at"], result,
+                           evidence_name, org_summary.row_for(row, ts(data["context"]["collected_at"]), cfg))
+    html_report.rebuild_org(owner_dir, data, generated=datetime.now(timezone.utc))  # links the new page
     summary = (console_table(result) + f"\n\nInvestigated: {len(results)} force push(es), {len(wf['commits'])} "
                f"workflow change(s), {len(zz.get('findings') or [])} zizmor finding(s) ({gh.calls} API calls).\n"
-               f"Report:   {display_path(os.path.join(d, a.repo + '.md'))}\n"
+               f"Report:   {display_path(os.path.join(d, a.repo + '.html'))} (open in a browser)\n"
+               f"          {display_path(os.path.join(d, a.repo + '.md'))} (the same as text)\n"
                f"Evidence: {display_path(os.path.join(d, evidence_name))}")
     if not results:
         prot = row["prot"] or {}

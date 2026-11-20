@@ -12,7 +12,7 @@ Repo Status looks at all of it at once, without changing anything. For every rep
 - Who can reach its secrets?
 - Is it set up the way GitHub recommends?
 
-You get one summary for the whole organisation with the repositories that need attention at the top, CSVs to sort and filter, and for any repository a one-page report saying what to fix and where on GitHub to fix it.
+You get one report for the whole organisation, a web page that opens in any browser with the repositories that need attention at the top; CSVs to sort and filter; and for any repository a one-page report saying what to fix and where on GitHub to fix it.
 
 It is built for security and platform engineers, and anyone responsible for an organisation's GitHub, who want a complete, repeatable picture instead of spot checks.
 
@@ -87,7 +87,7 @@ Python: 3.14.3
 Logged in to GitHub as: your-username
 GitHub API allowance: 5,000 of 5,000 per hour left (personal limit; see Rate Limits in the wiki for 15,000)
 zizmor: 1.32.0
-Self-test: passed (149 tests)
+Self-test: passed (158 tests)
 ```
 
 Something wrong? See [Common Problems](https://github.com/Himan10/git-repo-status/wiki/Common-Problems).
@@ -104,7 +104,8 @@ Results go to `out/your-org/`:
 
 | File | What it is |
 |---|---|
-| **`summary.md`** | **Read this first.** It opens with "Deep investigation needed: N of M repositories" and the reasons, then attack indicators, workflow security, workflows on other branches, unusual runs, action health, and settings worth fixing (with where to fix them) |
+| **`report.html`** | **Open this first**, in any browser (works offline). A one-page Summary for leaders; every finding, grouped and filterable, for security teams; every repository for developers |
+| `summary.md` | The same results as text. It opens with "Deep investigation needed: N of M repositories" and the reasons, then attack indicators, workflow security, workflows on other branches, unusual runs, action health, and settings worth fixing (with where to fix them) |
 | `repo-status.csv` | One row per repository (open in Excel) |
 | `branch-workflows.csv`, `runs-worth-a-look.csv`, `actions-inventory.csv` | Every workflow copy on other branches; every unusual run; every action used, and where |
 
@@ -116,7 +117,7 @@ Large organisations need more than an hour of GitHub's API allowance: the scan p
 
 Command: `./scan.sh your-org deep REPO`
 
-Writes **`out/your-org/deep-dive/REPO.md`**: one screen with a verdict ("1 to fix, 3 to review"), eight areas marked Fix, Review or OK, and what to do, with a direct link to the right GitHub settings page. Everything behind it is in `REPO-evidence.md`. Add `--logs` to also check recent run logs for leaked secrets (logs are never saved).
+Writes **`out/your-org/deep-dive/REPO.html`** (and the same as text in `REPO.md`): one screen with a verdict ("1 to fix, 3 to review"), eight areas marked Fix, Review or OK, and what to do, with a direct link to the right GitHub settings page. `report.html` then links to it. Everything behind it is in `REPO-evidence.md`. Add `--logs` to also check recent run logs for leaked secrets (logs are never saved).
 
 More: [Deep Dive Investigation](https://github.com/Himan10/git-repo-status/wiki/Deep-Dive-Investigation).
 

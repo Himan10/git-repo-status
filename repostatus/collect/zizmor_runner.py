@@ -84,16 +84,41 @@ def _rel(path, root):
     return path.replace(os.sep, "/")
 
 
-def run(exe, root, raw_path=None, online_token=None, cache_dir=None, persona="regular", no_ignores=False):
-    """Audit every workflow, action and Dependabot file under root.
+def _invoke(base_args, inputs, env, timeout):
+    """Run zizmor once. Returns (findings JSON or None, invalid files, error text or None)."""
+    try:
+        p = subprocess.run([*base_args, *inputs], capture_output=True, encoding="utf-8", errors="replace", env=env,
+                           timeout=timeout)
+    except subprocess.TimeoutExpired:
+        return None, [], f"timed out after {timeout}s"
+    except OSError as e:
+        return None, [], str(e)
+    invalid = [m.group(1) for m in INVALID.finditer(p.stderr)]
+    if p.returncode != 0 and "no inputs collected" in p.stderr:
+        return [], invalid, None
+    if p.returncode != 0:
+        if "failed to locate subfeature" in p.stderr:
+            return None, invalid, "zizmor could not locate one of its findings in the file (a zizmor bug)"
+        return None, invalid, next((l for l in reversed(p.stderr.strip().splitlines()) if l.strip()),
+                                   f"exit code {p.returncode}")[:200]
+    try:
+        return json.loads(p.stdout or "[]"), invalid, None
+    except ValueError:
+        return None, invalid, "output was not JSON"
 
-    Returns {"status": "ok" | "error: ..." , "findings": [...]}. Offline unless online_token is given;
-    the token is passed only in zizmor's own environment, never on the command line."""
-    if not os.path.isdir(root):
-        return {"status": "ok", "findings": [], "note": "no workflow files"}
+
+def audit_files(root):
+    """The files zizmor reads under a saved repository folder, one by one (for retrying a failed run)."""
+    out = []
+    for folder, _, names in os.walk(root):
+        out += [os.path.join(folder, n) for n in sorted(names) if n.endswith((".yml", ".yaml"))]
+    return sorted(out)
+
+
+def _base_args(exe, persona="regular", online_token=None, cache_dir=None, no_ignores=False):
     # --collect=all: the saved files live inside repo-status's own git folder, whose .gitignore excludes out/
     args = [exe, "--format", "json", "--no-exit-codes", "--no-progress", "--color", "never", "--no-config",
-            "--collect", "all", "--persona", persona]
+            "--collect=all", "--persona", persona]
     env = {k: v for k, v in os.environ.items() if k not in ("GH_TOKEN", "GITHUB_TOKEN", "ZIZMOR_GITHUB_TOKEN")}
     if online_token:
         env["ZIZMOR_GITHUB_TOKEN"] = online_token
@@ -103,28 +128,54 @@ def run(exe, root, raw_path=None, online_token=None, cache_dir=None, persona="re
         args.append("--offline")
     if no_ignores:
         args.append("--no-ignores")
-    args.append(root)
-    try:
-        p = subprocess.run(args, capture_output=True, encoding="utf-8", errors="replace", env=env, timeout=TIMEOUT)
-    except subprocess.TimeoutExpired:
-        return {"status": f"error: timed out after {TIMEOUT}s", "findings": []}
-    except OSError as e:
-        return {"status": f"error: {e}", "findings": []}
-    invalid = sorted({_rel(m.group(1), root) for m in INVALID.finditer(p.stderr)})
-    if p.returncode != 0 and "no inputs collected" in p.stderr:
-        return {"status": "ok", "findings": [], "invalid": invalid, "note": "no valid files to audit"}
-    if p.returncode != 0:
-        msg = next((l for l in reversed(p.stderr.strip().splitlines()) if l.strip()), f"exit code {p.returncode}")
-        return {"status": f"error: {msg[:200]}", "findings": [], "invalid": invalid}
-    try:
-        data = json.loads(p.stdout or "[]")
-    except ValueError:
-        return {"status": "error: output was not JSON", "findings": []}
+    return args, env
+
+
+def _audit(base, env, inputs, files_of, timeout):
+    """Run zizmor on all inputs at once; if that fails, on each input, and on each file of a failing input,
+    so one file zizmor cannot handle only costs that file. Returns (data, invalid, skipped [(file, reason)], error)."""
+    data, invalid, err = _invoke(base, inputs, env, timeout)
+    if err is None:
+        return data, invalid, [], None
+    data, invalid, skipped, ok_any = [], list(invalid), [], False
+    for item in inputs:
+        part, inv, e = _invoke(base, [item], env, timeout)
+        if e is None:
+            data += part
+            invalid += inv
+            ok_any = True
+            continue
+        files = files_of(item) if os.path.isdir(item) else [item]
+        for f in files:
+            part, inv, e2 = _invoke(base, [f], env, timeout)
+            invalid += inv
+            if e2 is None:
+                data += part
+                ok_any = True
+            else:
+                skipped.append((f, e2))
+    return data, invalid, skipped, (None if ok_any or not skipped else skipped[0][1])
+
+
+def run(exe, root, raw_path=None, online_token=None, cache_dir=None, persona="regular", no_ignores=False):
+    """Audit every workflow, action and Dependabot file under root.
+
+    Returns {"status": "ok" | "error: ...", "findings": [...], "invalid": [...], "skipped": [(file, reason)]}.
+    If zizmor fails on a file, the other files are still audited and the file is listed under "skipped".
+    Offline unless online_token is given; the token is passed only in zizmor's own environment."""
+    if not os.path.isdir(root):
+        return {"status": "ok", "findings": [], "note": "no workflow files"}
+    base, env = _base_args(exe, persona, online_token, cache_dir, no_ignores)
+    data, invalid, skipped, err = _audit(base, env, [root], audit_files, TIMEOUT)
+    invalid = sorted({_rel(i, root) for i in invalid})
+    skipped = [(_rel(f, root), why) for f, why in skipped]
+    if err:
+        return {"status": f"error: {err}", "findings": [], "invalid": invalid, "skipped": skipped}
     if raw_path:
         os.makedirs(os.path.dirname(raw_path), exist_ok=True)
         with open(raw_path, "w", encoding="utf-8") as fh:
             json.dump(data, fh, indent=1)
-    return {"status": "ok", "findings": [_slim(f, root) for f in data], "invalid": invalid}
+    return {"status": "ok", "findings": [_slim(f, root) for f in data], "invalid": invalid, "skipped": skipped}
 
 
 def escalates(f):
@@ -140,32 +191,23 @@ ONLINE_TIMEOUT = 1800
 def run_online(exe, roots, token, cache_dir=None, raw_path=None):
     """One zizmor run over every repository's saved workflow files, with the audits that ask GitHub.
 
-    roots: {repo: folder}. Returns {"status", "findings": {repo: [online findings]}}. Only the online rules are
-    kept; the offline findings come from the per-repository run. Requests go to api.github.com only, about the
-    actions used (name and version); the shared cache means each action is asked about once."""
+    roots: {repo: folder}. Returns {"status", "findings": {repo: [online findings]}, "skipped": [(repo, file,
+    reason)]}. Only the online rules are kept; the offline findings come from the per-repository run. Requests go
+    to api.github.com only, about the actions used (name and version); the shared cache means each action is asked
+    about once. If zizmor fails on a file, that file is skipped and every other repository is still audited."""
     roots = {repo: os.path.abspath(r) for repo, r in roots.items() if os.path.isdir(r)}
     if not roots:
-        return {"status": "ok", "findings": {}}
+        return {"status": "ok", "findings": {}, "skipped": []}
     if not token:
-        return {"status": "not run: no GitHub token found for zizmor", "findings": {}}
-    args = [exe, "--format", "json", "--no-exit-codes", "--no-progress", "--color", "never", "--no-config",
-            "--collect", "all", *(["--cache-dir", cache_dir] if cache_dir else []), *roots.values()]
-    env = {k: v for k, v in os.environ.items() if k not in ("GH_TOKEN", "GITHUB_TOKEN", "ZIZMOR_GITHUB_TOKEN")}
-    env["ZIZMOR_GITHUB_TOKEN"] = token
-    try:
-        p = subprocess.run(args, capture_output=True, encoding="utf-8", errors="replace", env=env,
-                           timeout=ONLINE_TIMEOUT)
-    except subprocess.TimeoutExpired:
-        return {"status": f"error: timed out after {ONLINE_TIMEOUT}s", "findings": {}}
-    except OSError as e:
-        return {"status": f"error: {e}", "findings": {}}
-    if p.returncode != 0 and "no inputs collected" not in p.stderr:
-        msg = next((l for l in reversed(p.stderr.strip().splitlines()) if l.strip()), f"exit code {p.returncode}")
-        return {"status": f"error: {msg[:200]}", "findings": {}}
-    try:
-        data = json.loads(p.stdout or "[]")
-    except ValueError:
-        return {"status": "error: output was not JSON", "findings": {}}
+        return {"status": "not run: no GitHub token found for zizmor", "findings": {}, "skipped": []}
+    base, env = _base_args(exe, online_token=token, cache_dir=cache_dir)
+    base = [a for a in base if a not in ("--persona", "regular")]
+    data, _, skipped, err = _audit(base, env, list(roots.values()), audit_files, ONLINE_TIMEOUT)
+    where = lambda path: next(((repo, _rel(path, root)) for repo, root in roots.items()
+                               if not _rel(path, root).startswith("..")), ("?", path))
+    skipped = [(*where(f), why) for f, why in skipped]
+    if err:
+        return {"status": f"error: {err}", "findings": {}, "skipped": skipped}
     if raw_path:
         os.makedirs(os.path.dirname(raw_path), exist_ok=True)
         with open(raw_path, "w", encoding="utf-8") as fh:
@@ -179,4 +221,4 @@ def run_online(exe, roots, token, cache_dir=None, raw_path=None):
             if not x["file"].startswith(".."):
                 out.setdefault(repo, []).append(dict(x, online=True))
                 break
-    return {"status": "ok", "findings": out}
+    return {"status": "ok", "findings": out, "skipped": skipped}

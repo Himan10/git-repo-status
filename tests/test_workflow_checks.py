@@ -327,5 +327,37 @@ class Saver(unittest.TestCase):
             self.assertFalse(os.path.exists(os.path.join(d, "escape.yml")))
 
 
+class ZizmorSkipsOnlyTheFileItCannotProcess(unittest.TestCase):
+    """zizmor 1.32.0 can stop on one file ("failed to locate subfeature"); the other files must still be audited."""
+
+    def test_one_bad_file(self):
+        with tempfile.TemporaryDirectory() as d:
+            wf = os.path.join(d, ".github", "workflows")
+            os.makedirs(wf)
+            for name in ("bad.yml", "good.yml"):
+                open(os.path.join(wf, name), "w", encoding="utf-8").close()
+            finding = {"ident": "template-injection", "determinations": {"severity": "High", "confidence": "High"},
+                       "locations": [{"symbolic": {"key": {"Local": {"given_path": os.path.join(wf, "good.yml")}},
+                                                   "annotation": "x"}, "concrete": {"location": {"start_point": {"row": 3}}}}]}
+
+            def fake(base, inputs, env, timeout):
+                if any(i.endswith("good.yml") for i in inputs) and len(inputs) == 1:
+                    return [finding], [], None
+                return None, [], "zizmor could not locate one of its findings in the file (a zizmor bug)"
+
+            real, zizmor_runner._invoke = zizmor_runner._invoke, fake
+            try:
+                r = zizmor_runner.run("zizmor", d)
+            finally:
+                zizmor_runner._invoke = real
+        self.assertEqual(r["status"], "ok")
+        self.assertEqual([p for p, _ in r["skipped"]], [os.path.join(".github", "workflows", "bad.yml").replace(os.sep, "/")])
+        self.assertEqual(len(r["findings"]), 1)
+
+    def test_collect_option_cannot_swallow_paths(self):
+        base, _ = zizmor_runner._base_args("zizmor")
+        self.assertIn("--collect=all", base)  # "--collect all <path>" made zizmor read the path as a collect kind
+
+
 if __name__ == "__main__":
     unittest.main()

@@ -110,5 +110,28 @@ class OnlineZizmor(unittest.TestCase):
             self.assertIn("no GitHub token", zizmor_runner.run_online("zizmor", {"a": d}, None)["status"])
 
 
+class WhoUses(unittest.TestCase):
+    """The places an action is used, from the scan (report.html's Actions tab and the uses command)."""
+
+    def test_direct_and_through_the_lockfile(self):
+        use = lambda ref, rtype: {"kind": "action", "slug": "bad/action", "target": "Bad/Action", "ref": ref, "ref_type": rtype}
+        repos = [
+            {"repo": "app", "actions": {"items": [
+                {"path": ".github/workflows/ci.yml", "state": "active", "last_run": "2026-11-01T00:00:00Z", "uses": [use("v2", "version")]}],
+                "lockfile": {}}},
+            {"repo": "lib", "actions": {"items": [
+                {"path": ".github/workflows/build.yml", "state": "active", "uses": [use("a" * 40, "sha")]},
+                {"path": ".github/workflows/release.yml", "state": "active", "uses": []}],
+                "lockfile": {"workflows": {".github/workflows/release.yml": ["wrapper/action@v1"]},
+                             "dependencies": {"wrapper/action@v1": {"slug": "wrapper/action", "uses": ["bad/action@v2"]},
+                                              "bad/action@v2": {"slug": "bad/action"}}}}},
+        ]
+        got = sorted((h["repo"], h["path"].rsplit("/", 1)[-1], h["ref_type"], h["locked"], h["via"])
+                     for h in action_health.who_uses(repos, "BAD/action@v2"))
+        self.assertEqual(got, [("app", "ci.yml", "version", False, "direct"),
+                               ("lib", "build.yml", "sha", True, "direct"),  # lib's actions.lock records bad/action
+                               ("lib", "release.yml", "", True, "through wrapper/action@v1 (actions.lock)")])
+
+
 if __name__ == "__main__":
     unittest.main()

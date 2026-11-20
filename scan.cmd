@@ -13,6 +13,9 @@ if errorlevel 1 (
   echo Then close and reopen this window.
   exit /b 1
 )
+rem Use the Windows certificate store, so uv's downloads work behind a company proxy that inspects HTTPS.
+rem Set UV_NATIVE_TLS=0 before running to turn this off.
+if not defined UV_NATIVE_TLS set UV_NATIVE_TLS=1
 rem "%~dp0." not "%~dp0": a trailing backslash before the closing quote would escape it
 uv run --quiet --locked --directory "%~dp0." python -m repostatus %*
 exit /b %ERRORLEVEL%
