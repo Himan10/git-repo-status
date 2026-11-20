@@ -87,7 +87,7 @@ Python: 3.14.3
 Logged in to GitHub as: your-username
 GitHub API allowance: 5,000 of 5,000 per hour left (personal limit; see Rate Limits in the wiki for 15,000)
 zizmor: 1.32.0
-Self-test: passed (158 tests)
+Self-test: passed (161 tests)
 ```
 
 Something wrong? See [Common Problems](https://github.com/Himan10/git-repo-status/wiki/Common-Problems).

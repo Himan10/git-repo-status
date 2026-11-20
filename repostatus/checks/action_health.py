@@ -59,9 +59,28 @@ def maintainer(slug, repo):
     return {"Organization": "organisation", "User": "individual account"}.get(repo.get("owner_type"), "unknown")
 
 
-def assess(slug, repo, health, used, now):
+def pinned_version(u, lock=None):
+    """The version a commit-pinned `uses:` stands for: its `# v4.2.0` comment, else the actions.lock entry for that
+    commit. None when neither says (or the use is not pinned to a commit)."""
+    from repostatus.collect.workflow_parser import FLOATING_VERSION, FULL_VERSION
+    if u.get("ref_type") != "sha":
+        return None
+    c = (u.get("version_comment") or "").strip()
+    if c and (FULL_VERSION.match(c) or FLOATING_VERSION.match(c)):
+        return c
+    sha = (u.get("ref") or "").lower()
+    for d in ((lock or {}).get("dependencies") or {}).values():
+        if sha and d.get("commit", "").lower().startswith(sha[:12]) and d.get("ref"):
+            return d["ref"]
+    return None
+
+
+def assess(slug, repo, health, used, now, pins=None):
     """{problems: [(level, text)], notes: [text], summary: text} for one action.
-    used: {(sub-path, ref, ref type, kind)} as the organisation uses it."""
+    used: {(sub-path, ref, ref type, kind)} as the organisation uses it; a commit whose version is known (from its
+    comment or actions.lock) is listed as that version. pins: {version: {commits}} for the wording."""
+    pins = pins or {}
+    via = lambda ref: (f" (pinned as commit {', '.join(sorted(c[:7] for c in pins[ref]))})" if ref in pins else "")
     problems, notes = [], []
     health = health or {}
     if repo.get("status") in (None, "not checked"):
@@ -79,13 +98,15 @@ def assess(slug, repo, health, used, now):
             hit = affected(ref, rtype, adv["ranges"])
             fixed = ", ".join(sorted({r["fixed"] for r in adv["ranges"] if r.get("fixed")})) or "no fixed version yet"
             if hit == "yes":
-                problems.append(("Fix", f"{adv['ghsa']} ({adv['severity']}) affects {ref}, which you use; fixed in {fixed}"))
+                problems.append(("Fix", f"{adv['ghsa']} ({adv['severity']}) affects {ref}{via(ref)}, which you use; fixed in {fixed}"))
             elif hit == "possibly":
-                problems.append(("Review", f"{adv['ghsa']} ({adv['severity']}) affects some {ref} releases; "
+                problems.append(("Review", f"{adv['ghsa']} ({adv['severity']}) affects some {ref}{via(ref)} releases; "
                                            f"fixed in {fixed}. zizmor online checks the release {ref} points to now"))
             elif hit == "unknown":
-                problems.append(("Review", f"{adv['ghsa']} ({adv['severity']}) exists for this action; you pin "
-                                           f"{ref[:12]} without a version, so it cannot be checked"))
+                problems.append(("Review", f"{adv['ghsa']} ({adv['severity']}) exists for this action. You use commit "
+                                           f"{ref[:12]}, which has no version comment and no actions.lock entry, so "
+                                           f"Repo Status cannot tell whether it is in an affected release: compare "
+                                           f"it with the advisory's affected versions"))
     for ref, published in (health.get("versions") or {}).items():
         if published and _days(now, ts(published)) < COOLDOWN_DAYS:
             problems.append(("Review", f"{ref} was released {published[:10]}, less than {COOLDOWN_DAYS} days ago"))
@@ -150,10 +171,10 @@ def who_uses(repos, target):
         for path, u in all_uses(f):
             if u.get("slug") and (u["slug"] == target or u["target"].lower() == target):
                 hits.append({"repo": f["repo"], "path": path, "ref": u["ref"], "ref_type": u.get("ref_type", ""),
-                             "where": u.get("where", ""), "via": "direct", "wf": items.get(path),
+                             "version": pinned_version(u, lock), "where": u.get("where", ""), "via": "direct", "wf": items.get(path),
                              "locked": u["target"].lower() in locked or u["slug"] in locked})
         for path, via in lock_paths(lock, target).items():
-            hits.append({"repo": f["repo"], "path": path, "ref": "", "ref_type": "", "where": "", "via": via,
+            hits.append({"repo": f["repo"], "path": path, "ref": "", "ref_type": "", "version": None, "where": "", "via": via,
                          "wf": items.get(path), "locked": True})
     return hits
 
@@ -161,14 +182,21 @@ def who_uses(repos, target):
 def org_actions(index, rows, now):
     """[(slug, assessment, repos using it)] for every upstream action in the scan, most serious first."""
     from repostatus.collect.repository_facts import all_uses
-    users, used = defaultdict(set), defaultdict(set)
+    from repostatus.collect.workflow_parser import ref_type
+    users, used, pins = defaultdict(set), defaultdict(set), defaultdict(lambda: defaultdict(set))
     for r in rows:
+        lock = (r["f"].get("actions") or {}).get("lockfile") or {}
         for _, u in all_uses(r["f"]):
             if u["kind"] in ("action", "reusable") and u.get("slug"):
                 users[u["slug"]].add(r["f"]["repo"])
-                used[u["slug"]].add((u.get("path") or "", u.get("ref") or "", u.get("ref_type") or "", u["kind"]))
+                ref, rtype = u.get("ref") or "", u.get("ref_type") or ""
+                version = pinned_version(u, lock)
+                if version:  # judge the commit as the version it stands for
+                    pins[u["slug"]][version].add(ref)
+                    ref, rtype = version, ref_type(version)
+                used[u["slug"]].add((u.get("path") or "", ref, rtype, u["kind"]))
     repos, health = (index or {}).get("repos") or {}, (index or {}).get("health") or {}
-    out = [(slug, assess(slug, repos.get(slug) or {"status": "not checked"}, health.get(slug), used[slug], now),
+    out = [(slug, assess(slug, repos.get(slug) or {"status": "not checked"}, health.get(slug), used[slug], now, pins[slug]),
             sorted(users[slug])) for slug in users]
     rank = {"Fix": 0, "Review": 1, "OK": 2, "Not checked": 3}
     return sorted(out, key=lambda x: (rank[x[1]["level"]], -len(x[2]), x[0]))

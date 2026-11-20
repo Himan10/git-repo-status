@@ -46,7 +46,12 @@ class OrgPage(unittest.TestCase):
         # findings point into the type and repository lists; the injection is one Fix finding in Workflow flaws
         fixes = [f for f in data["findings"] if f[2] == 1]
         self.assertEqual(len(fixes), 1)
-        self.assertEqual(data["types"][fixes[0][0]][1:], ["Command injection", "Workflow flaws"])
+        self.assertEqual(data["types"][fixes[0][0]][1:3], ["Command injection", "Workflow flaws"])
+        # every finding says where it is, with a link: here the file and lines on the default branch
+        self.assertEqual(fixes[0][3], ".github/workflows/deploy.yml:10,11 on main")
+        self.assertEqual(fixes[0][5], "https://github.com/acme/app/blob/main/.github/workflows/deploy.yml#L10")
+        self.assertEqual(data["types"][fixes[0][0]][5], "https://docs.zizmor.sh/audits/#template-injection")
+        self.assertEqual([f for f in data["findings"] if not f[3]], [])  # no finding without a place
         self.assertEqual(data["repos"][fixes[0][1]]["n"], "app")
         # notes that carry a count share one finding type, so they group across repositories
         names = [t[1] for t in data["types"]]
@@ -115,7 +120,7 @@ class DeepPage(unittest.TestCase):
         self.assertIn('<a href="https://github.com/acme/app/commit/abc1234def5">abc1234</a> '
                       '<span class="code">FINDING: WORKFLOW_BY_NEW_ACTOR</span>', page)
         for u in links(page):
-            self.assertTrue(u.startswith(("https://github.com/", "#", "../report.html", "app-evidence.md")), u)
+            self.assertTrue(u.startswith(("https://github.com/", "https://docs.zizmor.sh/", "#", "../report.html", "app-evidence.md")), u)
         self.assertTrue(all(ord(c) < 0x2190 for c in page), "no icons or emoji in the report")
 
 

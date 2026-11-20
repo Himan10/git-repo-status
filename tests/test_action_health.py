@@ -82,6 +82,37 @@ class Assess(unittest.TestCase):
                          [("x/old", "Review", ["b"]), ("actions/checkout", "OK", ["a"])])
 
 
+class PinnedCommits(unittest.TestCase):
+    """A `uses:` pinned to a commit is judged as the version it stands for (its comment, or actions.lock)."""
+    SHA = "3e5f45b2cfb9" + "0" * 28
+
+    def rows(self, comment=None, lock=None):
+        u = {"kind": "action", "slug": "tj-actions/changed-files", "target": "tj-actions/changed-files", "path": "",
+             "ref": self.SHA, "ref_type": "sha", "version_comment": comment}
+        return [{"f": {"repo": "app", "actions": {"items": [{"path": ".github/workflows/ci.yml", "uses": [u]}],
+                                                   "lockfile": lock or {}}}}]
+
+    def problems(self, rows):
+        index = {"repos": {"tj-actions/changed-files": OK_REPO},
+                 "health": {"tj-actions/changed-files": {"advisories": [{"ghsa": "GHSA-mrrh-fwg8-r2c3", "severity": "high", "ranges": TJ}]}}}
+        (_, a, _), = action_health.org_actions(index, rows, NOW)
+        return a["level"], [t for _, t in a["problems"]]
+
+    def test_version_comment(self):
+        level, text = self.problems(self.rows("v45.0.7"))
+        self.assertEqual(level, "Fix")
+        self.assertIn("affects v45.0.7 (pinned as commit 3e5f45b), which you use", text[0])
+
+    def test_lockfile_entry(self):
+        lock = {"dependencies": {"tj-actions/changed-files@v46.0.1": {"ref": "v46.0.1", "commit": self.SHA}}}
+        self.assertEqual(self.problems(self.rows(lock=lock))[0], "OK")  # the fixed release: nothing to report
+
+    def test_unknown_says_why(self):
+        level, text = self.problems(self.rows())
+        self.assertEqual(level, "Review")
+        self.assertIn("no version comment and no actions.lock entry", text[0])
+
+
 class OnlineZizmor(unittest.TestCase):
     def test_findings_are_mapped_to_their_repository(self):
         with tempfile.TemporaryDirectory() as d:

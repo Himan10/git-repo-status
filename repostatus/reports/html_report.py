@@ -20,7 +20,7 @@ from collections import Counter
 from repostatus.platform_support import scan_cmd
 from repostatus.checks import action_health
 from repostatus.reports import deep_dive_verdict, finding_explanations, org_summary
-from repostatus.reports.github_links import SHA, commit_url
+from repostatus.reports.github_links import SHA, commit_url, file_url
 
 AREA_WHAT = {
     "History": "Force pushes, odd commit dates, unusual signing",
@@ -55,6 +55,8 @@ def _note_detail(text, title):
         return "Force pushes cannot be blocked, and pull requests and code-owner review cannot be required"
     short = text.split(" (")[0].split(":")[0]
     rest = text[len(short):].strip().strip(":").strip()
+    if rest.startswith("(") and "): " in rest:  # 'name (aside): the list' -> 'the list'
+        return rest.split("): ", 1)[1]
     return rest[1:-1] if rest.startswith("(") and rest.endswith(")") else rest
 
 
@@ -67,23 +69,116 @@ def _title(a):
     return text[:1].upper() + text[1:]
 
 
-def _findings(a):
-    """One action of the verdict as findings: (type key, title, where, detail). Grouped actions (settings,
-    hygiene) become one finding per note, so the Findings tab can group the same note across repositories."""
+PATH = re.compile(r"\.github/[\w.\-/]+|[\w.\-/]*action\.ya?ml")
+ON_BRANCH = re.compile(r"on branch ([^\s,;:()]+)")
+ZIZMOR_DOCS = "https://docs.zizmor.sh/audits/#{rule}"
+NOTE_PAGE = [  # (start of note, settings page) for notes that are settings, not files
+    ("force-push allowed", "rules"), ("no PR required", "rules"), ("CODEOWNERS not enforced", "rules"),
+    ("approvals stay valid", "rules"), ("whoever pushed last", "rules"), ("workflow token can write", "actions"),
+    ("workflows can approve", "actions"), ("any action from any author", "actions"), ("fork pull request", "actions"),
+    ("pull_request_target", "actions"), ("pinning to a commit is required", "actions"), ("last pusher has no access", "access"),
+    ("branch rules (block force pushes", "rules"), ("branch rules could not be read", "rules"),
+    ("secrets any branch can read", "secrets"), ("static cloud keys", "secrets"), ("environments", "environments"),
+    ("older workflow copies", "branches"), ("workflow files only on other branches", "branches"),
+]
+
+
+def _locate(text, f, lines=None):
+    """Where a finding is, as (text, GitHub link): the file and the branch it is on, else the settings page
+    that controls it, else the repository's file list."""
+    full, branch = f.get("full_name") or f["repo"], f.get("default_branch") or "main"
+    m = PATH.search(text or "")
+    if m:
+        path = m.group(0).rstrip(".,;:")
+        b = ON_BRANCH.search(text)
+        b = b.group(1) if b else branch
+        anchor = f"#L{lines[0]}" if lines else ""
+        shown = path + (":" + ",".join(str(n) for n in lines) if lines else "")
+        return f"{shown} on {b}", file_url(full, b, path) + anchor
+    low = (text or "").lower()
+    for prefix, key in NOTE_PAGE:
+        if low.startswith(prefix.lower()):
+            link = finding_explanations.settings_link(key, full)
+            return link[0], link[1]
+    if low.startswith(("no codeowners", "codeowners errors", "workflows have no code owner")):
+        return f".github/CODEOWNERS on {branch}", f"https://github.com/{full}/tree/{branch}/.github"
+    if low.startswith(("other zizmor findings", "uses actions with known problems")) or "actions.lock" in low \
+            or re.match(r"\d+ of \d+ actions are not pinned", low):
+        files = _unpinned_files(f) if "not pinned" in low else []
+        shown = ", ".join(p.rsplit("/", 1)[-1] for p in files[:4]) + (f" and {len(files) - 4} more" if len(files) > 4 else "")
+        return (f"{shown or '.github/workflows/'} on {branch}",
+                file_url(full, branch, files[0]) if len(files) == 1 else f"https://github.com/{full}/tree/{branch}/.github/workflows")
+    return "Repository settings", f"https://github.com/{full}/settings"
+
+
+def _unpinned_files(f):
+    """Workflow and action files with a `uses:` not pinned to a commit."""
+    a = f.get("actions") or {}
+    return sorted({w["path"] for w in (a.get("items") or []) + (a.get("composite_actions") or [])
+                   for u in w.get("uses") or [] if u.get("kind") in ("action", "reusable") and u.get("ref_type") != "sha"})
+
+
+def _note_fix(text, title, a):
+    """What to do about a note, in words that make sense on the page (not the markdown report's)."""
+    if title in ("Actions not pinned to a commit", "No actions.lock") and a.get("fix"):
+        return a["fix"]
+    if title == "Other zizmor findings":
+        return ("Each rule is linked under the finding to zizmor's documentation, which explains it and shows the fix. "
+                "Change the workflow files named under Where.")
+    if title.startswith("Branch rules not available") and a.get("fix"):
+        return a["fix"]
+    if title == "Invalid workflow file":
+        return ("Fix the file so GitHub can run it (the Actions tab on GitHub shows the error), or delete it if it is "
+                "no longer needed. An invalid file can hide a check someone expects to run.")
+    if title == "Pip install without pinned versions":
+        return ("Pin each package to an exact version (`package==1.2.3`), or install from a requirements file with "
+                "hashes (`pip install --require-hashes -r requirements.txt`).")
+    if title == "Uses actions with known problems":
+        return "The Actions tab lists each action's problem and every place it is used."
+    where = org_summary.where_to_fix(text)
+    if where.startswith("The workflow file named"):
+        return "Change the file or setting linked under Where."
+    return f"Change it in: {where}"
+
+
+def _commit_links(text, f, code):
+    """Every commit named in a finding, linked, with its FINDING: keyword (as in the markdown reports)."""
+    full = f.get("full_name") or f["repo"]
+    return [[f"{sha[:7]} FINDING: {code}", commit_url(full, sha)] for sha in dict.fromkeys(SHA.findall(text or ""))]
+
+
+def _findings(a, f):
+    """One action of the verdict as findings: (type key, title, where, link, detail, links, why, fix, docs).
+    Grouped actions (settings, hygiene) become one finding per note, so the Findings tab groups the same note
+    across repositories."""
     out = []
+    full = f.get("full_name") or f["repo"]
     if a.get("items"):
         for i in a["items"]:
             title = _short_note(i["text"])
-            out.append((f"note:{title.lower()}", title, (i.get("settings") or ("", ""))[0], _note_detail(i["text"], title)))
+            where, url = (i["settings"][0], i["settings"][1]) if i.get("settings") else _locate(i["text"], f)
+            fix = _note_fix(i["text"], title, a)
+            links = [[f"zizmor: {r}", ZIZMOR_DOCS.format(rule=r)] for r in re.findall(r"([a-z][a-z0-9-]+) \(\d+\)", i["text"])] \
+                if title == "Other zizmor findings" else []
+            out.append((f"note:{title.lower()}", title, where, url, _note_detail(i["text"], title), links,
+                        a.get("why") or "", fix, None))
     elif a.get("lines"):
         rule = finding_explanations.ZIZMOR.get(a["code"], {}).get("title") or a["code"]
-        where = a["file"] + ":" + ",".join(str(ln["line"]) for ln in a["lines"] if ln.get("line"))
+        nums = [ln["line"] for ln in a["lines"] if ln.get("line")]
+        where, url = _locate(a["file"], f, nums)
         detail = f"Who can use it: {a.get('who') or 'unknown'}. Can read: {a.get('reach') or 'no secrets'}" \
                  + ("" if a.get("live") else ". The workflow no longer runs")
-        out.append((f"zizmor:{a['code']}", rule, where, detail))
+        docs = ZIZMOR_DOCS.format(rule=a["code"])
+        out.append((f"zizmor:{a['code']}", rule, where, url, detail, [[f"zizmor: {a['code']}", docs]],
+                    a.get("why") or "", a.get("fix") or "", docs))
     else:
+        settings = [[x[0], x[1]] for x in (a.get(k) for k in ("settings", "settings2")) if x]
         for w in (a.get("where") or [""])[:MAX_PER_ACTION]:
-            out.append((a["code"], a["title"], a.get("file") or "", w))
+            where, url = _locate(w, f)
+            if not url and settings:
+                where, url = settings[0]
+            out.append((a["code"], a["title"], where, url, w, _commit_links(w, f, a["code"]) + settings[1:],
+                        a.get("why") or "", a.get("fix") or "", None))
     return out
 
 
@@ -99,6 +194,7 @@ def org_page(ctx, rows, cfg, now, owner_dir, generated=None):
         f = r["f"]
         x = org_summary.row_for(r, now, cfg)
         name = f["repo"]
+        f = {**f, "full_name": f.get("full_name") or f"{owner}/{name}"}  # older scans may not have it
         report = os.path.exists(os.path.join(owner_dir, "deep-dive", f"{name}.html"))
         if r["status"] in ("dormant", "dead") and x["workflows_run_last_90_days"]:
             quiet_running += 1
@@ -116,17 +212,17 @@ def org_page(ctx, rows, cfg, now, owner_dir, generated=None):
         ri = len(repos)
         per_area = Counter()
         for a in result["actions"]:
-            for key, title, where, detail in _findings(a):
+            for key, title, where, url, detail, links, why, fix, docs in _findings(a, f):
                 if key not in type_index:
                     type_index[key] = len(types)
-                    types.append([key, title, a["area"]])
-                findings.append([type_index[key], ri, 1 if a["level"] == "Fix" else 0, where, detail])
+                    types.append([key, title, a["area"], why, fix, docs])
+                findings.append([type_index[key], ri, 1 if a["level"] == "Fix" else 0, where, detail, url, links])
                 per_area[a["area"]] += 1
         fixes = sum(a["level"] == "Fix" for a in result["actions"])
         reviews = sum(a["level"] == "Review" for a in result["actions"])
         first = result["actions"][0] if result["actions"] else None
         entry.update(verdict="Fix" if fixes else "Review" if reviews else "OK", fix=fixes, review=reviews,
-                     main=_findings(first)[0][1] if first else "Nothing found",
+                     main=_findings(first, f)[0][1] if first else "Nothing found",
                      areas=[[ar["result"], per_area[ar["name"]]] for ar in result["areas"]])
         repos.append(entry)
 
@@ -180,7 +276,9 @@ def _places(facts, slug, index_of):
     out = []
     for h in action_health.who_uses(facts, slug):
         wf = h.get("wf") or {}
-        out.append([index_of.get(h["repo"], -1), h["path"], h["ref"] or "-", "yes" if h["ref_type"] == "sha" else "no",
+        ref = h["ref"][:12] + (f" ({h['version']})" if h.get("version") else " (no version comment)") \
+            if h["ref_type"] == "sha" else (h["ref"] or "-")
+        out.append([index_of.get(h["repo"], -1), h["path"], ref, "yes" if h["ref_type"] == "sha" else "no",
                     "yes" if h["locked"] else "no", wf.get("state") or "", (wf.get("last_run") or "")[:10],
                     "" if h["via"] == "direct" else h["via"]])
     return sorted(out, key=lambda x: (x[6] == "", [-ord(c) for c in x[6]], x[0], x[1]))
@@ -255,19 +353,34 @@ def _where_short(a):
     return w[:60] + ("..." if len(w) > 60 else "") + (f" and {len(a['where']) - 1} more" if len(a.get("where") or []) > 1 else "")
 
 
-def _details(a, full):
+def _out(label_html, url):
+    """A link to GitHub or zizmor's documentation; anything else stays text."""
+    ok = str(url or "").startswith(("https://github.com/", "https://docs.zizmor.sh/"))
+    return f'<a href="{E(url)}">{label_html}</a>' if ok else label_html
+
+
+def _details(a, f):
+    full, branch = f.get("full_name") or f["repo"], f.get("default_branch") or "main"
     D = []
     if a.get("lines"):
-        D.append(("Where", f'<code>{E(a["file"])}</code>' + (f', step "{E(a["step"])}"' if a.get("step") else "")
-                  + "<ul>" + "".join(f'<li>line {E(str(ln["line"]))}: <code>{E(ln["text"] or "")}</code>'
+        base = file_url(full, branch, a["file"])
+        D.append(("Where", _out(f'<code>{E(a["file"])}</code>', base) + f" on {E(branch)}"
+                  + (f', step "{E(a["step"])}"' if a.get("step") else "")
+                  + "<ul>" + "".join(f'<li>{_out("line " + E(str(ln["line"])), base + "#L" + str(ln["line"]))}: <code>{E(ln["text"] or "")}</code>'
                                      + (" (a value GitHub generates; low risk)" if ln["harmless"] else "") + "</li>"
                                      for ln in a["lines"]) + "</ul>"))
     elif a.get("items"):
-        D.append(("Found", "<ul>" + "".join(f"<li>{_text(i['text'])}" + (f". Where: {_link(i['settings'])}" if i.get("settings") else "")
-                                           + "</li>" for i in a["items"]) + "</ul>"))
+        lis = []
+        for i in a["items"]:
+            where, url = (i["settings"][0], i["settings"][1]) if i.get("settings") else _locate(i["text"], f)
+            lis.append(f"<li>{_text(i['text'])}" + (f". Where: {_out(E(where), url)}" if where else "") + "</li>")
+        D.append(("Found", "<ul>" + "".join(lis) + "</ul>"))
     elif a.get("where"):
-        D.append(("Where", "<ul>" + "".join(f"<li>{_where(w, full, a['code'])}</li>" for w in a["where"][:8])
-                  + (f"<li>{len(a['where']) - 8} more in the evidence file</li>" if len(a["where"]) > 8 else "") + "</ul>"))
+        lis = []
+        for w in a["where"][:8]:
+            where, url = _locate(w, f)
+            lis.append(f"<li>{_where(w, full, a['code'])}" + (f" ({_out('open ' + E(where), url)})" if url and PATH.search(w) else "") + "</li>")
+        D.append(("Where", "<ul>" + "".join(lis) + (f"<li>{len(a['where']) - 8} more in the evidence file</li>" if len(a["where"]) > 8 else "") + "</ul>"))
     if a.get("who"):
         D.append(("Who can use it", f"{E(a['who'])}. {'The workflow still runs and can read' if a.get('live') else 'It can read'}: "
                                     f"{E(a['reach'])}."))
@@ -275,6 +388,8 @@ def _details(a, full):
         D.append(("What it means", _text(a["why"])))
     if a.get("fix"):
         D.append(("What to do", _text(a["fix"])))
+    if a.get("lines"):
+        D.append(("How to fix it", _out(f"zizmor documentation: {E(a['code'])}", ZIZMOR_DOCS.format(rule=a["code"]))))
     links = [_link(a[k]) for k in ("settings", "settings2") if a.get(k)]
     if links:
         D.append(("Where on GitHub", " &middot; ".join(links)))
@@ -285,6 +400,7 @@ def _details(a, full):
 def deep_page(owner, f, collected_at, result, evidence_name, facts_row=None):
     """The deep-dive report: one verdict line, the findings (Fix ones open), the eight areas, evidence and limits."""
     full = f"{owner}/{f['repo']}"
+    f = {**f, "full_name": f.get("full_name") or full}
     x = facts_row or {}
     acts = result["actions"]
     fixes = sum(a["level"] == "Fix" for a in acts)
@@ -307,7 +423,7 @@ def deep_page(owner, f, collected_at, result, evidence_name, facts_row=None):
             B.append(f'<details class="fitem" id="a{i}"{" open" if a["level"] == "Fix" else ""}><summary class="frow">'
                      f'<span class="muted">{i}</span><span>{_word(a["level"])}</span><span class="ftitle">{E(_title(a))}</span>'
                      f'<span class="muted">{E(a["area"])}</span><span class="mono">{E(_where_short(a))}</span></summary>'
-                     f'<div class="fbody">{_details(a, full)}</div></details>')
+                     f'<div class="fbody">{_details(a, f)}</div></details>')
         B.append("</div>")
     else:
         B.append('<p class="meta">Nothing to fix or review.</p>')
@@ -393,7 +509,7 @@ input[type=search]{flex:1 1 320px;max-width:520px}
 .pager .pages{display:flex;flex-wrap:wrap;gap:4px;align-items:center}
 .info{display:flex;flex-wrap:wrap;gap:6px 12px;align-items:baseline;font-size:13px;color:var(--muted)}.info strong{color:var(--ink)}
 .linkout{width:100%;max-width:720px;height:32px;border:1px solid var(--line);border-radius:6px;padding:0 8px;font:inherit;font-size:12px;color:var(--ink);background:var(--bg)}
-.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 24px}.areas-grid .v{display:inline-block;min-width:60px}
+.where{overflow-wrap:anywhere;font-size:12px}.links{display:flex;flex-wrap:wrap;gap:2px 14px;margin-top:4px;font-size:12px}.about{display:grid;grid-template-columns:120px minmax(0,1fr);gap:4px 16px;margin:0;padding:10px 12px 10px 28px;font-size:13px;border-bottom:1px solid var(--line2)}.about dt{color:var(--muted)}.about dd{margin:0}.areas-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:4px 24px}.areas-grid .v{display:inline-block;min-width:60px}
 .notice{border:1px solid var(--fix);border-left-width:4px;padding:10px 14px;margin-bottom:20px}
 .doc{max-width:980px}.facts-list{margin:0;padding-left:20px}.facts-list li{margin:0 0 4px}.facts-list li:first-child{font-weight:600}.sr{position:absolute;left:-9999px}
 .flist{border:1px solid var(--line);border-radius:6px;overflow:hidden;font-size:13px}
@@ -455,7 +571,7 @@ var D = JSON.parse(document.getElementById("data").textContent);
 var AREAS = D.areas, R = D.repos, T = D.types;
 var FIND = D.findings.map(function (x) {
   var r = R[x[1]], t = T[x[0]];
-  return {type: x[0], title: t[1], area: t[2], verdict: x[2] ? "Fix" : "Review", ri: x[1], repo: r.n, team: r.team, status: r.status, vis: r.vis, where: x[3], detail: x[4]};
+  return {type: x[0], title: t[1], area: t[2], verdict: x[2] ? "Fix" : "Review", ri: x[1], repo: r.n, team: r.team, status: r.status, vis: r.vis, where: x[3], detail: x[4], href: x[5], links: x[6] || []};
 });
 var RANK = {Fix: 0, Review: 1, OK: 2, "Not checked": 3};
 function emptyF() { return {verdict: {}, area: {}, status: {}, vis: {}, team: {}}; }
@@ -481,7 +597,18 @@ function add(e, c) {
   e.appendChild(typeof c === "string" || typeof c === "number" ? document.createTextNode(String(c)) : c);
 }
 function clear(n) { while (n.firstChild) n.removeChild(n.firstChild); return n; }
-function safe(u) { return (typeof u === "string" && (/^https:\/\/github\.com\//.test(u) || /^deep-dive\/[A-Za-z0-9._-]+\.html$/.test(u))) ? u : null; }
+function safe(u) { return (typeof u === "string" && (/^https:\/\/github\.com\//.test(u) || /^https:\/\/docs\.zizmor\.sh\//.test(u) || /^deep-dive\/[A-Za-z0-9._-]+\.html$/.test(u))) ? u : null; }
+function out(label, url) { var u = safe(url); return u ? el("a", {href: u, target: "_blank", rel: "noopener"}, label) : el("span", null, label); }
+function whereCell(x) { return x.where ? (safe(x.href) ? out(x.where, x.href) : el("span", null, x.where)) : el("span", {cls: "muted"}, "-"); }
+function linkLine(links) {
+  if (!links.length) return null;
+  var line = el("div", {cls: "links"});
+  links.forEach(function (l) {
+    var m = /^([0-9a-f]{7}) (FINDING: .*)$/.exec(l[0]);
+    line.appendChild(m ? el("span", null, out(m[1], l[1]), " ", el("span", {cls: "code"}, m[2])) : out(l[0], l[1]));
+  });
+  return line;
+}
 function fmt(n) { return Number(n).toLocaleString("en-GB"); }
 function word(w) { return el("span", {cls: "v v-" + ({Fix: "fix", Review: "review", OK: "ok"}[w] || "na")}, w); }
 function code(t) { return String(t || "").split("`").map(function (p, i) { return i % 2 ? el("code", null, p) : document.createTextNode(p); }); }
@@ -702,6 +829,13 @@ function groupsOf(items) {
       count: byType ? new Set(its.map(function (x) { return x.ri; })).size : new Set(its.map(function (x) { return x.type; })).size};
   }).sort(function (a, b) { return (b.fix - a.fix) || (b.count - a.count) || (b.items.length - a.items.length) || (a.title < b.title ? -1 : 1); });
 }
+function typeInfo(ti) {
+  var t = T[ti], rows = [];
+  if (t[3]) rows.push(el("dt", null, "What it means"), el("dd", null, code(t[3])));
+  if (t[4]) rows.push(el("dt", null, "What to do"), el("dd", null, code(t[4])));
+  if (safe(t[5])) rows.push(el("dt", null, "How to fix it"), el("dd", null, out("zizmor documentation: " + t[0].replace(/^zizmor:/, ""), t[5])));
+  return rows.length ? el("dl", {cls: "about"}, rows) : null;
+}
 function findingsList(items) {
   var groups = groupsOf(items), byType = S.group === "type";
   info.insertBefore(el("span", null, el("strong", null, plural(items.length, "finding", "findings") + " in " + plural(groups.length, byType ? "finding type" : "repository", byType ? "finding types" : "repositories"))), info.firstChild);
@@ -719,18 +853,19 @@ function findingsList(items) {
     if (open) {
       var per = 10, last = Math.ceil(g.items.length / per), ip = Math.min(S.gpage[g.key] || 1, last);
       var its = g.items.slice((ip - 1) * per, ip * per);
-      var inner = el("table", null, el("thead", null, el("tr", null, el("th", {style: "width:220px"}, byType ? "Repository" : "Finding"), el("th", {style: "width:240px"}, "Where"), el("th", null, "Detail"), el("th", {style: "width:80px"}, "Verdict"))),
+      var inner = el("table", null, el("thead", null, el("tr", null, el("th", {style: "width:200px"}, byType ? "Repository" : "Finding"), el("th", {style: "width:300px"}, "Where"), el("th", null, "Detail"), el("th", {style: "width:80px"}, "Verdict"))),
         el("tbody", null, its.map(function (x) {
-          return el("tr", null, el("td", null, byType ? repoLink(x.ri) : x.title), el("td", {cls: isPath(x.where) ? "mono" : null}, x.where || "-"),
-            el("td", null, code(x.detail || "-")), el("td", null, word(x.verdict)));
+          return el("tr", null, el("td", null, byType ? repoLink(x.ri) : x.title), el("td", {cls: "where"}, whereCell(x)),
+            el("td", null, code(x.detail || "-"), linkLine(x.links)), el("td", null, word(x.verdict)));
         })));
+      var about = byType ? typeInfo(g.items[0].type) : null;
       var bar = el("div", {cls: "innerbar"}, el("span", null, last > 1 ? "Showing " + fmt((ip - 1) * per + 1) + "–" + fmt(Math.min(ip * per, g.items.length)) + " of " + fmt(g.items.length) + " in this group" : plural(g.items.length, "finding", "findings") + " in this group"));
       if (last > 1) {
         bar.appendChild(el("button", {cls: "btn sm", type: "button", disabled: ip === 1, on: {click: function () { S.gpage[g.key] = ip - 1; refresh(); }}}, "Previous"));
         bar.appendChild(el("button", {cls: "btn sm", type: "button", disabled: ip === last, on: {click: function () { S.gpage[g.key] = ip + 1; refresh(); }}}, "Next"));
       }
       if (!byType && !safe(R[g.ri].report)) bar.appendChild(el("span", null, "Full report: run ", el("code", null, R[g.ri].cmd)));
-      body.appendChild(el("tr", null, el("td", {cls: "inner", colspan: "6"}, inner, bar)));
+      body.appendChild(el("tr", null, el("td", {cls: "inner", colspan: "6"}, about, inner, bar)));
     }
     t.appendChild(body);
   });
@@ -781,8 +916,8 @@ function cell(v) {
 }
 function exportCsv() {
   var base = baseItems().filter(function (x) { return passes(x, null); }), lines;
-  if (S.tab === "findings") lines = [["verdict", "finding", "area", "repository", "team", "status", "where", "detail"]].concat(
-    base.map(function (x) { return [x.verdict, x.title, x.area, x.repo, x.team, x.status, x.where, x.detail]; }));
+  if (S.tab === "findings") lines = [["verdict", "finding", "area", "repository", "team", "status", "where", "detail", "link"]].concat(
+    base.map(function (x) { return [x.verdict, x.title, x.area, x.repo, x.team, x.status, x.where, x.detail, safe(x.href) || ""]; }));
   else lines = [["repository", "verdict", "fix", "review", "most_serious_finding", "status", "visibility", "team", "last_push"]].concat(
     base.map(function (x) { var r = x.r; return [r.n, r.verdict, r.fix, r.review, r.main, r.status, r.vis, r.team, r.push]; }));
   var csv = "\ufeff" + lines.map(function (l) { return l.map(cell).join(","); }).join("\r\n") + "\r\n";
