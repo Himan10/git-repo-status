@@ -34,7 +34,7 @@ from repostatus.collect.repository_facts import all_uses
 from repostatus.checks.repository_checks import evaluate, is_github_commit, ts
 from repostatus.github.api_client import ApiError, GitHub, gh_token
 from repostatus.reports.org_summary import _last_run_text, _reach
-from repostatus.checks.workflow_checks import _runs, branch_copies, runs_worth_a_look
+from repostatus.checks.workflow_checks import _runs, branch_copies, runs_worth_a_look, tag_moved
 from repostatus.collect.workflow_parser import FULL_VERSION
 from repostatus.platform_support import scan_cmd, utf8_console
 
@@ -336,15 +336,15 @@ def upstream_actions(f, index):
         if r and r["status"] != "ok":
             problems.append({"action": u["slug"], "where": path, "state": r["status"]})
         if u.get("ref_type") == "sha" and u.get("version_comment") and FULL_VERSION.match(u["version_comment"]):
-            now_at = (tags.get(f"{u['slug']}@{u['version_comment']}") or {}).get("commit")
-            if now_at and r and now_at.lower() != u["ref"].lower():
+            now_at = tag_moved(tags.get(f"{u['slug']}@{u['version_comment']}"), u["ref"])
+            if now_at and r:
                 moved.append({"action": u["slug"], "tag": u["version_comment"], "pinned": u["ref"], "now": now_at,
                               "where": path, "source": "version comment",
                               "compare": f"https://github.com/{r['full_name']}/compare/{u['ref']}...{now_at}"})
     for key, dep in (((f.get("actions") or {}).get("lockfile") or {}).get("dependencies") or {}).items():
-        now_at = (tags.get(f"{dep['slug']}@{dep['ref']}") or {}).get("commit")
+        now_at = tag_moved(tags.get(f"{dep['slug']}@{dep['ref']}"), dep.get("commit"))
         r = repos.get(dep["slug"]) or {}
-        if now_at and dep.get("commit") and now_at.lower() != dep["commit"].lower() and r.get("full_name"):
+        if now_at and r.get("full_name"):
             moved.append({"action": dep["slug"], "tag": dep["ref"], "pinned": dep["commit"], "now": now_at,
                           "where": "actions.lock", "source": "lockfile" if FULL_VERSION.match(dep["ref"])
                           else "lockfile (major-version tag: moving is normal)",

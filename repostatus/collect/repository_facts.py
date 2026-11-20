@@ -617,19 +617,22 @@ def all_uses(f):
 
 
 def _resolve_tag(gh, slug, tag):
-    """Commit a tag points to now (annotated tags are followed). Returns (sha, error)."""
+    """Commit a tag points to now. An annotated tag is its own object wrapping the commit; it is followed to the
+    commit, and its id is kept too, because a `uses:` can be pinned to it (git resolves it to the same commit).
+    Returns (commit sha, [annotated tag object shas], error)."""
     data, err = gh.try_get(f"repos/{slug}/git/ref/tags/{quote(tag, safe='')}")
     if err:
-        return None, err
-    obj = data.get("object") or {}
+        return None, [], err
+    obj, objects = data.get("object") or {}, []
     for _ in range(3):
         if obj.get("type") != "tag":
             break
+        objects.append(obj["sha"])
         t, err = gh.try_get(f"repos/{slug}/git/tags/{obj['sha']}")
         if err:
-            return None, err
+            return None, objects, err
         obj = t.get("object") or {}
-    return obj.get("sha"), None
+    return obj.get("sha"), objects, None
 
 
 def action_index(gh, facts, workers=4, pace=None):
@@ -672,8 +675,8 @@ def action_index(gh, facts, workers=4, pace=None):
         r = repos.get(slug) or {}
         if r.get("status") != "ok":
             return f"{slug}@{t}", {"error": r.get("status")}
-        sha, err = _resolve_tag(gh, r["full_name"], t)
-        return f"{slug}@{t}", {"commit": sha, "error": err}
+        sha, objects, err = _resolve_tag(gh, r["full_name"], t)
+        return f"{slug}@{t}", {"commit": sha, "tag_objects": objects, "error": err}
 
     with ThreadPoolExecutor(max_workers=workers) as ex:
         tags = dict(ex.map(tag, sorted(claims)))

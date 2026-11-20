@@ -359,5 +359,18 @@ class ZizmorSkipsOnlyTheFileItCannotProcess(unittest.TestCase):
         self.assertIn("--collect=all", base)  # "--collect all <path>" made zizmor read the path as a collect kind
 
 
+class AnnotatedTags(unittest.TestCase):
+    """github/gh-aw-actions@80471a4 # v0.67.1: 80471a4 is v0.67.1's annotated tag object, which wraps commit
+    addd8a8. Pinning to the tag object is the same release, not a moved tag."""
+
+    def test_pin_to_the_tag_object_is_not_a_move(self):
+        from repostatus.checks.workflow_checks import tag_moved
+        entry = {"commit": "addd8a8bc8bad66050cec907c7bf182cca4d2e69", "tag_objects": ["80471a493be8c528dd27daf73cd644242a7965e0"]}
+        self.assertIsNone(tag_moved(entry, "80471a493be8c528dd27daf73cd644242a7965e0"))
+        self.assertIsNone(tag_moved(entry, "ADDD8A8BC8BAD66050CEC907C7BF182CCA4D2E69"))
+        self.assertEqual(tag_moved(entry, "1111111111111111111111111111111111111111"), entry["commit"])
+        self.assertIsNone(tag_moved({"commit": None, "error": "404"}, "1111111"))  # unknown: no claim
+
+
 if __name__ == "__main__":
     unittest.main()

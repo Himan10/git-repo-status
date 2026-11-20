@@ -133,6 +133,16 @@ def _ai_agents(f):
     return out
 
 
+def tag_moved(entry, pinned):
+    """Where a tag points now, if that is not the pinned commit: the commit's sha, else None. A pin to the
+    tag's annotated tag object (as gh-aw writes them) is the same release, not a move."""
+    now_at = (entry or {}).get("commit")
+    if not now_at or not pinned:
+        return None
+    same = {now_at.lower()} | {x.lower() for x in (entry or {}).get("tag_objects") or []}
+    return None if pinned.lower() in same else now_at
+
+
 def _upstream(f, index):
     """Upstream actions that disappeared, changed hands, or whose tags moved."""
     if not index:
@@ -157,8 +167,8 @@ def _upstream(f, index):
                         f"{slug} in {path} now redirects to {r['full_name']}"
                         + ("; the old owner name can be registered by someone else" if owner_changed else "")))
         if u.get("ref_type") == "sha" and u.get("version_comment") and FULL_VERSION.match(u["version_comment"]):
-            now_at = (tags.get(f"{slug}@{u['version_comment']}") or {}).get("commit")
-            if now_at and now_at.lower() != u["ref"].lower():
+            now_at = tag_moved(tags.get(f"{slug}@{u['version_comment']}"), u["ref"])
+            if now_at:
                 out.append(("TAG_MOVED", "medium",
                             f"{slug}@{u['ref'][:7]} in {path} is commented {u['version_comment']}, but that tag now "
                             f"points to {now_at[:7]}: the comment is wrong, or the tag was moved after you pinned it"))
@@ -170,8 +180,8 @@ def _upstream(f, index):
             out.append(("ACTION_REPO_REPLACED", "high",
                         f"{key}: actions.lock recorded repo id {d['repo_id']}, GitHub now has {r['id']} under that name "
                         f"(deleted and re-created, possibly by someone else)"))
-        now_at = (tags.get(f"{d['slug']}@{d['ref']}") or {}).get("commit")
-        if now_at and d.get("commit") and now_at.lower() != d["commit"].lower():
+        now_at = tag_moved(tags.get(f"{d['slug']}@{d['ref']}"), d.get("commit"))
+        if now_at:
             if FULL_VERSION.match(d["ref"]):
                 out.append(("TAG_MOVED", "high", f"{key}: locked at {d['commit'][:7]}, tag {d['ref']} now points to "
                                                   f"{now_at[:7]}. A full version tag should never move"))
