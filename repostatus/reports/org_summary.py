@@ -448,6 +448,8 @@ def _zizmor_section(ctx, rows):
              + (f"Online audits (known-vulnerable actions, impostor commits, ref confusion) ran once for the whole "
                 f"organisation: {online.get('findings', 0)} finding(s), about {online.get('api_calls', 0)} API calls. "
                 if online.get("status") == "ok" else f"Online audits: {online.get('status', 'not run')}. ")
+             + (f"zizmor could not process {len(online['skipped'])} file(s), so the online audits skipped them "
+                f"(every other file was audited): {', '.join(online['skipped'][:10])}. " if online.get("skipped") else "")
              + "A deep dive on a repository also shows findings hidden by `# zizmor: ignore` comments.\n")
     if failed:
         L.append(f"zizmor could not audit {len(failed)} repo(s): {', '.join(failed[:10])} (see Collection errors).\n")
@@ -651,7 +653,7 @@ WHERE_TO_FIX = [  # (start of hygiene note, where)
     ("environments do not protect pull_request_target", "Move secrets out of pull_request_target workflows, or use pull_request"),
     ("static cloud keys", "Your cloud provider: set up an OIDC login, then delete the keys from Settings > Secrets"),
     ("pull_request_target", "Settings > Actions > Policies (allow the event), or move to pull_request"),
-    ("uses actions with known problems", "The Actions used section above"),
+    ("uses actions with known problems", "The Actions used section of summary.md, or the Actions tab of report.html"),
     ("workflows not in actions.lock", "Run `gh actions-lock` in the repository"),
 ]
 

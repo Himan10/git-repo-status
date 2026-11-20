@@ -114,6 +114,50 @@ def assess(slug, repo, health, used, now):
             "summary": problems[0][1] if problems else "No known problems"}
 
 
+def lock_paths(lock, target):
+    """Lockfile entries that run target, directly or through other actions: {workflow path: via}."""
+    deps = lock.get("dependencies") or {}
+
+    def reaches(key, seen=()):
+        d = deps.get(key) or {}
+        if d.get("slug") == target or d.get("target", "").lower() == target:
+            return key
+        for sub in d.get("uses") or []:
+            if sub not in seen and reaches(sub, seen + (key,)):
+                return key
+        return None
+    out = {}
+    for path, keys in (lock.get("workflows") or {}).items():
+        for k in keys:
+            if reaches(k) and (deps.get(k) or {}).get("slug") != target:
+                out[path] = f"through {k} (actions.lock)"
+    return out
+
+
+def who_uses(repos, target):
+    """Every place an action is used, from the scan's facts (no API calls): the workflows and composite actions
+    that name it, and the workflows whose actions.lock reaches it through another action. Each place has the
+    version used, whether it is pinned to a commit or recorded in actions.lock, and the workflow's facts (wf:
+    state and last run). target: owner/repo, any case, without @version."""
+    from repostatus.collect.repository_facts import all_uses
+    target = target.lower().split("@")[0].rstrip("/")
+    hits = []
+    for f in repos:
+        acts = f.get("actions") or {}
+        items = {w["path"]: w for w in acts.get("items") or []}
+        lock = acts.get("lockfile") or {}
+        locked = {k.split("@")[0].lower() for k in (lock.get("dependencies") or {})}
+        for path, u in all_uses(f):
+            if u.get("slug") and (u["slug"] == target or u["target"].lower() == target):
+                hits.append({"repo": f["repo"], "path": path, "ref": u["ref"], "ref_type": u.get("ref_type", ""),
+                             "where": u.get("where", ""), "via": "direct", "wf": items.get(path),
+                             "locked": u["target"].lower() in locked or u["slug"] in locked})
+        for path, via in lock_paths(lock, target).items():
+            hits.append({"repo": f["repo"], "path": path, "ref": "", "ref_type": "", "where": "", "via": via,
+                         "wf": items.get(path), "locked": True})
+    return hits
+
+
 def org_actions(index, rows, now):
     """[(slug, assessment, repos using it)] for every upstream action in the scan, most serious first."""
     from repostatus.collect.repository_facts import all_uses
