@@ -20,7 +20,7 @@ from collections import Counter
 from repostatus.platform_support import scan_cmd
 from repostatus.checks import action_health
 from repostatus.reports import deep_dive_verdict, finding_explanations, org_summary
-from repostatus.reports.github_links import SHA, commit_url, file_url
+from repostatus.reports.github_links import SHA, action_compare, action_tag, commit_url, commits_repo, file_url
 
 AREA_WHAT = {
     "History": "Force pushes, odd commit dates, unusual signing",
@@ -144,7 +144,9 @@ def _note_fix(text, title, a):
 def _commit_links(text, f, code):
     """Every commit named in a finding, linked, with its FINDING: keyword (as in the markdown reports)."""
     full = f.get("full_name") or f["repo"]
-    return [[f"{sha[:7]} FINDING: {code}", commit_url(full, sha)] for sha in dict.fromkeys(SHA.findall(text or ""))]
+    repo = commits_repo(text, full)  # an action's commits are in the action's repository
+    links = [[f"{sha[:7]} FINDING: {code}", commit_url(repo, sha)] for sha in dict.fromkeys(SHA.findall(text or ""))]
+    return links + [list(x) for x in (action_tag(text, full), action_compare(text, full)) if x]
 
 
 def _findings(a, f):
@@ -323,12 +325,16 @@ def _where(s, full, code):
     """Escaped text with every commit id turned into a link, marked FINDING: CODE like the markdown report."""
     out, last = [], 0
     s = str(s or "")
+    repo = commits_repo(s, full)  # an action's commits are in the action's repository
     for m in SHA.finditer(s):
         out.append(_text(s[last:m.start()]))
         sha = m.group(0)
-        out.append(f'<a href="{E(commit_url(full, sha))}">{E(sha[:7])}</a> <span class="code">FINDING: {E(code)}</span>')
+        out.append(f'<a href="{E(commit_url(repo, sha))}">{E(sha[:7])}</a> <span class="code">FINDING: {E(code)}</span>')
         last = m.end()
     out.append(_text(s[last:]))
+    extra = [x for x in (action_tag(s, full), action_compare(s, full)) if x]
+    if extra:
+        out.append(" (" + ", ".join(f'<a href="{E(url)}">{E(label)}</a>' for label, url in extra) + ")")
     return "".join(out)
 
 

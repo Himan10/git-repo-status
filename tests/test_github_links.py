@@ -48,5 +48,30 @@ class EvidenceHasNoDiffs(unittest.TestCase):
         self.assertIn("[a1b2c3d](https://github.com/org/app/commit/a1b2c3d) FINDING: SIGNING_BREAK", lines[0])
 
 
+class ActionCommits(unittest.TestCase):
+    """A moved tag names commits of the action's repository; linking them to the repository that uses the
+    action leads to GitHub's 'nothing found' page."""
+
+    def test_commented_pin(self):
+        t = ("aws-actions/configure-aws-credentials@3e5f45b in .github/workflows/deploy.yml is commented v4.2.0, "
+             "but that tag now points to 9a8b7c6: the comment is wrong")
+        out = github_links.linkify(t, "acme/app", {"3e5f45b": ["TAG_MOVED"]})
+        self.assertIn("[3e5f45b](https://github.com/aws-actions/configure-aws-credentials/commit/3e5f45b) FINDING: TAG_MOVED", out)
+        self.assertIn("(https://github.com/aws-actions/configure-aws-credentials/commit/9a8b7c6)", out)
+        self.assertIn("(https://github.com/aws-actions/configure-aws-credentials/tree/v4.2.0)", out)
+        self.assertIn("(https://github.com/aws-actions/configure-aws-credentials/compare/3e5f45b...9a8b7c6)", out)
+        self.assertNotIn("acme/app", out)
+
+    def test_lockfile_entry_with_sub_path(self):
+        t = "some-org/deploy-action/sub@v2.1.0: locked at 1a2b3c4, tag v2.1.0 now points to 5d6e7f8"
+        self.assertEqual(github_links.commits_repo(t, "acme/app"), "some-org/deploy-action")
+
+    def test_ordinary_findings_stay_in_the_repository(self):
+        t = 'a1b2c3d "fix" by someone, dated 2026-11-01'
+        self.assertEqual(github_links.commits_repo(t, "acme/app"), "acme/app")
+        self.assertEqual(github_links.linkify(t, "acme/app"), '[a1b2c3d](https://github.com/acme/app/commit/a1b2c3d) "fix" by someone, dated 2026-11-01')
+        self.assertEqual(github_links.commits_repo(".github/workflows/ci.yml ran 3 time(s) on branch x", "acme/app"), "acme/app")
+
+
 if __name__ == "__main__":
     unittest.main()
